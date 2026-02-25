@@ -145,3 +145,6 @@ vite.config.ts.timestamp-*
 
 # astro
 .astro
+
+# wasm-pack output
+src/wasm/pkg
