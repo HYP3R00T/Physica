@@ -4,7 +4,6 @@ import { OrthographicCamera } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Axes from "@/components/simulations/common/Axes";
-import Grid from "@/components/simulations/common/Grid";
 import Particle from "@/components/simulations/common/Particle";
 import PhysicsScene from "@/components/simulations/common/PhysicsScene";
 
@@ -105,7 +104,7 @@ const ProjectileSim = (): ReactElement => {
 
   const cameraSettings = useMemo(
     () => ({
-      position: [0, 0, 10] as [number, number, number],
+      position: [5, 3, 10] as [number, number, number],
       zoom: 50,
       near: 0.1,
       far: 1000,
@@ -184,12 +183,11 @@ const ProjectileSim = (): ReactElement => {
       </div>
 
       <div className="px-6 pb-8 pt-6">
-        <div className="h-125 w-full">
+        <div className="h-125 w-full border border-border">
           <Canvas className="h-full w-full">
             <OrthographicCamera makeDefault {...cameraSettings} />
             <PhysicsScene cameraMode="static" followTarget={followTargetRef}>
-              <Grid sizeX={10} sizeY={6} divisionsX={10} divisionsY={6} />
-              <Axes sizeX={10} sizeY={6} />
+              <Axes sizeX={100} sizeY={100} />
               <ProjectileBody
                 wasmRef={wasmRef}
                 running={running}
