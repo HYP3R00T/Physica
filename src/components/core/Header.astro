@@ -1,0 +1,52 @@
+---
+import { Icon } from "astro-icon/components";
+
+import { Button } from "@/components/ui/button";
+
+import { SITE, navItems } from "@/config";
+import MobileMenuToggle from "@/components/core/MobileMenuToggle.astro";
+import MobileMenuPanel from "@/components/core/MobileMenuPanel.astro";
+import ThemeToggle from "@/components/core/ThemeToggle.astro";
+---
+
+<header
+  class="sticky top-0 z-50 flex h-24 items-center justify-center border-b border-border bg-background px-4 py-12 md:px-12"
+>
+  <nav class="mx-auto w-full max-w-7xl">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+
+      <Button variant="ghost">
+        <a href="/" class="flex flex-row gap-2">
+          <Icon name="bookmark" class="size-5" />
+          {SITE.title}
+        </a>
+      </Button>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden items-center gap-8 md:flex">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              target={item.blank ? "_blank" : undefined}
+              rel={item.blank ? "noopener noreferrer" : undefined}
+              class="text-xs uppercase tracking-wider text-foreground transition-colors hover:text-foreground/50"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- Desktop Theme Toggle & Mobile Menu Toggle -->
+      <div class="flex items-center gap-4">
+        <ThemeToggle />
+        <MobileMenuToggle />
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Panel -->
+<MobileMenuPanel navItems={navItems} />

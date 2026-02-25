@@ -1,0 +1,34 @@
+---
+interface Props {
+  navItems: Array<{ label: string; href: string; blank?: boolean }>;
+}
+
+const { navItems } = Astro.props as Props;
+---
+
+<!-- Panel (full-screen overlay below header). Visibility controlled via data-open attr -->
+<div
+  data-mobile-menu
+  data-open="false"
+  class="pointer-events-none fixed inset-x-0 top-0 z-40 overflow-auto border-t border-border bg-background opacity-0 transition duration-150 ease-out data-[open=true]:pointer-events-auto data-[open=true]:opacity-100 md:hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+  <div class="px-6 py-8">
+    <nav class="space-y-4">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            target={item.blank ? "_blank" : undefined}
+            rel={item.blank ? "noopener noreferrer" : undefined}
+            class="block text-sm uppercase tracking-wider text-foreground-1 transition-colors hover:text-foreground-0"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+---
+import { Icon } from "astro-icon/components";
+
+import { Button } from "@/components/ui/button";
+---
+
+<div class="md:hidden">
+  <Button
+    data-mobile-menu-toggle
+    class="p-2 text-foreground-0"
+    aria-label="Toggle menu"
+    aria-expanded="false"
+    size="icon"
+    variant="ghost"
+  >
+    <span aria-hidden="true" data-icon-open>
+      <Icon name="menu" class="size-5" />
+    </span>
+    <span aria-hidden="true" data-icon-close class="hidden">
+      <Icon name="close" class="size-5" />
+    </span>
+  </Button>
+</div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const toggleBtn = document.querySelector("[data-mobile-menu-toggle]");
+    const menu = document.querySelector("[data-mobile-menu]");
+    if (!toggleBtn || !menu) return;
+
+    const iconOpen = toggleBtn.querySelector("[data-icon-open]");
+    const iconClose = toggleBtn.querySelector("[data-icon-close]");
+    const panelCloseBtn = menu.querySelector("[data-mobile-menu-close]");
+
+    // Position panel under header
+    const header = document.querySelector("header");
+    const applyPanelPosition = () => {
+      const headerHeight = header ? header.getBoundingClientRect().height : 0;
+      (menu as HTMLElement).style.top = `${headerHeight}px`;
+      (menu as HTMLElement).style.bottom = "0";
+    };
+
+    applyPanelPosition();
+    window.addEventListener("resize", applyPanelPosition);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+
+    function setOpen(open: boolean) {
+      (menu as HTMLElement).setAttribute("data-open", String(open));
+      (menu as HTMLElement).setAttribute("aria-hidden", String(!open));
+      (toggleBtn as HTMLElement).setAttribute("aria-expanded", String(open));
+      iconOpen && iconOpen.classList.toggle("hidden", open);
+      iconClose && iconClose.classList.toggle("hidden", !open);
+
+      if (open) {
+        document.addEventListener("keydown", onKey);
+        document.body.classList.add("overflow-hidden");
+        (panelCloseBtn as HTMLElement | null)?.focus();
+        document.dispatchEvent(new CustomEvent("mobile-menu:opened"));
+      } else {
+        document.removeEventListener("keydown", onKey);
+        document.body.classList.remove("overflow-hidden");
+        (toggleBtn as HTMLElement).focus();
+        document.dispatchEvent(new CustomEvent("mobile-menu:closed"));
+      }
+    }
+
+    toggleBtn.addEventListener("click", () =>
+      setOpen(menu.getAttribute("data-open") !== "true"),
+    );
+
+    panelCloseBtn &&
+      panelCloseBtn.addEventListener("click", () => setOpen(false));
+
+    menu.addEventListener("click", (e) => {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      if (target === menu) return setOpen(false);
+      const isCloseButton = !!target.closest("[data-mobile-menu-close]");
+      if (!isCloseButton && (target.closest("a") || target.closest("button")))
+        setOpen(false);
+    });
+  });
+</script>

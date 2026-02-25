@@ -1,14 +1,31 @@
 ---
 import HeadSEO from "@/components/core/HeadSEO.astro";
+import Header from "@/components/core/Header.astro";
+
+import { LOCALE } from "@/config";
+
+const { title, description, image, imageAlt, contentType } = Astro.props;
 ---
 
-<html lang="en">
+<html lang=`${LOCALE.lang ?? "en"}`>
   <head>
-    <HeadSEO />
+    <HeadSEO
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      contentType={contentType}
+    />
   </head>
-  <body class="">
-    <main class="">
-      <slot />
-    </main>
+
+  <body class="flex flex-col">
+    <Header />
+    <div class="flex flex-1">
+      <main class="flex h-full w-full justify-center">
+        <div class="flex w-full flex-col justify-center">
+          <slot />
+        </div>
+      </main>
+    </div>
   </body>
 </html>

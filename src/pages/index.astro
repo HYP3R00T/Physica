@@ -4,12 +4,11 @@ import ProjectileSim from "@/components/ProjectileSim";
 ---
 
 <BaseLayout>
-  <h1 class="font-bold text-3xl">
-    Checkout my projects:
-    <a href="http://hyperoot.dev" target="_blank" class="text-blue-400">
-      hyperoot.dev
-    </a>
-  </h1>
-
-  <ProjectileSim client:idle />
+  <section
+    class="relative flex items-center justify-center bg-background px-4 py-12 md:px-12"
+  >
+    <div class="mx-auto w-full max-w-7xl">
+      <ProjectileSim client:idle />
+    </div>
+  </section>
 </BaseLayout>
