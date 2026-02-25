@@ -18,6 +18,6 @@ export const SITE = {
 };
 
 export const navItems = [
-  { href: "/post", label: "Blog" },
+  // { href: "/post", label: "Blog" },
   { href: "https://hyperoot.dev", label: "Projects", blank: true },
 ];
