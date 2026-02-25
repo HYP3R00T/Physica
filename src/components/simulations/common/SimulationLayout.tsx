@@ -16,8 +16,8 @@ const SimulationLayout = ({
   statusMessages,
 }: SimulationLayoutProps): ReactElement => {
   return (
-    <Card className="mt-10 w-full border border-border bg-card shadow-none">
-      <div className="flex flex-col gap-6 p-6 lg:flex-row">
+    <Card className="w-full border border-border bg-card shadow-none">
+      <div className="flex flex-col gap-6 px-6 lg:flex-row">
         {/* Canvas Section */}
         <div className="flex-1">{canvas}</div>
 
