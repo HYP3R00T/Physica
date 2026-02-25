@@ -2,10 +2,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrthographicCamera } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import Axes from "@/components/simulations/common/Axes";
 import Particle from "@/components/simulations/common/Particle";
 import PhysicsScene from "@/components/simulations/common/PhysicsScene";
+import SimulationLayout from "@/components/simulations/common/SimulationLayout";
 
 import type { ReactElement, RefObject } from "react";
 import type { Object3D } from "three";
@@ -166,75 +166,71 @@ const ProjectileSim = (): ReactElement => {
     setState(nextState);
   };
 
-  return (
-    <Card className="mt-10 w-full max-w-3xl border border-border bg-card shadow-none">
-      <div className="flex items-center justify-end gap-2 px-6 pt-6">
-        <Button
-          disabled={!ready || reducedMotion}
-          onClick={handleToggleRun}
-          size="default"
-          variant="default"
-        >
-          {running ? "Pause" : "Start"}
-        </Button>
-        <Button onClick={handleReset} size="default" variant="outline">
-          Reset
-        </Button>
-      </div>
-
-      <div className="px-6 pb-8 pt-6">
-        <div className="h-125 w-full border border-border">
-          <Canvas className="h-full w-full">
-            <OrthographicCamera makeDefault {...cameraSettings} />
-            <PhysicsScene cameraMode="static" followTarget={followTargetRef}>
-              <Axes sizeX={100} sizeY={100} />
-              <ProjectileBody
-                wasmRef={wasmRef}
-                running={running}
-                ready={ready}
-                reducedMotion={reducedMotion}
-                gravity={GRAVITY}
-                stateRef={stateRef}
-                state={state}
-                onStateChange={handleStateChange}
-                onRunStateChange={setRunning}
-                followTargetRef={followTargetRef}
-              />
-            </PhysicsScene>
-          </Canvas>
-        </div>
-
-        <div className="mt-8 grid gap-4 text-sm text-muted-foreground sm:grid-cols-2">
-          <div className="border border-border bg-muted px-4 py-3">
-            <p className="text-xs uppercase text-muted-foreground">Position</p>
-            <p className="mt-2 text-lg font-semibold text-foreground">
-              x: {formatNumber(state.x)} m
-            </p>
-            <p className="text-lg font-semibold text-foreground">
-              y: {formatNumber(state.y)} m
-            </p>
-          </div>
-          <div className="border border-border bg-muted px-4 py-3">
-            <p className="text-xs uppercase text-muted-foreground">Velocity</p>
-            <p className="mt-2 text-lg font-semibold text-foreground">
-              vx: {formatNumber(state.vx)} m/s
-            </p>
-            <p className="text-lg font-semibold text-foreground">
-              vy: {formatNumber(state.vy)} m/s
-            </p>
-          </div>
-        </div>
-
-        {(error || !ready || reducedMotion) && (
-          <div className="mt-4 text-xs text-muted-foreground">
-            {error && <p className="text-destructive">{error}</p>}
-            {!error && !ready && <p>Loading WASM module...</p>}
-            {reducedMotion && <p>Reduced motion is enabled; use Reset to inspect values.</p>}
-          </div>
-        )}
-      </div>
-    </Card>
+  const canvas = (
+    <div className="h-125 w-full border border-border">
+      <Canvas className="h-full w-full">
+        <OrthographicCamera makeDefault {...cameraSettings} />
+        <PhysicsScene cameraMode="static" followTarget={followTargetRef}>
+          <Axes sizeX={100} sizeY={100} />
+          <ProjectileBody
+            wasmRef={wasmRef}
+            running={running}
+            ready={ready}
+            reducedMotion={reducedMotion}
+            gravity={GRAVITY}
+            stateRef={stateRef}
+            state={state}
+            onStateChange={handleStateChange}
+            onRunStateChange={setRunning}
+            followTargetRef={followTargetRef}
+          />
+        </PhysicsScene>
+      </Canvas>
+    </div>
   );
+
+  const controls = (
+    <>
+      <Button
+        disabled={!ready || reducedMotion}
+        onClick={handleToggleRun}
+        size="default"
+        variant="default"
+        className="flex-1"
+      >
+        {running ? "Pause" : "Start"}
+      </Button>
+      <Button onClick={handleReset} size="default" variant="outline" className="flex-1">
+        Reset
+      </Button>
+    </>
+  );
+
+  const metrics = (
+    <>
+      <div className="border border-border bg-muted px-4 py-3">
+        <p className="text-xs uppercase text-muted-foreground">Position</p>
+        <p className="mt-2 text-lg font-semibold text-foreground">x: {formatNumber(state.x)} m</p>
+        <p className="text-lg font-semibold text-foreground">y: {formatNumber(state.y)} m</p>
+      </div>
+      <div className="border border-border bg-muted px-4 py-3">
+        <p className="text-xs uppercase text-muted-foreground">Velocity</p>
+        <p className="mt-2 text-lg font-semibold text-foreground">vx: {formatNumber(state.vx)} m/s</p>
+        <p className="text-lg font-semibold text-foreground">vy: {formatNumber(state.vy)} m/s</p>
+      </div>
+    </>
+  );
+
+  const statusMessages =
+    error || !ready || reducedMotion ? (
+      <>
+        {error && <p className="text-destructive">{error}</p>}
+        {!error && !ready && <p>Loading WASM module...</p>}
+        {reducedMotion && <p>Reduced motion is enabled; use Reset to inspect values.</p>}
+      </>
+    ) : null;
+
+  return <SimulationLayout canvas={canvas} controls={controls} metrics={metrics} statusMessages={statusMessages} />;
 };
 
 export default ProjectileSim;
