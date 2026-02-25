@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 import type { ReactElement } from "react";
 
@@ -63,14 +65,8 @@ const ProjectileSim = (): ReactElement => {
     const updatePreference = (): void => setReducedMotion(mediaQuery.matches);
 
     updatePreference();
-
-    if (typeof mediaQuery.addEventListener === "function") {
-      mediaQuery.addEventListener("change", updatePreference);
-      return () => mediaQuery.removeEventListener("change", updatePreference);
-    }
-
-    mediaQuery.addListener(updatePreference);
-    return () => mediaQuery.removeListener(updatePreference);
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
   }, []);
 
   useEffect(() => {
@@ -140,68 +136,66 @@ const ProjectileSim = (): ReactElement => {
   };
 
   return (
-    <section className="mt-10 w-full max-w-2xl rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-lg shadow-slate-200/60">
-      <header className="flex flex-wrap items-center justify-between gap-4">
+    <Card className="mt-10 w-full max-w-2xl border-border">
+      <header className="flex flex-wrap items-center justify-between gap-4 px-6 pt-6">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Rust WASM</p>
-          <h2 className="text-2xl font-semibold text-slate-900">Projectile Motion</h2>
+          <p className="text-xs uppercase text-muted-foreground">
+            Rust WASM
+          </p>
+          <h2 className="text-2xl font-semibold text-foreground">Projectile Motion</h2>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+          <Button
             disabled={!ready || running || reducedMotion}
             onClick={handleStart}
-            type="button"
+            size="default"
+            variant="default"
           >
             Start
-          </button>
-          <button
-            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
-            onClick={handlePause}
-            type="button"
-          >
+          </Button>
+          <Button onClick={handlePause} size="default" variant="outline">
             Pause
-          </button>
-          <button
-            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
-            onClick={handleReset}
-            type="button"
-          >
+          </Button>
+          <Button onClick={handleReset} size="default" variant="outline">
             Reset
-          </button>
+          </Button>
         </div>
       </header>
 
-      <div className="mt-6 grid gap-4 text-sm text-slate-600 sm:grid-cols-2">
-        <div className="rounded-xl bg-slate-50 p-4">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Position</p>
-          <p className="mt-2 text-lg font-semibold text-slate-900">
+      <div className="mt-6 grid gap-4 px-6 text-sm text-muted-foreground sm:grid-cols-2">
+        <div className="bg-muted p-4">
+          <p className="text-xs uppercase text-muted-foreground">
+            Position
+          </p>
+          <p className="mt-2 text-lg font-semibold text-foreground">
             x: {formatNumber(state.x)} m
           </p>
-          <p className="text-lg font-semibold text-slate-900">
+          <p className="text-lg font-semibold text-foreground">
             y: {formatNumber(state.y)} m
           </p>
         </div>
-        <div className="rounded-xl bg-slate-50 p-4">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Velocity</p>
-          <p className="mt-2 text-lg font-semibold text-slate-900">
+        <div className="bg-muted p-4">
+          <p className="text-xs uppercase text-muted-foreground">
+            Velocity
+          </p>
+          <p className="mt-2 text-lg font-semibold text-foreground">
             vx: {formatNumber(state.vx)} m/s
           </p>
-          <p className="text-lg font-semibold text-slate-900">
+          <p className="text-lg font-semibold text-foreground">
             vy: {formatNumber(state.vy)} m/s
           </p>
         </div>
       </div>
 
-      <footer className="mt-6 text-xs text-slate-500">
-        {error && <p className="text-red-600">{error}</p>}
+      <footer className="mt-6 px-6 pb-6 text-xs text-muted-foreground">
+        {error && <p className="text-destructive">{error}</p>}
         {!error && !ready && <p>Loading WASM module...</p>}
         {reducedMotion && <p>Reduced motion is enabled; use Reset to inspect values.</p>}
         {ready && !error && !reducedMotion && (
           <p>Running on Rust + wasm-bindgen with gravity {formatNumber(GRAVITY)} m/s^2.</p>
         )}
       </footer>
-    </section>
+    </Card>
   );
 };
 
