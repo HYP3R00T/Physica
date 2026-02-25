@@ -4,9 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "pnpm wasm:build && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "wasm:setup": "cargo install wasm-pack",
+    "wasm:build": "wasm-pack build engine/physica-wasm --target web --out-dir ../../src/wasm/pkg --out-name physica_wasm --release",
+    "wasm:build:dev": "wasm-pack build engine/physica-wasm --target web --out-dir ../../src/wasm/pkg --out-name physica_wasm"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
