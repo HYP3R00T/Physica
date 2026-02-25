@@ -18,7 +18,8 @@
         "astro-build.astro-vscode",
         "bradlc.vscode-tailwindcss",
         "DavidAnson.vscode-markdownlint",
-        "EditorConfig.EditorConfig"
+        "EditorConfig.EditorConfig",
+        "rust-lang.rust-analyzer"
       ]
     }
   },
