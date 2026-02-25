@@ -1,5 +1,5 @@
 {
-  "name": "devcontainer-astro-template",
+  "name": "physica",
   "build": {
     "context": ".",
     "dockerfile": "Dockerfile"
