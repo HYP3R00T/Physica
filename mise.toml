@@ -5,6 +5,7 @@ markdownlint-cli2 = "latest"
 pnpm = "latest"
 pre-commit = "latest"
 python = "3.14"
+rust = "stable"
 
 [settings]
 experimental = true
