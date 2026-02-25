@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from "astro";
 import { ClientRouter } from "astro:transitions";
 import { getImage } from "astro:assets";
 
@@ -20,42 +21,57 @@ const canonicalURL = new URL(Astro.url);
 // Prefer configured site URL when Astro.site isn't available (e.g., in dev)
 const siteUrl = Astro.site ?? SITE.website ?? "http://127.0.0.1:4321";
 
-// Generate a fully qualified OG image URL
-let ogImageUrl: string;
+const robotsValue = noIndex ? "noindex, nofollow" : "index, follow";
 
-if (typeof image === "object" && "src" in image) {
-  // Case 1: Imported asset or content collection image()
-  try {
-    const { src } = await getImage({
-      src: image,
-      width: 1200,
-      height: 630,
-      format: "jpeg",
-      quality: 70,
-    });
-    ogImageUrl = new URL(src, siteUrl).toString();
-  } catch {
-    ogImageUrl = new URL(image.src, siteUrl).toString();
+const isImageMetadata = (value: unknown): value is ImageMetadata =>
+  typeof value === "object" &&
+  value !== null &&
+  "src" in value &&
+  "width" in value &&
+  "height" in value &&
+  "format" in value;
+
+const resolveOgImageUrl = async (source: typeof image): Promise<string> => {
+  if (typeof source === "string" && source.startsWith("http")) {
+    return source;
   }
-} else if (typeof image === "string" && !image.startsWith("http")) {
-  // Case 2: Local relative path (blogs/assets or similar)
-  try {
-    const { src } = await getImage({
-      src: image,
-      width: 1200,
-      height: 630,
-      format: "jpeg",
-      quality: 70,
-    });
-    ogImageUrl = new URL(src, siteUrl).toString();
-  } catch {
-    // Fallback: just prefix with siteUrl if optimization fails
-    ogImageUrl = new URL(image, siteUrl).toString();
+
+  if (isImageMetadata(source)) {
+    try {
+      const { src } = await getImage({
+        src: source,
+        width: 1200,
+        height: 630,
+        format: "jpeg",
+        quality: 70,
+      });
+      return new URL(src, siteUrl).toString();
+    } catch {
+      return new URL(source.src, siteUrl).toString();
+    }
   }
-} else {
-  // Case 3: External full URL
-  ogImageUrl = image;
-}
+
+  if (typeof source === "string") {
+    try {
+      const { src } = await getImage({
+        src: source,
+        width: 1200,
+        height: 630,
+        format: "jpeg",
+        quality: 70,
+      });
+      return new URL(src, siteUrl).toString();
+    } catch {
+      // Fallback: just prefix with siteUrl if optimization fails
+      return new URL(source, siteUrl).toString();
+    }
+  }
+
+  return String(source);
+};
+
+// Generate a fully qualified OG image URL
+const ogImageUrl = await resolveOgImageUrl(image);
 ---
 
 <!-- Global Metadata -->
@@ -64,11 +80,8 @@ if (typeof image === "object" && "src" in image) {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
 <meta charset="UTF-8" />
-<meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
-<meta
-  name="googlebot"
-  content={noIndex ? "noindex, nofollow" : "index, follow"}
-/>
+<meta name="robots" content={robotsValue} />
+<meta name="googlebot" content={robotsValue} />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
