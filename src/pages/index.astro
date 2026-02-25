@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProjectileSim from "@/components/ProjectileSim";
 ---
 
 <BaseLayout>
@@ -9,4 +10,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       hyperoot.dev
     </a>
   </h1>
+
+  <ProjectileSim client:idle />
 </BaseLayout>
