@@ -1,38 +1,22 @@
-> 📖 **New to this template?** Check out the [comprehensive setup guide](http://hyperoot.dev/python-template/setup) for detailed instructions on getting started.
+# Physica
 
----
+Physica is a static Astro site that runs a real Rust physics engine in the browser via WebAssembly.
 
-# Project Name
+## Core
 
-Brief description of what your project does.
+- Rust engine in engine/
+- WASM executed locally in the browser
+- Astro + MDX for structured content
+- Canvas/WebGL for visualization
 
-## Features
+## Why
 
-- Feature 1
-- Feature 2
-- Feature 3
+Most sites show equations or pre-rendered animations. Physica runs the laws of physics live so changes propagate instantly.
 
-## Installation
+## Stack
 
-```bash
-# Clone your repository
-git clone https://github.com/YOUR_USERNAME/YOUR_PROJECT_NAME.git
-cd YOUR_PROJECT_NAME
-
-# Install dependencies
-pnpm install
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-Please follow the coding standards defined in `.github/copilot-instructions.md`.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Astro
+- MDX
+- Rust
+- WebAssembly
+- Canvas/WebGL
