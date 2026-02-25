@@ -15,5 +15,21 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [react(), mdx(), icon()],
+  integrations: [
+    mdx(),
+    icon({
+      iconDir: "src/assets/icons",
+      svgoOptions: {
+        plugins: [
+          {
+            name: "convertColors",
+            params: {
+              currentColor: true,
+            },
+          },
+        ],
+      },
+    }),
+    react()
+  ],
 });
