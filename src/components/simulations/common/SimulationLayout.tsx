@@ -24,7 +24,7 @@ const SimulationLayout = ({
         {/* Controls and Metrics Section */}
         <div className="flex w-full flex-col gap-6 lg:w-80">
           {/* Controls */}
-          <div className="flex items-center gap-2">{controls}</div>
+          {controls}
 
           {/* Metrics */}
           <div className="flex flex-col gap-4 text-sm text-muted-foreground">{metrics}</div>
