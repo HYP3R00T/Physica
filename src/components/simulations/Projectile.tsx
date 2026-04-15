@@ -80,7 +80,6 @@ const ProjectileSim = (): ReactElement => {
       };
 
       setState(nextState);
-      followTargetRef.current?.position.set(nextState.x, nextState.y, 0);
       if (landed) {
         setRunning(false);
       }
