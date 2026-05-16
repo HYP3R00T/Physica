@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 
 # astro
 .astro
+
+# rumdl cache
+.rumdl_cache
