@@ -11,19 +11,20 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "tamasfe.even-better-toml",
-        "christian-kohler.path-intellisense",
-        "redhat.vscode-yaml",
-        "hverlin.mise-vscode",
         "astro-build.astro-vscode",
+        "biomejs.biome",
         "bradlc.vscode-tailwindcss",
-        "DavidAnson.vscode-markdownlint",
+        "christian-kohler.path-intellisense",
         "EditorConfig.EditorConfig",
-        "rust-lang.rust-analyzer"
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "hverlin.mise-vscode",
+        "hyperoot.settings-organizer",
+        "redhat.vscode-yaml",
+        "rvben.rumdl",
+        "tamasfe.even-better-toml",
+        "unifiedjs.vscode-mdx"
       ]
     }
-  },
-  "forwardPorts": [
-    4321
-  ]
+  }
 }

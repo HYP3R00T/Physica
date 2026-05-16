@@ -1,14 +1,17 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import ProjectileSim from "@/components/simulations/Projectile";
+
 ---
 
-<BaseLayout>
-  <section
-    class="relative flex items-center justify-center bg-background px-4 py-12 md:px-12"
-  >
-    <div class="mx-auto w-full max-w-7xl">
-      <ProjectileSim client:idle />
-    </div>
-  </section>
-</BaseLayout>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <h1>Astro</h1>
+  </body>
+</html>
