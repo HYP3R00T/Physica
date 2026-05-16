@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["**/*.{js,jsx,ts,tsx,mjs}"]
   },
   "formatter": {
     "enabled": true,
