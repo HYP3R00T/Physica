@@ -28,3 +28,20 @@ const { title, description, image, imageAlt, contentType } = Astro.props as Base
   import initInteractiveDots from "@/lib/initInteractiveDots";
   initInteractiveDots();
 </script>
+
+<script is:inline>
+  (() => {
+    const applyTheme = () => {
+      const savedTheme = localStorage.getItem("theme");
+      const theme = savedTheme === "light" || savedTheme === "dark" || savedTheme === "system" ? savedTheme : "system";
+      const isDark =
+        theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+      document.documentElement.classList.toggle("dark", isDark);
+      document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+    };
+
+    applyTheme();
+    document.addEventListener("astro:after-swap", applyTheme);
+  })();
+</script>
