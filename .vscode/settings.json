@@ -1,33 +1,23 @@
 {
-    "explorer.excludeGitIgnore": true,
-    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
-    "github.copilot.chat.reviewSelection.instructions": [
-        {
-            "file": "./.github/instructions/codeReview.instructions.md"
-        }
-    ],
-    "github.copilot.chat.commitMessageGeneration.instructions": [
-        {
-            "file": "./.github/instructions/commitMessageGeneration.instructions.md"
-        }
-    ],
-    "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
-        {
-            "file": "./.github/instructions/pullRequestDescriptionGeneration.instructions.md"
-        }
-    ],
-    "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  "explorer.excludeGitIgnore": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit"
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.quickSuggestions": {
+      "strings": true
     },
-    "[toml]": {
-        "editor.defaultFormatter": "tamasfe.even-better-toml"
-    },
-    "[yaml]": {
-        "editor.defaultFormatter": "redhat.vscode-yaml"
-    },
-    "chat.instructionsFilesLocations": {
-        ".github/instructions": true
-    },
-    "css.lint.unknownAtRules": "ignore",
-    "markdownlint.configFile": ".markdownlint.yaml"
+    "editor.suggest.insertMode": "replace"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "css.lint.unknownAtRules": "ignore"
 }
