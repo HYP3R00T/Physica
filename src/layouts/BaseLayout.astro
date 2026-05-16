@@ -1,0 +1,25 @@
+---
+import { SITE } from "@data/config";
+import Header from "@/components/core/Header.astro";
+import HeadSEO from "@/components/core/HeadSEO.astro";
+import type { BaseLayoutProps } from "@/lib/types";
+
+const { title, description, image, imageAlt, contentType } = Astro.props as BaseLayoutProps;
+---
+
+<html lang=`${SITE.lang ?? "en"}`>
+  <head>
+    <HeadSEO title={title} description={description} image={image} imageAlt={imageAlt} contentType={contentType} />
+  </head>
+
+  <body class="flex flex-col">
+    <Header />
+    <div class="flex flex-1">
+      <main class="flex h-full w-full justify-center">
+        <div class="flex w-full flex-col justify-center">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
