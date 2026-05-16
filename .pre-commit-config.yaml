@@ -21,6 +21,12 @@ repos:
       - id: commitizen
         stages: [commit-msg]
 
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.0.222
+    hooks:
+      - id: rumdl
+      - id: rumdl-fmt
+
   - repo: https://github.com/biomejs/pre-commit
     rev: v2.4.15
     hooks:
