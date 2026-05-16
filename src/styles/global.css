@@ -163,7 +163,7 @@
 
 .dot-pattern-interactive::before {
   background-image: radial-gradient(circle,
-      color-mix(in hsl, var(--secondary-foreground) 30%, transparent) var(--dot-size),
+      color-mix(in hsl, var(--secondary-foreground) 5%, transparent) var(--dot-size),
       transparent calc(var(--dot-size) + 0.6px));
   background-size: var(--dot-grid) var(--dot-grid);
   opacity: 0.3;
@@ -172,7 +172,7 @@
 
 .dot-pattern-interactive::after {
   background-image: radial-gradient(circle,
-      color-mix(in hsl, var(--foreground) 44%, transparent) var(--dot-size),
+      color-mix(in hsl, var(--foreground) 20%, transparent) var(--dot-size),
       transparent calc(var(--dot-size) + 0.6px));
   background-size: var(--dot-grid) var(--dot-grid);
   mask-image: radial-gradient(circle var(--dot-spot-size) at var(--dot-mx) var(--dot-my),
