@@ -138,3 +138,52 @@
     @apply font-sans;
   }
 }
+
+/* Interactive Dot Pattern */
+.dot-pattern-interactive {
+  --dot-size: 1px;
+  --dot-grid: 14px;
+  --dot-mx: 50%;
+  --dot-my: 50%;
+  --dot-spot-size: 190px;
+  --dot-highlight-opacity: 0;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dot-pattern-interactive::before,
+.dot-pattern-interactive::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dot-pattern-interactive::before {
+  background-image: radial-gradient(circle,
+      color-mix(in hsl, var(--secondary-foreground) 30%, transparent) var(--dot-size),
+      transparent calc(var(--dot-size) + 0.6px));
+  background-size: var(--dot-grid) var(--dot-grid);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.dot-pattern-interactive::after {
+  background-image: radial-gradient(circle,
+      color-mix(in hsl, var(--foreground) 44%, transparent) var(--dot-size),
+      transparent calc(var(--dot-size) + 0.6px));
+  background-size: var(--dot-grid) var(--dot-grid);
+  mask-image: radial-gradient(circle var(--dot-spot-size) at var(--dot-mx) var(--dot-my),
+      black 0%,
+      transparent 78%);
+  opacity: calc(0.5 * var(--dot-highlight-opacity));
+  transition: opacity 200ms ease;
+  z-index: 0;
+}
+
+.dot-pattern-interactive>* {
+  position: relative;
+  z-index: 1;
+}
