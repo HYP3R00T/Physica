@@ -6,6 +6,10 @@
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
   },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features",
+    "editor.suggest.insertMode": "replace"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.maxTokenizationLineLength": 2500
