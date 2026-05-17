@@ -17,6 +17,8 @@
       "@data/*": [
         "./data/*"
       ]
-    }
+    },
+    "strictNullChecks": true,
+    "allowJs": true
   }
 }
