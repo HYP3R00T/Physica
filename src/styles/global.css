@@ -187,3 +187,16 @@
   position: relative;
   z-index: 1;
 }
+
+/* Fix MathJax SVG inline sizing: prevent mjx-container stretching line width */
+mjx-container[jax="SVG"] {
+  display: inline-block;
+  width: auto !important;
+  vertical-align: baseline;
+}
+
+mjx-container[jax="SVG"]>svg {
+  display: inline-block;
+  max-width: none !important;
+  height: auto;
+}
