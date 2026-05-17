@@ -10,9 +10,16 @@ import remarkMath from 'remark-math'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://physica.hyperoot.dev',
+  prefetch: true,
+
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeMathjax],
+    shikiConfig: {
+      theme: 'css-variables',
+      defaultColor: false,
+    },
   },
 
   integrations: [
