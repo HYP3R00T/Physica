@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Badge } from "@/components/ui/badge";
+import CardGrid from "@/components/common/CardGrid.astro";
+
+const components = await getCollection("components");
+---
+
+<BaseLayout title="Components" description="A concise list of the custom components available in this project.">
+  <section class="relative flex items-center justify-center px-4 md:px-12">
+    <div class="mx-auto w-full max-w-5xl my-16">
+      <!-- Greeter -->
+      <div class="mb-16">
+        <Badge variant="default">Components</Badge>
+        <h1 class="text-section-heading my-8">
+          <div>User</div>
+          <div>Interface</div>
+        </h1>
+
+        <p class="text-foreground-1 max-w-2xl space-y-6 text-base leading-relaxed md:text-lg">
+          Click a link to view the source layout for that component.
+        </p>
+      </div>
+
+      <!-- All projects -->
+      <div class="space-y-4">
+        {
+          components.map((component) => (
+            <CardGrid>
+              <a href={`/components/${component.id}`} class="flex flex-row justify-between items-center gap-3">
+                <span class="font-display text-foreground-1 group-hover:text-accent-1 text-xl font-semibold">
+                  {component.data.title}
+                </span>
+                <span class="text-foreground-2 text-sm leading-relaxed">view component</span>
+              </a>
+            </CardGrid>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
