@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
+import AutoImport from 'astro-auto-import'
 import icon from 'astro-icon'
 import rehypeMathjax from 'rehype-mathjax'
 import remarkMath from 'remark-math'
@@ -17,13 +18,11 @@ export default defineConfig({
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeMathjax],
     shikiConfig: {
-      theme: 'css-variables',
-      defaultColor: false,
+      theme: 'poimandres',
     },
   },
 
   integrations: [
-    react(),
     icon({
       iconDir: 'src/assets/icons',
       svgoOptions: {
@@ -37,7 +36,11 @@ export default defineConfig({
         ],
       },
     }),
+    AutoImport({
+      imports: ['./src/components/core/Video.astro'],
+    }),
     mdx(),
+    react(),
   ],
 
   vite: {

@@ -1,0 +1,39 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+  const entries = await getCollection("components");
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+// 2. For your template, you can get the entry directly from the prop
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} - Components`} description={entry.data.description}>
+  <section class="relative flex items-center justify-center px-4 md:px-12">
+    <div class="mx-auto w-full max-w-5xl my-16">
+      <header class="mb-6">
+        <h1 class="text-section-heading my-8">
+          {entry.data.title}
+        </h1>
+        {
+          entry.data.description && (
+            <p class="text-foreground-1 max-w-2xl space-y-6 text-base leading-relaxed md:text-lg">
+              {entry.data.description}
+            </p>
+          )
+        }
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -3,26 +3,25 @@
 import { navItems, SITE } from "@data/config";
 import { Button } from "@/components/ui/button";
 import { Icon } from "astro-icon/components";
-import { ModeToggle } from "@/components/common/ModeToggle";
-import { BrainCircuit, User } from "lucide-react";
+import { ModeToggle } from "@/components/core/ModeToggle";
+import AnimatedText from "@/components/common/AnimatedText.tsx";
+import { User } from "lucide-react";
 import MobileMenuToggle from "@/components/core/MobileMenuToggle.astro";
 import MobileMenuPanel from "@/components/core/MobileMenuPanel.astro";
 ---
 
 <header
-  class="border-border sticky top-0 z-50 flex items-center justify-center border-b bg-background px-4 py-4 md:py-6 md:px-12"
+  class="border-border sticky top-0 z-50 flex items-center justify-center border-b bg-background-0 backdrop-blur-xl px-4 py-4 md:py-6 md:px-12"
 >
   <nav class="mx-auto w-full max-w-7xl">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center">
       <!-- Logo -->
-      <a href="/" class="font-display">
-        <Button variant="outline">
-          <BrainCircuit /> Physica
-        </Button>
+      <a href="/" class="flex flex-row font-mono flex-1">
+        <AnimatedText client:load text="Physica" className="text-accent-1" auto={true} hover={true} />
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden items-center gap-4 md:flex">
+      <div class="hidden items-center justify-center gap-12 md:flex font-mono flex-2">
         {
           navItems
             .filter((item) => !item.special)
@@ -32,21 +31,16 @@ import MobileMenuPanel from "@/components/core/MobileMenuPanel.astro";
                 target={item.blank ? "_blank" : undefined}
                 rel={item.blank ? "noopener noreferrer" : undefined}
               >
-                <Button variant="ghost">{item.label}</Button>
+                <div class="text-sm text-foreground-2 hover:text-accent-1">{item.label}</div>
               </a>
             ))
         }
       </div>
 
-      <div class="hidden items-center gap-2 md:flex">
+      <div class="hidden items-center justify-end gap-2 md:flex flex-1">
         <a href={SITE.repo} target="_blank" class="hidden md:block">
-          <Button size="icon" variant="outline">
+          <Button size="icon" variant="ghost" className="text-foreground-2">
             <Icon name="github" />
-          </Button>
-        </a>
-        <a href="https://rajeshdas.dev" target="_blank" class="hidden md:block">
-          <Button size="icon" variant="outline">
-            <User />
           </Button>
         </a>
 

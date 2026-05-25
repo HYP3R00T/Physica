@@ -3,6 +3,7 @@ import { SITE } from "@data/config";
 import Header from "@/components/core/Header.astro";
 import HeadSEO from "@/components/core/HeadSEO.astro";
 import type { BaseLayoutProps } from "@/lib/types";
+import Footer from "@/components/core/Footer.astro";
 
 const { title, description, image, imageAlt, contentType } = Astro.props as BaseLayoutProps;
 ---
@@ -21,6 +22,7 @@ const { title, description, image, imageAlt, contentType } = Astro.props as Base
         </div>
       </main>
     </div>
+    <Footer />
   </body>
 </html>
 

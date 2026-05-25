@@ -1,0 +1,103 @@
+---
+import { Icon } from "astro-icon/components";
+import { Button } from "@/components/ui/button";
+---
+
+<style>
+  :global(.code-wrapper) {
+    position: relative;
+  }
+
+  :global(.code-copy-actions) {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 2;
+  }
+
+  :global(.code-copy-button),
+  :global(.code-copy-success) {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  :global(.code-copy-button),
+  :global(.code-copy-success) {
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  :global(.code-copy-success) {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  :global(.code-wrapper[data-copied="true"] .code-copy-button) {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  :global(.code-wrapper[data-copied="true"] .code-copy-success) {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: none;
+  }
+</style>
+
+<template id="copyButtonTemplate">
+  <div class="code-copy-actions">
+    <Button className="code-copy-button" size="icon" variant="secondary" aria-label="Copy code" title="Copy">
+      <Icon name="copy" class="size-4" />
+    </Button>
+    <Button className="code-copy-success" size="icon" variant="secondary" aria-label="Copied" title="Copied">
+      <Icon name="check" class="text-green size-4" />
+    </Button>
+  </div>
+</template>
+
+<script>
+  function initCodeCopyButtons() {
+    const template = document.getElementById("copyButtonTemplate");
+    if (!(template instanceof HTMLTemplateElement)) return;
+
+    const templateButton = template.content.firstElementChild;
+    if (!templateButton) return;
+
+    document.querySelectorAll("pre").forEach((pre) => {
+      if (pre.parentElement?.classList.contains("code-wrapper")) return;
+      if (!navigator.clipboard) return;
+
+      const code = pre.querySelector("code");
+      if (!code) return;
+
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("code-wrapper");
+      wrapper.setAttribute("data-copied", "false");
+      pre.parentNode?.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      const button = templateButton.cloneNode(true);
+      if (!(button instanceof HTMLElement)) return;
+
+      const copyButton = button.querySelector(".code-copy-button");
+      if (!(copyButton instanceof HTMLElement)) return;
+
+      copyButton.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(code.innerText);
+        wrapper.setAttribute("data-copied", "true");
+        setTimeout(() => {
+          wrapper.setAttribute("data-copied", "false");
+        }, 2000);
+      });
+
+      wrapper.appendChild(button);
+    });
+  }
+
+  initCodeCopyButtons();
+  document.addEventListener("astro:page-load", initCodeCopyButtons);
+</script>
