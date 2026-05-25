@@ -1,0 +1,142 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { Icon } from "astro-icon/components";
+import { Button } from "@/components/ui/button";
+
+interface Props {
+  images: ImageMetadata[];
+  projectTitle: string;
+  imageAlt?: string;
+}
+
+const { images, projectTitle, imageAlt } = Astro.props;
+const totalImages = images.length;
+---
+
+<div class="relative h-full min-h-60 overflow-hidden">
+  <!-- Image Container -->
+  <div class="image-carousel-container h-full w-full" data-total={totalImages}>
+    {
+      images.map((img, idx) => (
+        <div class={`carousel-slide absolute inset-0 ${idx === 0 ? "is-active" : ""}`} data-index={idx}>
+          <Image
+            src={img}
+            alt={imageAlt || `${projectTitle} - Image ${idx + 1}`}
+            class="h-full w-full object-cover my-0!"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Edge Tick Indicator -->
+  {
+    totalImages > 1 && (
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, idx) => (
+          <span
+            class={`carousel-tick h-0.5 w-6 bg-foreground/30 ${idx === 0 ? "bg-foreground" : ""}`}
+            data-index={idx}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  <!-- Navigation Overlay -->
+  {
+    totalImages > 1 && (
+      <div class="absolute inset-0 flex items-center justify-between bg-background/0 p-4 opacity-100 transition-opacity duration-300 pointer-events-auto md:opacity-0 md:pointer-events-none md:group-hover:opacity-100">
+        <Button
+          aria-label="Previous image"
+          size="icon"
+          variant="outline"
+          className="carousel-prev bg-background/60! backdrop-blur-2xl pointer-events-auto self-center"
+        >
+          <Icon name="arrow-left" class="text-foreground size-6" />
+        </Button>
+
+        <Button
+          aria-label="Next image"
+          size="icon"
+          variant="outline"
+          className="carousel-next bg-background/60! backdrop-blur-2xl pointer-events-auto self-center"
+        >
+          <Icon name="arrow-right" class="text-foreground size-6" />
+        </Button>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .carousel-slide {
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+    pointer-events: none;
+  }
+
+  .carousel-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const carousels = document.querySelectorAll(".image-carousel-container");
+
+    carousels.forEach((carousel) => {
+      let currentIndex = 0;
+
+      const totalSlides = parseInt(carousel.getAttribute("data-total") ?? "1", 10);
+
+      const slides = carousel.querySelectorAll(".carousel-slide");
+
+      const navContainer = carousel.parentElement;
+
+      const prevBtn = navContainer?.querySelector(".carousel-prev");
+      const nextBtn = navContainer?.querySelector(".carousel-next");
+
+      const ticks = navContainer?.querySelectorAll(".carousel-tick");
+
+      function updateCarousel() {
+        slides.forEach((slide, idx) => {
+          slide.classList.remove("is-active");
+
+          if (idx === currentIndex) {
+            slide.classList.add("is-active");
+          }
+        });
+
+        if (ticks) {
+          ticks.forEach((tick, idx) => {
+            tick.classList.remove("bg-foreground");
+            tick.classList.add("bg-foreground/30");
+
+            if (idx === currentIndex) {
+              tick.classList.remove("bg-foreground/30");
+              tick.classList.add("bg-foreground");
+            }
+          });
+        }
+      }
+
+      function goToPrev() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+      }
+
+      function goToNext() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+      }
+
+      prevBtn?.addEventListener("click", goToPrev);
+      nextBtn?.addEventListener("click", goToNext);
+
+      updateCarousel();
+    });
+  });
+</script>
