@@ -15,7 +15,10 @@ export const SITE: SiteConfig = {
   lang: 'en',
 }
 
-export const navItems: NavItem[] = [{ href: '/components', label: 'Components' }]
+export const navItems: NavItem[] = [
+  { href: '/components', label: 'Components' },
+  { href: '/post', label: 'Articles' },
+]
 
 export const SOCIAL_LINKS = [
   {
