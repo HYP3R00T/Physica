@@ -1,0 +1,40 @@
+---
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+const { currentPage, prevUrl, nextUrl, first, last, firstUrl, lastUrl, totalPages } = Astro.props;
+---
+
+<nav class="flex items-center justify-center gap-4">
+  <div class="flex items-center justify-center gap-2">
+    {
+      prevUrl ? (
+        <a href={prevUrl} aria-label="Previous page" class={buttonVariants({ variant: "outline", size: "icon-lg" })}>
+          <ArrowLeft />
+        </a>
+      ) : (
+        <Button variant="outline" size="icon-lg" disabled aria-label="Previous page">
+          <ArrowLeft />
+        </Button>
+      )
+    }
+  </div>
+
+  <div class="text-foreground-2 text-sm font-medium">
+    {currentPage} / {totalPages}
+  </div>
+
+  <div class="flex items-center gap-2">
+    {
+      nextUrl ? (
+        <a href={nextUrl} aria-label="Next page" class={buttonVariants({ variant: "outline", size: "icon-lg" })}>
+          <ArrowRight />
+        </a>
+      ) : (
+        <Button variant="outline" size="icon-lg" disabled aria-label="Next page">
+          <ArrowRight />
+        </Button>
+      )
+    }
+  </div>
+</nav>

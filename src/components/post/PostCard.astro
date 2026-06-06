@@ -1,0 +1,42 @@
+---
+import { formatDateUppercase, estimateReadTime } from "@/lib/utils";
+import type { PostCardProps } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
+import CardGrid from "../common/CardGrid.astro";
+
+const { post, index } = Astro.props as PostCardProps & { index?: number };
+const readTime = estimateReadTime(post.body || post.data.description);
+---
+
+<CardGrid>
+  <a href={`/post/${post.id}/`}>
+    <div class="flex flex-col md:flex-row">
+      <div class="flex grow flex-col gap-4">
+        <div class="text-foreground-2 flex items-center justify-between gap-4 text-xs font-mono">
+          {index !== undefined && <span class="text-accent-1 text-xs">// {String(index + 1).padStart(2, "0")}</span>}
+          <time datetime={post.data.pubDatetime.toISOString()}>
+            {formatDateUppercase(post.data.pubDatetime)}
+          </time>
+        </div>
+
+        <h3 class="group-hover:text-accent-1 text-foreground-1 font-display text-xl transition-colors md:text-2xl">
+          {post.data.title}
+        </h3>
+
+        <div class="text-foreground-2 max-w-2xl text-sm leading-relaxed">
+          {post.data.description}
+        </div>
+
+        {
+          post.data.tags && post.data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {post.data.tags.map((tag: string) => (
+                <Badge variant="secondary">{tag}</Badge>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </a>
+</CardGrid>

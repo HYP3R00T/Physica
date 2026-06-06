@@ -1,0 +1,51 @@
+---
+import { formatDateUppercase, estimateReadTime } from "@/lib/utils";
+import type { PostCardProps } from "@/lib/types";
+import { Image } from "astro:assets";
+import { Badge } from "@/components/ui/badge";
+
+const { post } = Astro.props as PostCardProps;
+---
+
+<div class="border-border group hover:bg-background-1 border bg-background transition-colors duration-200">
+  <a href={`/post/${post.id}/`} class="grid md:grid-cols-2">
+    <!-- Image -->
+    <div class="aspect-video overflow-hidden md:aspect-auto">
+      <Image src={post.data.cover} alt={post.data.coverAlt || post.data.title} class="h-full w-full object-cover" />
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col justify-between p-8 md:p-12">
+      <div>
+        <div class="text-foreground-2 mb-4 flex items-center gap-4 text-xs">
+          <time datetime={post.data.pubDatetime.toISOString()}>
+            {formatDateUppercase(post.data.pubDatetime)}
+          </time>
+          <span>•</span>
+          <span>{estimateReadTime(post.data.description)} MIN</span>
+        </div>
+
+        <h2
+          class="group-hover:text-accent-1 text-foreground-0 mb-4 text-2xl uppercase transition-colors md:text-3xl"
+          style="font-family: 'Space Grotesk', sans-serif; font-weight: 700;"
+        >
+          {post.data.title}
+        </h2>
+
+        <p class="text-foreground-2 mb-6 text-sm leading-relaxed">
+          {post.data.description}
+        </p>
+      </div>
+
+      {
+        post.data.tags && post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {post.data.tags.map((tag: string) => (
+              <Badge variant="default">{tag}</Badge>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </a>
+</div>

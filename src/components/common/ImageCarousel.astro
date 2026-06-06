@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { Icon } from "astro-icon/components";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface Props {
   images: ImageMetadata[];
@@ -54,7 +55,7 @@ const totalImages = images.length;
           variant="outline"
           className="carousel-prev bg-background/60! backdrop-blur-2xl pointer-events-auto self-center"
         >
-          <Icon name="arrow-left" class="text-foreground size-6" />
+          <ArrowLeft />
         </Button>
 
         <Button
@@ -63,7 +64,7 @@ const totalImages = images.length;
           variant="outline"
           className="carousel-next bg-background/60! backdrop-blur-2xl pointer-events-auto self-center"
         >
-          <Icon name="arrow-right" class="text-foreground size-6" />
+          <ArrowRight />
         </Button>
       </div>
     )

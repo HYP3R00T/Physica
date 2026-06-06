@@ -1,0 +1,90 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { PaginateFunction } from "astro";
+import { getCollection } from "astro:content";
+import type { PostsPageProps } from "@/lib/types";
+import Pagination from "@/components/post/Pagination.astro";
+import PostCard from "@/components/post/PostCard.astro";
+import FeaturedPostCard from "@/components/post/FeaturedPostCard.astro";
+import { SITE } from "@data/config";
+import { Badge } from "@/components/ui/badge";
+
+export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
+  const posts = await getCollection("posts").then((entries) => entries.filter((entry) => !entry.data.draft));
+
+  posts.sort((a, b) => {
+    const aDate = new Date(a.data.pubDatetime).valueOf();
+    const bDate = new Date(b.data.pubDatetime).valueOf();
+    return bDate - aDate;
+  });
+
+  const featured = posts.find((p) => p.data.featured);
+  const rest = featured ? posts.filter((p) => p.id !== featured.id) : posts;
+  const pagination = paginate(rest, { pageSize: SITE.pageSize });
+
+  return pagination.map((page) => ({
+    ...page,
+    props: {
+      ...page.props,
+      totalPages: pagination.length,
+      featured,
+      page: {
+        ...page.props.page,
+        pageSize: SITE.pageSize,
+      },
+    },
+  }));
+}
+
+const { page, totalPages, featured } = Astro.props as PostsPageProps;
+const defaultPageSize = SITE.pageSize ?? 10;
+const pageSize = page.pageSize ?? defaultPageSize;
+const pageOffset = (page.currentPage - 1) * pageSize;
+---
+
+<BaseLayout>
+  <section class="relative flex items-center justify-center px-4 md:px-12">
+    <div class="mx-auto w-full max-w-5xl">
+      <div class="mb-12">
+        <h1 class="text-section-heading my-8">
+          <div>Articles &</div>
+          <div>Insights</div>
+        </h1>
+        <p class="text-foreground-2 max-w-2xl text-base leading-relaxed md:text-lg">
+          Thoughts and learnings on DevOps, infrastructure automation, cloud architecture, and building reliable systems
+          at scale.
+        </p>
+      </div>
+
+      <!-- Latest Article -->
+      {
+        featured && page.currentPage === 1 && (
+          <div class="mb-12 flex flex-col gap-4">
+            <Badge>Featured Article</Badge>
+            <FeaturedPostCard post={featured} />
+          </div>
+        )
+      }
+
+      <!-- All Articles -->
+      <div class="mb-8 flex flex-col gap-4">
+        <Badge>All Articles</Badge>
+        <div class="border-border space-y-4 md:space-y-0 grid grid-cols-2">
+          {page.data.map((post, index) => <PostCard post={post} index={pageOffset + index} />)}
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="px-2 pb-8">
+        <Pagination
+          currentPage={page.currentPage}
+          prevUrl={page.url.prev}
+          nextUrl={page.url.next}
+          first={page.url.first}
+          last={page.url.last}
+          totalPages={totalPages}
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

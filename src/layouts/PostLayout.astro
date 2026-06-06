@@ -1,0 +1,122 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { formatDateUppercase, estimateReadTime } from "@/lib/utils";
+import { SITE } from "@data/config";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+
+const {
+  title,
+  description,
+  pubDatetime,
+  modDatetime,
+  featured,
+  draft,
+  tags,
+  cover,
+  category,
+  coverAlt,
+  headings,
+  body,
+} = Astro.props;
+
+const readTime = body ? estimateReadTime(body) : 5;
+---
+
+<BaseLayout title={title} description={description} image={cover} imageAlt={coverAlt} contentType="Article">
+  <div class="relative bg-transparent flex items-center justify-center px-4 md:px-12">
+    <div class="mx-auto w-full max-w-5xl my-16">
+      <!-- Back Navigation -->
+      <div class="mb-4">
+        <a href="/post">
+          <Badge>
+            <div class="flex flex-row items-center gap-2">
+              <ArrowLeft className="size-4" />
+              <div class="">BACK TO ARTICLES</div>
+            </div>
+          </Badge>
+        </a>
+      </div>
+
+      <!-- Hero Image -->
+      <div class="aspect-video overflow-hidden">
+        <Image src={cover} alt={coverAlt || title} class="h-full w-full object-cover" />
+      </div>
+
+      <!-- Metadata -->
+      <div class="text-foreground-2 flex items-center gap-4 py-4 text-xs">
+        <time datetime={pubDatetime.toISOString()}>
+          {formatDateUppercase(pubDatetime)}
+        </time>
+        <span>•</span>
+        <span>{readTime} MIN</span>
+        <span>•</span>
+        <span class="uppercase">{SITE.author}</span>
+      </div>
+
+      <!-- Title & Description -->
+      <div class="flex flex-col items-start gap-4">
+        <h1 class="text-foreground font-display text-left text-4xl text-[clamp(2rem,10vw,5rem)]">
+          {title}
+        </h1>
+        <p class="text-foreground-2 mt-0 mb-8 text-lg leading-relaxed">
+          {description}
+        </p>
+      </div>
+
+      <!-- Tags & Share -->
+      <div class="border-border mx-auto flex items-center justify-between border-b py-4">
+        <div class="flex flex-wrap gap-2">
+          {tags && tags.length > 0 && tags.map((tag: string) => <Badge variant="outline">{tag}</Badge>)}
+        </div>
+        <Button
+          id="share-button"
+          variant="secondary"
+          size="sm"
+          className="shrink-0 text-xs tracking-wider uppercase"
+          aria-label="Share article"
+        >
+          <ArrowUpRight />
+          SHARE
+        </Button>
+      </div>
+
+      <!-- Article Content -->
+      <article class="prose max-w-none pt-8">
+        <slot />
+      </article>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  document.getElementById("share-button")?.addEventListener("click", async () => {
+    const url = window.location.href;
+    const title = document.title;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+      } catch (err) {
+        console.log("Share canceled");
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        const button = document.getElementById("share-button");
+        if (button) {
+          const originalText = button.innerHTML;
+          button.innerHTML = `<svg class="h-4 w-4"><use href="#icon-check"></use></svg> COPIED`;
+          setTimeout(() => {
+            button.innerHTML = originalText;
+          }, 2000);
+        }
+      } catch (err) {
+        console.error("Failed to copy:", err);
+      }
+    }
+  });
+</script>
