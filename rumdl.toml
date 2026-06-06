@@ -1,6 +1,7 @@
 [global]
 flavor = "standard"
 disable = [
+  "MD007", # Expected 2 spaces for indent depth 1
   "MD010", # No hard tabs
   "MD013", # Line length
   "MD033", # No inline HTML
