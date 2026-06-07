@@ -18,18 +18,18 @@
   --foreground-0: hsl(225, 20%, 8%);
 
   --accent-0: hsl(170, 70%, 90%);
-  --accent-1: hsl(170, 70%, 35%);
+  --accent-1: hsl(170, 70%, 28%);
   --accent-2: hsl(170, 70%, 22%);
 
-  --red-0: hsl(0, 75%, 45%);
-  --orange-0: hsl(30, 75%, 40%);
-  --yellow-0: hsl(45, 75%, 38%);
-  --green-0: hsl(130, 60%, 35%);
-  --teal-0: hsl(170, 70%, 35%);
-  --cyan-0: hsl(191, 70%, 38%);
-  --blue-0: hsl(220, 70%, 48%);
-  --purple-0: hsl(270, 70%, 50%);
-  --pink-0: hsl(338, 70%, 48%);
+  --red-0: hsl(0, 75%, 38%);
+  --orange-0: hsl(30, 75%, 33%);
+  --yellow-0: hsl(45, 75%, 31%);
+  --green-0: hsl(130, 60%, 28%);
+  --teal-0: hsl(170, 70%, 28%);
+  --cyan-0: hsl(191, 70%, 31%);
+  --blue-0: hsl(220, 70%, 41%);
+  --purple-0: hsl(270, 70%, 43%);
+  --pink-0: hsl(338, 70%, 41%);
 
   --background: var(--background-0);
   --foreground: var(--foreground-0);
