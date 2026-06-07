@@ -39,13 +39,13 @@
   --input: var(--background-5);
   --card: var(--background-3);
   --card-foreground: var(--foreground-1);
-  --popover: var(--background-4);
-  --popover-foreground: var(--foreground-1);
+  --popover: var(--background-1);
+  --popover-foreground: var(--foreground-0);
   --secondary: var(--background-3);
   --secondary-foreground: var(--foreground-1);
   --primary: var(--accent-1);
   --primary-foreground: var(--background-0);
-  --accent: var(--background-1);
+  --accent: var(--background-2);
   --accent-foreground: var(--foreground-0);
   --destructive: var(--red-0);
   --destructive-foreground: var(--foreground-0);
