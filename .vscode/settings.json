@@ -21,6 +21,9 @@
     },
     "editor.suggest.insertMode": "replace"
   },
+  "[mdx]": {
+    "editor.defaultFormatter": "rvben.rumdl"
+  },
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
