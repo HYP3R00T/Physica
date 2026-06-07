@@ -1,0 +1,164 @@
+---
+author: Rajesh
+pubDatetime: 2026-06-06
+title: "How People Actually Learn: The Frameworks Behind Physica"
+featured: true
+draft: false
+tags:
+  - learning
+description: "Most tutorial websites start at step four. Here's what steps one through three look like — and why skipping them is why most people feel like they can't learn physics."
+category: Learning
+cover: "./images/how-people-actually-learn.png"
+coverAlt: Neofetch output of Arch Linux
+---
+
+One common structure in physics courses and learning resources goes like this: open with a definition, show the relevant equations, work through an example, assign problems. It is a familiar sequence, and it has a certain logic to it.
+
+But research in learning science suggests that the order in which concepts are introduced matters considerably — and that the sequence itself is worth examining carefully.
+
+Building this site forced me to ask a question I should have asked much earlier in my own education: *how do people actually learn something?*
+
+The answer turns out to be reasonably well-studied. There's an entire field called **Instructional Design (ID)** that has been working on this problem for decades. And within science education specifically, there's a body of work called **Inquiry-Based Science Education (IBSE)** that offers detailed, evidence-backed frameworks for structuring learning experiences.
+
+This post is about what those frameworks say, why they agree more than they disagree, and what we've built from them here.
+
+---
+
+## The Foundation: Constructivism
+
+Before the specific models, there's a single idea worth naming because everything else descends from it.
+
+**Constructivism** is the learning theory that says humans don't receive knowledge — they build it. A learner isn't a vessel you pour information into. They come to every learning experience with existing mental models, some correct and many wrong, and new information either attaches to those models, modifies them, or gets rejected by them. If you don't engage with what the learner already believes before you try to teach them something new, you haven't taught them anything. You've given them words that float unattached to anything real.
+
+This sounds obvious when stated plainly, which is part of why it's worth examining carefully — obvious principles have a way of being harder to implement than they appear.
+
+Constructivism as a formal theory is associated with Jean Piaget and Lev Vygotsky in the mid-twentieth century, but the ideas precede them and have been extensively validated since. Every framework below is constructivist in structure — they disagree on the finer details of sequencing, but they agree that the learner's prior beliefs must be activated and often disrupted before genuine learning can begin.
+
+---
+
+## The Models
+
+### 1. The 5E Model
+
+**Bybee et al., BSCS, 1987**
+*Learning Cycle Model — Inquiry-Based Science Education*
+
+The 5E model is the most widely used framework in science education, and the most validated across age groups and subjects. Its five stages are: **Engage, Explore, Explain, Elaborate, Evaluate.**
+
+The non-negotiable rule of 5E is that **Explain comes after Explore**. The formal concept — the vocabulary, the definition, the equation — is introduced only after the learner has had a hands-on or interactive encounter with the phenomenon. This sequence is deliberate. An explanation delivered before the learner has experienced the thing being explained has nothing to attach to. The experience creates the cognitive hooks; the explanation fills them. In 5E terms, leading with explanation is the equivalent of giving someone the answer key before they've seen the question.
+
+---
+
+### 2. The 7E Model
+
+**Arthur Eisenkraft, 2003**
+*Extended Learning Cycle Model*
+
+Eisenkraft took 5E and added two stages that address known gaps: **Elicit, Engage, Explore, Explain, Elaborate, Evaluate, Extend.**
+
+The first addition, **Elicit**, goes before Engage. It explicitly surfaces the learner's prior beliefs before showing them anything. This isn't a quiz — it's an act of making the learner's existing mental model visible to themselves. Why does this matter? Because if a student believes heavier objects fall faster and you show them a demonstration without first making that belief explicit, they will unconsciously reinterpret what they see to fit the belief they already hold. Eliciting the wrong belief first makes it possible to confront it directly.
+
+The second addition, **Extend**, comes after Elaborate and addresses the difference between **near transfer** and **far transfer**. Near transfer is using a concept in a situation similar to how it was learned. Far transfer is recognizing that a concept applies in a completely different context — and using it there. Far transfer is where genuine understanding lives. Pendulum mechanics, for instance, is the same mathematics as an LC oscillator circuit. A student who can only solve pendulum problems hasn't understood the concept; they've learned a procedure.
+
+The 7E model maps more precisely to how this site is structured than any other single framework.
+
+---
+
+### 3. POE — Predict, Observe, Explain
+
+**White & Gunstone, 1992**
+*Conceptual Change Teaching Strategy*
+
+POE is not a full learning sequence — it's a micro-cycle designed to produce a specific cognitive event: **the confrontation between a committed prediction and a contradictory observation.**
+
+The sequence is simple. Before showing a learner anything, you ask them to commit to a specific prediction about what will happen. Then you show them what actually happens. Then you ask them to explain the gap between their prediction and the reality.
+
+The key word is *commit*. The learner doesn't just vaguely expect something — they state a specific outcome. This means the observation either confirms or directly contradicts *their personal belief*, not some abstract general notion. The research is clear: a contradicted prediction that you were committed to produces significantly more learning than watching a demonstration passively, even if you were paying close attention.
+
+POE is a loop. It can repeat multiple times within a single concept. On this site, this is the mechanism behind what I'm calling the **Calibration Block** — an interactive input where you guess a numerical value before seeing the correct result.
+
+---
+
+### 4. Kolb's Experiential Learning Cycle
+
+**David Kolb, 1984**
+*Experiential Learning Theory (ELT)*
+
+Kolb's model has four stages: **Concrete Experience, Reflective Observation, Abstract Conceptualization, Active Experimentation** — arranged in a cycle, not a line.
+
+The cycle is the important structural insight. Learning is not a path that ends at understanding; it's a loop that you keep traversing at higher resolution. You experience something, you reflect on it, you build a theory from the reflection, you test the theory, and the test generates a new concrete experience. Mastery is many loops, not one completion.
+
+Kolb's model is also where **learning style theory** originated — the idea that people prefer one phase of the cycle over others. The strong version of learning styles (that you should only teach someone through their "preferred style") has been largely discredited by subsequent research. But the cycle itself, stripped of that claim, remains a sound description of how humans develop competence.
+
+For this site, Kolb's primary contribution is the reminder that a single pass through a concept is not learning — it's an introduction. Return visits need to be easy and rewarding.
+
+---
+
+### 5. Gagné's Nine Events of Instruction
+
+**Robert Gagné, 1965, updated 1988**
+*Systematic Instructional Design Model*
+
+Gagné's framework is the most complete from an instructional design standpoint. His nine events are: **Gain Attention, Inform Learners of Objectives, Stimulate Recall of Prior Learning, Present Content, Provide Learning Guidance, Elicit Performance, Provide Feedback, Assess Performance, Enhance Retention and Transfer.**
+
+A few observations worth making here.
+
+"Inform learners of objectives" sounds bureaucratic but is backed by metacognitive research — learners who know what they are trying to understand retain more than learners who don't. This is not about writing a formal learning outcome at the top of a page; it's about framing the question the concept is answering before you answer it.
+
+"Elicit Performance" and "Provide Feedback" are steps 6 and 7 — well over halfway through. These are the steps where passive content consumption becomes active learning. A learner who reads or watches without ever being asked to do something with the knowledge has been exposed to it, not necessarily changed by it.
+
+"Enhance Retention and Transfer" is Gagné's equivalent of Eisenkraft's Extend — making sure the learner can use the concept in new territory, not just reproduce it in familiar territory.
+
+---
+
+### 6. Japanese Teaching Through Problem Solving (TTP)
+
+**Embedded in Japan's national mathematics and science curriculum since the 1980s**
+*Problem-Based Learning / Discovery Learning*
+
+Japan's consistently high PISA performance in mathematics and science is not an accident of culture or selection. It is, in significant part, a result of a specific pedagogical structure called **Teaching Through Problem Solving (TTP)**, which operates as follows.
+
+The teacher presents a problem that students **cannot yet solve**. They have not been taught the method. They are asked to attempt it anyway, individually, in silence. This is the **Struggle** phase. Then approaches are compared and discussed — a Japanese classroom practice called **Neriage**, meaning "kneading," where the teacher draws out and examines multiple student approaches, including wrong ones. Then the teacher formalizes the best reasoning into the official method. Then there is **Reflection**.
+
+What is notable about the structure is that the problem precedes the method. The struggle is not a failure to be avoided — it is the mechanism. This is consistent with researcher Manu Kapur's work on **Productive Failure**, which showed that students who attempt a problem before receiving instruction outperform students who receive instruction first and then practice — even when the pre-instruction attempts are entirely wrong.
+
+The wrong attempt is doing real cognitive work. It creates the question to which the instruction becomes the answer.
+
+---
+
+### 7. Merrill's First Principles of Instruction
+
+**M. David Merrill, 2002**
+*Synthesis of Instructional Design Research*
+
+Merrill took a different approach from the others. Rather than proposing a new model, he asked: what do the best-validated instructional frameworks actually agree on? What are the principles that hold across models, contexts, and subjects?
+
+He identified four: **Activation, Demonstration, Application, Integration.**
+
+Learning is facilitated when learners activate prior knowledge before encountering new information. Learning is facilitated when the instruction demonstrates — not just describes — what is to be learned. Learning is facilitated when learners apply new knowledge, not just receive it. Learning is facilitated when learners integrate new knowledge into their existing understanding through reflection, discussion, or creation.
+
+These four are the highest-confidence claims in instructional design. If a learning experience violates any of them, something is wrong. If it satisfies all four, it is at minimum defensible.
+
+---
+
+## How This Site Is Structured — And Why
+
+The honest observation about these seven frameworks is that they largely agree. They disagree on granularity and emphasis. They come from different research traditions. But the core sequence is the same: activate prior knowledge, create experience before explanation, build intuition before formalism, apply in near and far contexts, reflect metacognitively.
+
+Every concept on this site is structured around a nine-stage learning sequence that synthesizes primarily from 7E, POE, and the productive failure literature, adapted for a self-directed, asynchronous web environment:
+
+1. **Activation** — Surface the learner's prior belief before showing them anything
+2. **Provocation** — Create cognitive dissonance; make the phenomenon surprising
+3. **Exploration** — Free-form interaction with a simulation; no explanation yet
+4. **Prediction** — Commit to a specific value; see how far off you were (POE loop)
+5. **Intuitive Explanation** — Plain language, no mathematics; dismantle misconceptions explicitly
+6. **Formalization** — Mathematics and derivation, with every step annotated for *why*, not just *what*
+7. **Near Application** — Solve problems in familiar territory
+8. **Far Application** — Recognize and use the concept in an unfamiliar context
+9. **Metacognitive Reflection** — What did you believe before this that turned out to be wrong? What do you still not understand?
+
+This is not an arbitrary sequence. Every stage is ordered because it creates the cognitive conditions that the next stage requires. You cannot productively formalize a concept you don't yet have an intuition for. You cannot build intuition for something you haven't explored. You cannot explore something meaningfully if your prior wrong beliefs haven't been surfaced and made available for contradiction.
+
+The sequence is the pedagogy. And the pedagogy is not new — it is assembled from decades of careful research into how people actually build understanding.
+
+That is the foundation this site is built on.
