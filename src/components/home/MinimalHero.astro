@@ -1,0 +1,58 @@
+---
+// MinimalHero - Main hero section for homepage
+import { Button } from "@/components/ui/button";
+---
+
+<section class="relative min-h-[85vh] flex items-center justify-center px-4 py-20 overflow-hidden">
+  <!-- Subtle physics motif: orbital arc -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <svg
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 opacity-10"
+      viewBox="0 0 800 800"
+    >
+      <ellipse
+        cx="400"
+        cy="400"
+        rx="350"
+        ry="200"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        class="text-accent-1"
+        stroke-dasharray="4 8"></ellipse>
+      <circle cx="400" cy="200" r="3" fill="currentColor" class="text-accent-1">
+        <animateMotion dur="20s" repeatCount="indefinite" path="M 400,200 A 350,200 0 1,1 399.9,200"></animateMotion>
+      </circle>
+    </svg>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+    <!-- Headline -->
+    <h1 class="font-display text-5xl md:text-7xl font-bold text-foreground-0 tracking-tight leading-tight">
+      Physics, understood visually.
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="text-lg md:text-xl text-foreground-2 max-w-2xl mx-auto leading-relaxed">
+      Short, interactive learning modules that help you build intuition first — then connect what you see to equations,
+      examples, and real problems.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+      <!-- Primary CTA -->
+      <a href="/modules/motion" class="w-full sm:w-auto">
+        <Button size="lg" className="w-full sm:w-auto px-8 py-6 text-lg font-semibold">
+          Start with Motion
+        </Button>
+      </a>
+
+      <!-- Secondary CTA -->
+      <a href="/post" class="w-full sm:w-auto">
+        <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 py-6 text-lg">
+          Read articles
+        </Button>
+      </a>
+    </div>
+  </div>
+</section>

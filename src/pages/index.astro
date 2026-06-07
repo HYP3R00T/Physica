@@ -1,9 +1,14 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import MinimalHero from "@/components/home/MinimalHero.astro";
 ---
 
-<BaseLayout>
-  <div class="flex flex-col gap-20 py-20">
-    <h1>Hello</h1>
+<BaseLayout
+  title="Physica — Physics, understood visually"
+  description="Short, interactive learning modules that help you build intuition first — then connect what you see to equations, examples, and real problems."
+>
+  <div class="flex flex-col min-h-screen">
+    <!-- Hero Section -->
+    <MinimalHero />
   </div>
 </BaseLayout>
