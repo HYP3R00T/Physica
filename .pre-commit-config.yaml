@@ -15,19 +15,19 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.16.2
+    rev: v4.16.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
 
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.222
+    rev: v0.2.20
     hooks:
       - id: rumdl
       - id: rumdl-fmt
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.4.15
+    rev: v2.5.0
     hooks:
       - id: biome-check
         exclude: '\.astro$'
