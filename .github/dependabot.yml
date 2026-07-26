@@ -1,44 +1,64 @@
-# Dependabot configuration for automated dependency updates
-# See https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
-
 version: 2
 updates:
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: weekly
-      day: monday
-      time: "03:00"
-    open-pull-requests-limit: 5
-    rebase-strategy: auto
-    labels:
-      - dependencies
-      - ci
-    commit-message:
-      prefix: chore(deps)
-    groups:
-      dependencies:
-        patterns:
-          - "*"
-    assignees:
-      - HYP3R00T
-
-  - package-ecosystem: npm
-    directory: "/"
-    schedule:
-      interval: weekly
-      day: monday
-      time: "03:00"
-    open-pull-requests-limit: 5
-    rebase-strategy: auto
-    labels:
-      - dependencies
-      - ci
-    commit-message:
-      prefix: chore(deps)
-    groups:
-      dependencies:
-        patterns:
-          - "*"
-    assignees:
-      - HYP3R00T
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: weekly
+    day: thursday
+    time: 09:00
+    timezone: Asia/Kolkata
+  open-pull-requests-limit: 2
+  rebase-strategy: auto
+  labels:
+  - dependencies
+  - ci
+  commit-message:
+    prefix: chore(deps)
+  groups:
+    safe-patch-updates:
+      patterns:
+      - '*'
+      update-types:
+      - patch
+    minor-updates:
+      patterns:
+      - '*'
+      update-types:
+      - minor
+  cooldown:
+    default-days: 7
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
+- package-ecosystem: npm
+  directory: /
+  schedule:
+    interval: weekly
+    day: thursday
+    time: 09:00
+    timezone: Asia/Kolkata
+  open-pull-requests-limit: 2
+  rebase-strategy: auto
+  labels:
+  - dependencies
+  - ci
+  commit-message:
+    prefix: chore(deps)
+  groups:
+    safe-patch-updates:
+      patterns:
+      - '*'
+      update-types:
+      - patch
+    minor-updates:
+      patterns:
+      - '*'
+      update-types:
+      - minor
+  cooldown:
+    default-days: 7
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
