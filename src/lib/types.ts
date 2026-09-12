@@ -1,5 +1,5 @@
-import type { CollectionEntry } from 'astro:content'
-import type { ImageMetadata, MarkdownHeading } from 'astro'
+import type { CollectionEntry } from "astro:content"
+import type { ImageMetadata, MarkdownHeading } from "astro"
 
 // For HeadSEO.astro
 export interface HeadSEOProps {
@@ -62,7 +62,7 @@ export interface FooterSocialLink {
 }
 
 // Posts / content types
-export type PostEntry = CollectionEntry<'posts'>
+export type PostEntry = CollectionEntry<"posts">
 export type Posts = PostEntry[]
 
 export interface PostsPageProps {

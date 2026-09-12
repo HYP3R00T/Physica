@@ -1,4 +1,4 @@
-const SELECTOR = '.dot-pattern-interactive'
+const SELECTOR = ".dot-pattern-interactive"
 
 const initialized = new WeakSet()
 
@@ -12,16 +12,16 @@ function setupDotPattern(el) {
   let targetY = currentY
   let rafId = 0
 
-  el.style.setProperty('--dot-mx', `${currentX}px`)
-  el.style.setProperty('--dot-my', `${currentY}px`)
-  el.style.setProperty('--dot-highlight-opacity', '0')
+  el.style.setProperty("--dot-mx", `${currentX}px`)
+  el.style.setProperty("--dot-my", `${currentY}px`)
+  el.style.setProperty("--dot-highlight-opacity", "0")
 
   const animate = () => {
     currentX += (targetX - currentX) * 0.2
     currentY += (targetY - currentY) * 0.2
 
-    el.style.setProperty('--dot-mx', `${currentX}px`)
-    el.style.setProperty('--dot-my', `${currentY}px`)
+    el.style.setProperty("--dot-mx", `${currentX}px`)
+    el.style.setProperty("--dot-my", `${currentY}px`)
 
     const isSettled = Math.abs(targetX - currentX) < 0.2 && Math.abs(targetY - currentY) < 0.2
 
@@ -42,25 +42,25 @@ function setupDotPattern(el) {
     const rect = el.getBoundingClientRect()
     targetX = event.clientX - rect.left
     targetY = event.clientY - rect.top
-    el.style.setProperty('--dot-highlight-opacity', '1')
+    el.style.setProperty("--dot-highlight-opacity", "1")
     startAnimation()
   }
 
   const hideHighlight = () => {
-    el.style.setProperty('--dot-highlight-opacity', '0')
+    el.style.setProperty("--dot-highlight-opacity", "0")
     if (!rafId) return
     window.cancelAnimationFrame(rafId)
     rafId = 0
   }
 
-  el.addEventListener('pointerenter', updateTargetFromEvent)
-  el.addEventListener('pointermove', updateTargetFromEvent)
-  el.addEventListener('pointerleave', hideHighlight)
+  el.addEventListener("pointerenter", updateTargetFromEvent)
+  el.addEventListener("pointermove", updateTargetFromEvent)
+  el.addEventListener("pointerleave", hideHighlight)
 }
 
 export default function initInteractiveDots() {
   document.querySelectorAll(SELECTOR).forEach(setupDotPattern)
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener("astro:after-swap", () => {
     document.querySelectorAll(SELECTOR).forEach(setupDotPattern)
   })
 }

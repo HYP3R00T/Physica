@@ -1,7 +1,7 @@
-import type { ElementType, Ref } from 'react'
-import { useEffect, useRef } from 'react'
+import type { ElementType, Ref } from "react"
+import { useEffect, useRef } from "react"
 
-const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
 
 interface Props {
   text?: string
@@ -11,7 +11,7 @@ interface Props {
   className?: string
 }
 
-export default function AnimatedText({ text = '', auto = false, hover = true, tag = 'div', className = '' }: Props) {
+export default function AnimatedText({ text = "", auto = false, hover = true, tag = "div", className = "" }: Props) {
   const ref = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function AnimatedText({ text = '', auto = false, hover = true, ta
     if (!current) return
     const node: HTMLElement = current
 
-    const target = text || node.textContent || ''
+    const target = text || node.textContent || ""
     node.dataset.value = target
     node.textContent = target
 
@@ -32,10 +32,10 @@ export default function AnimatedText({ text = '', auto = false, hover = true, ta
 
       let iteration = 0
       interval = setInterval(() => {
-        node.textContent = (node.textContent || '')
-          .split('')
+        node.textContent = (node.textContent || "")
+          .split("")
           .map((_, i) => (i < iteration ? target[i] : LETTERS[Math.floor(Math.random() * LETTERS.length)]))
-          .join('')
+          .join("")
 
         if (iteration >= target.length && interval !== null) {
           clearInterval(interval)
@@ -48,11 +48,11 @@ export default function AnimatedText({ text = '', auto = false, hover = true, ta
 
     if (auto) playAnimation()
 
-    if (hover) node.addEventListener('mouseover', playAnimation)
+    if (hover) node.addEventListener("mouseover", playAnimation)
 
     return () => {
       if (interval !== null) clearInterval(interval)
-      if (hover) node.removeEventListener('mouseover', playAnimation)
+      if (hover) node.removeEventListener("mouseover", playAnimation)
     }
   }, [text, auto, hover])
 

@@ -1,21 +1,21 @@
-import Plyr from 'plyr'
+import Plyr from "plyr"
 
 export default () => {
-  document.addEventListener('astro:page-load', () => {
-    const players = Plyr.setup('#player', {
+  document.addEventListener("astro:page-load", () => {
+    const players = Plyr.setup("#player", {
       controls: [
-        'play',
-        'progress',
-        'current-time',
-        'mute',
+        "play",
+        "progress",
+        "current-time",
+        "mute",
         // 'volume',
-        'settings',
-        'fullscreen',
+        "settings",
+        "fullscreen",
       ],
-      settings: ['captions', 'quality', 'speed', 'loop'],
+      settings: ["captions", "quality", "speed", "loop"],
       keyboard: { focused: true },
       autoplay: false,
-      ratio: '16:9',
+      ratio: "16:9",
       clickToPlay: true,
       invertTime: false,
       tooltips: { controls: true, seek: true },
@@ -35,7 +35,7 @@ export default () => {
     // Broadcast Plyr events globally so components can react reliably
     if (players && players.length > 0) {
       players.forEach((p) => {
-        ;['play', 'playing', 'pause', 'ended'].forEach((eventName) => {
+        ;["play", "playing", "pause", "ended"].forEach((eventName) => {
           p.on(eventName, () => {
             document.dispatchEvent(new CustomEvent(`plyr:${eventName}`))
           })
