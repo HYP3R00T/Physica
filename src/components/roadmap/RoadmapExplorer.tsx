@@ -55,10 +55,27 @@ export default function RoadmapExplorer({
   const byId = new Map(segments.map((segment) => [segment.id, segment]))
   const color = (id: string) => roadmapLanes[byId.get(id)?.lane ?? "methods"].color
   const x = (id: string) => 12 + lanes.indexOf(byId.get(id)?.lane ?? "methods") * 15
-  edges.sort(
-    (a, b) =>
-      Number(a.source === selected || a.target === selected) - Number(b.source === selected || b.target === selected),
-  )
+  // Paint shared strokes together so antialiased edges do not accumulate at overlaps.
+  const edgePaths = [false, true]
+    .flatMap((active) =>
+      lanes.map((lane) => ({
+        lane,
+        active,
+        d: edges
+          .filter(
+            ({ source, target }) =>
+              byId.get(source)?.lane === lane && (source === selected || target === selected) === active,
+          )
+          .map(({ source, target }) => {
+            const y1 = (positions.get(source) ?? 0) * ROW + ROW / 2
+            const y2 = (positions.get(target) ?? 0) * ROW + ROW / 2
+            const bend = Math.min(48, (y2 - y1) / 2)
+            return `M ${x(source)} ${y1} L ${x(source)} ${y2 - bend} C ${x(source)} ${y2 - bend / 2}, ${x(target)} ${y2 - bend / 2}, ${x(target)} ${y2}`
+          })
+          .join(" "),
+      })),
+    )
+    .filter(({ d }) => d)
 
   const reveal = useCallback((id: string) => {
     const row = document.getElementById(anchor(id))
@@ -329,22 +346,15 @@ export default function RoadmapExplorer({
               height={segments.length * ROW}
               aria-hidden="true"
             >
-              {edges.map(({ source, target }) => {
-                const y1 = (positions.get(source) ?? 0) * ROW + ROW / 2
-                const y2 = (positions.get(target) ?? 0) * ROW + ROW / 2
-                const active = source === selected || target === selected
-                const bend = Math.min(48, (y2 - y1) / 2)
-                return (
-                  <path
-                    key={`${source}-${target}`}
-                    d={`M ${x(source)} ${y1} L ${x(source)} ${y2 - bend} C ${x(source)} ${y2 - bend / 2}, ${x(target)} ${y2 - bend / 2}, ${x(target)} ${y2}`}
-                    fill="none"
-                    stroke={color(source)}
-                    strokeWidth={active ? 2.5 : 1.2}
-                    opacity={active ? 0.95 : 0.13}
-                  />
-                )
-              })}
+              {edgePaths.map(({ lane, active, d }) => (
+                <path
+                  key={`${lane}-${active}`}
+                  d={d}
+                  fill="none"
+                  stroke={`color-mix(in srgb, ${roadmapLanes[lane as keyof typeof roadmapLanes].color} ${active ? 95 : 13}%, var(--background-0))`}
+                  strokeWidth={active ? 2.5 : 1.2}
+                />
+              ))}
               {segments.map((segment, index) => (
                 <circle
                   key={segment.id}
