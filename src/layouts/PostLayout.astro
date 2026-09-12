@@ -1,122 +1,32 @@
 ---
-import { Image } from "astro:assets";
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { formatDateUppercase, estimateReadTime } from "@/lib/utils";
-import { SITE } from "@data/config";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { formatDateUppercase, estimateReadTime } from "@/lib/utils"
+import "katex/dist/katex.min.css"
 
-const {
-  title,
-  description,
-  pubDatetime,
-  modDatetime,
-  featured,
-  draft,
-  tags,
-  cover,
-  category,
-  coverAlt,
-  headings,
-  body,
-} = Astro.props;
-
-const readTime = body ? estimateReadTime(body) : 5;
+const { title, description, pubDatetime, tags, cover, coverAlt, headings = [], body } = Astro.props
+const tableOfContents = headings.filter(({ depth }: { depth: number }) => depth === 2 || depth === 3)
 ---
 
-<BaseLayout title={title} description={description} image={cover} imageAlt={coverAlt} contentType="Article">
-  <div class="relative bg-transparent flex items-center justify-center px-4 md:px-12">
-    <div class="mx-auto w-full max-w-5xl my-16">
-      <!-- Back Navigation -->
-      <div class="mb-4">
-        <a href="/post">
-          <Badge>
-            <div class="flex flex-row items-center gap-2">
-              <ArrowLeft className="size-4" />
-              <div class="">BACK TO ARTICLES</div>
-            </div>
-          </Badge>
-        </a>
-      </div>
-
-      <!-- Hero Image -->
-      <div class="aspect-video overflow-hidden border">
-        <Image src={cover} alt={coverAlt || title} class="h-full w-full object-cover" />
-      </div>
-
-      <!-- Metadata -->
-      <div class="text-foreground-2 flex items-center gap-4 py-4 text-xs">
-        <time datetime={pubDatetime.toISOString()}>
-          {formatDateUppercase(pubDatetime)}
-        </time>
-        <span>•</span>
-        <span>{readTime} MIN</span>
-        <span>•</span>
-        <span class="uppercase">{SITE.author}</span>
-      </div>
-
-      <!-- Title & Description -->
-      <div class="flex flex-col items-start gap-4">
-        <h1 class="text-foreground font-display text-left text-4xl text-[clamp(2rem,10vw,5rem)]">
-          {title}
-        </h1>
-        <p class="text-foreground-2 mt-0 mb-8 text-lg leading-relaxed">
-          {description}
-        </p>
-      </div>
-
-      <!-- Tags & Share -->
-      <div class="border-border mx-auto flex items-center justify-between border-b py-4">
-        <div class="flex flex-wrap gap-2">
-          {tags && tags.length > 0 && tags.map((tag: string) => <Badge variant="outline">{tag}</Badge>)}
-        </div>
-        <Button
-          id="share-button"
-          variant="secondary"
-          size="sm"
-          className="shrink-0 text-xs tracking-wider uppercase"
-          aria-label="Share article"
-        >
-          <ArrowUpRight />
-          SHARE
-        </Button>
-      </div>
-
-      <!-- Article Content -->
-      <article class="prose max-w-none pt-8">
-        <slot />
-      </article>
-    </div>
+<BaseLayout title={`${title} — Physica`} description={description} image={cover} imageAlt={coverAlt} contentType="article" layout="notes">
+  <div class="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-368 items-start lg:grid-cols-[minmax(12rem,1fr)_minmax(0,56rem)_minmax(12rem,1fr)]">
+    <aside class="sticky top-16 hidden px-5 py-8 lg:block">
+      <a href="/post" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground-2 transition-colors hover:bg-background-1 hover:text-accent-1"><Icon name="arrow-left" class="size-5 shrink-0" aria-hidden="true" /> All articles</a>
+    </aside>
+    <article class="min-w-0 w-full max-w-4xl justify-self-center lg:max-w-none">
+      <header class="border-b border-border px-5 py-12 md:px-10 md:py-16 lg:px-14">
+        <a href="/post" class="font-mono text-xs text-accent-1 hover:text-accent-2">Articles</a>
+        <h1 class="mt-4 font-display text-4xl leading-tight font-semibold tracking-tight text-foreground-0 md:text-5xl">{title}</h1>
+        <p class="mt-5 text-lg leading-8 text-foreground-2">{description}</p>
+        <p class="mt-5 font-mono text-xs text-foreground-3"><time datetime={pubDatetime.toISOString()}>{formatDateUppercase(pubDatetime)}</time> · {estimateReadTime(body ?? "")} MIN READ</p>
+        <ul class="mt-6 flex flex-wrap gap-2" aria-label="Article topics">{tags.map((tag: string) => <li class="rounded-full border border-border px-3 py-1 font-mono text-xs text-foreground-2">{tag}</li>)}</ul>
+      </header>
+      <div class="px-5 pt-10 md:px-10 lg:px-14"><Image src={cover} alt={coverAlt || title} class="aspect-video w-full border border-border object-cover" /></div>
+      <div class="prose px-5 py-10 md:px-10 lg:px-14"><slot /></div>
+    </article>
+    <aside class="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto px-5 py-8 lg:block" aria-label="On this page">
+      {tableOfContents.length > 0 && <><h2 class="font-mono text-[0.6875rem] tracking-[0.12em] text-foreground-3 uppercase">On this page</h2><nav class="mt-4"><ul class="space-y-2">{tableOfContents.map((heading: { depth: number; slug: string; text: string }) => <li class:list={[heading.depth === 3 && "pl-3"]}><a href={`#${heading.slug}`} class="block text-sm leading-5 text-foreground-2 transition-colors hover:text-accent-1">{heading.text}</a></li>)}</ul></nav></>}
+    </aside>
   </div>
 </BaseLayout>
-
-<script>
-  document.getElementById("share-button")?.addEventListener("click", async () => {
-    const url = window.location.href;
-    const title = document.title;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title, url });
-      } catch (err) {
-        console.log("Share canceled");
-      }
-    } else {
-      // Fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(url);
-        const button = document.getElementById("share-button");
-        if (button) {
-          const originalText = button.innerHTML;
-          button.innerHTML = `<svg class="h-4 w-4"><use href="#icon-check"></use></svg> COPIED`;
-          setTimeout(() => {
-            button.innerHTML = originalText;
-          }, 2000);
-        }
-      } catch (err) {
-        console.error("Failed to copy:", err);
-      }
-    }
-  });
-</script>

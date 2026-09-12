@@ -1,42 +1,15 @@
 ---
-import { formatDateUppercase, estimateReadTime } from "@/lib/utils";
-import type { PostCardProps } from "@/lib/types";
-import { Badge } from "@/components/ui/badge";
-import CardGrid from "../common/CardGrid.astro";
-
-const { post, index } = Astro.props as PostCardProps & { index?: number };
-const readTime = estimateReadTime(post.body || post.data.description);
+import type { PostEntry } from "@/lib/types"
+import { formatDateUppercase } from "@/lib/utils"
+interface Props { post: PostEntry; index?: number }
+const { post, index = 0 } = Astro.props
 ---
-
-<CardGrid>
-  <a href={`/post/${post.id}/`}>
-    <div class="flex flex-col md:flex-row">
-      <div class="flex grow flex-col gap-4">
-        <div class="text-foreground-2 flex items-center justify-between gap-4 text-xs font-mono">
-          {index !== undefined && <span class="text-accent-1 text-xs">// {String(index + 1).padStart(2, "0")}</span>}
-          <time datetime={post.data.pubDatetime.toISOString()}>
-            {formatDateUppercase(post.data.pubDatetime)}
-          </time>
-        </div>
-
-        <h3 class="group-hover:text-accent-1 text-foreground-1 font-display text-xl transition-colors md:text-2xl">
-          {post.data.title}
-        </h3>
-
-        <div class="text-foreground-2 max-w-2xl text-sm leading-relaxed">
-          {post.data.description}
-        </div>
-
-        {
-          post.data.tags && post.data.tags.length > 0 && (
-            <div class="flex flex-wrap gap-2">
-              {post.data.tags.map((tag: string) => (
-                <Badge variant="secondary">{tag}</Badge>
-              ))}
-            </div>
-          )
-        }
-      </div>
-    </div>
-  </a>
-</CardGrid>
+<a href={`/post/${post.id}`} class:list={["group flex h-full min-h-72 flex-col border-b border-border px-5 py-10 transition-colors hover:bg-background-1 md:px-10 lg:px-15", index % 2 === 0 && "md:border-r"]}>
+  <div class="flex items-start justify-between gap-6">
+    <p class="font-mono text-xs text-foreground-3">{post.data.featured && "Featured · "}{formatDateUppercase(post.data.pubDatetime)}</p>
+    <span class="h-px w-10 bg-border transition-[width,background-color] group-hover:w-16 group-hover:bg-accent-1" aria-hidden="true" />
+  </div>
+  <h2 class="mt-14 font-display text-2xl font-semibold text-foreground-0 group-hover:text-accent-1">{post.data.title}</h2>
+  <p class="mt-3 leading-7 text-foreground-2">{post.data.description}</p>
+  <ul class="mt-auto flex flex-wrap gap-2 pt-6" aria-label={`${post.data.title} topics`}>{post.data.tags.map((tag) => <li class="rounded-full border border-border px-3 py-1 font-mono text-xs text-foreground-2">{tag}</li>)}</ul>
+</a>

@@ -4,7 +4,7 @@ import type { PostEntry, PostPath, PostDetailPageProps } from "@/lib/types";
 import PostLayout from "@/layouts/PostLayout.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts");
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
   const headings = await Promise.all(posts.map((entry: PostEntry) => render(entry).then((data) => data.headings)));
 
   const posts_: PostPath[] = posts.map((entry: PostEntry, index: number) => ({

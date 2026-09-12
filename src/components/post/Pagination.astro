@@ -1,6 +1,7 @@
 ---
+import { Icon } from "astro-icon/components";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+
 
 const { currentPage, prevUrl, nextUrl, first, last, firstUrl, lastUrl, totalPages } = Astro.props;
 ---
@@ -10,11 +11,11 @@ const { currentPage, prevUrl, nextUrl, first, last, firstUrl, lastUrl, totalPage
     {
       prevUrl ? (
         <a href={prevUrl} aria-label="Previous page" class={buttonVariants({ variant: "outline", size: "icon-lg" })}>
-          <ArrowLeft />
+          <Icon name="arrow-left" class="size-5" aria-hidden="true" />
         </a>
       ) : (
         <Button variant="outline" size="icon-lg" disabled aria-label="Previous page">
-          <ArrowLeft />
+          <Icon name="arrow-left" class="size-5" aria-hidden="true" />
         </Button>
       )
     }
@@ -28,11 +29,11 @@ const { currentPage, prevUrl, nextUrl, first, last, firstUrl, lastUrl, totalPage
     {
       nextUrl ? (
         <a href={nextUrl} aria-label="Next page" class={buttonVariants({ variant: "outline", size: "icon-lg" })}>
-          <ArrowRight />
+          <Icon name="arrow-right" class="size-5" aria-hidden="true" />
         </a>
       ) : (
         <Button variant="outline" size="icon-lg" disabled aria-label="Next page">
-          <ArrowRight />
+          <Icon name="arrow-right" class="size-5" aria-hidden="true" />
         </Button>
       )
     }

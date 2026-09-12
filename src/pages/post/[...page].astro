@@ -5,9 +5,9 @@ import { getCollection } from "astro:content";
 import type { PostsPageProps } from "@/lib/types";
 import Pagination from "@/components/post/Pagination.astro";
 import PostCard from "@/components/post/PostCard.astro";
-import FeaturedPostCard from "@/components/post/FeaturedPostCard.astro";
+import Section from "@/components/common/Section.astro";
 import { SITE } from "@data/config";
-import { Badge } from "@/components/ui/badge";
+
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
   const posts = await getCollection("posts").then((entries) => entries.filter((entry) => !entry.data.draft));
@@ -41,55 +41,21 @@ const defaultPageSize = SITE.pageSize ?? 10;
 const pageSize = page.pageSize ?? defaultPageSize;
 const pageOffset = (page.currentPage - 1) * pageSize;
 ---
-
-<BaseLayout>
-  <section class="relative flex items-center justify-center px-4 md:px-12">
-    <div class="mx-auto w-full max-w-5xl">
-      <div class="mb-12">
-        <h1 class="text-section-heading my-8">
-          <div>Articles &</div>
-          <div>Insights</div>
-        </h1>
-        <p class="text-foreground-2 max-w-2xl text-base leading-relaxed md:text-lg">
-          Explorations in physics concepts, learning methods, and building intuition through interactive examples.
-        </p>
-      </div>
-
-      <!-- Latest Article -->
-      {
-        featured && page.currentPage === 1 && (
-          <div class="mb-12 flex flex-col gap-4">
-            <Badge>Featured Article</Badge>
-            <FeaturedPostCard post={featured} />
-          </div>
-        )
-      }
-
-      <!-- All Articles -->
-      {
-        page.data.length > 0 && (
-          <div class="mb-8 flex flex-col gap-4">
-            <Badge>All Articles</Badge>
-            <div class="border-border space-y-4 md:space-y-0 grid grid-cols-2">
-              {page.data.map((post, index) => (
-                <PostCard post={post} index={pageOffset + index} />
-              ))}
-            </div>
-          </div>
-        )
-      }
-
-      <!-- Pagination -->
-      <div class="px-2 pb-8">
-        <Pagination
-          currentPage={page.currentPage}
-          prevUrl={page.url.prev}
-          nextUrl={page.url.next}
-          first={page.url.first}
-          last={page.url.last}
-          totalPages={totalPages}
-        />
-      </div>
+<BaseLayout title="Articles — Physica" description="Explorations in physics concepts, learning methods, and building intuition.">
+  <Section>
+    <header class="px-5 py-16 md:px-10 md:py-24 lg:px-15 lg:py-28">
+      <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Articles &amp; insights</p>
+      <h1 class="mt-5 max-w-4xl font-display text-5xl leading-[0.95] font-semibold tracking-tight text-foreground-0 md:text-7xl">Ideas behind the learning.</h1>
+      <p class="mt-7 max-w-2xl text-lg leading-8 text-foreground-2 md:text-xl">Explorations in physics concepts, learning methods, and building intuition through practice.</p>
+    </header>
+  </Section>
+  <Section aria-label="Articles">
+    <div class="grid md:grid-cols-2">
+      {featured && page.currentPage === 1 && <PostCard post={featured} index={0} />}
+      {page.data.map((post, index) => <PostCard post={post} index={pageOffset + index + (featured ? 1 : 0)} />)}
     </div>
-  </section>
+    <div class="border-t border-border px-5 py-8 md:px-10 lg:px-15">
+      <Pagination currentPage={page.currentPage} prevUrl={page.url.prev} nextUrl={page.url.next} first={page.url.first} last={page.url.last} totalPages={totalPages} />
+    </div>
+  </Section>
 </BaseLayout>
