@@ -1,0 +1,103 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getModuleSlug, getNoteSlug } from "@/lib/content"
+import type { LearningEntry } from "@/lib/content"
+
+import "katex/dist/katex.min.css"
+
+interface Heading {
+  depth: number
+  slug: string
+  text: string
+}
+
+interface Props {
+  title: string
+  description?: string
+  module: LearningEntry
+  notes: LearningEntry[]
+  currentId?: string
+  headings?: Heading[]
+}
+
+const { title, description, module, notes, currentId, headings = [] } = Astro.props as Props
+
+const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 3)
+---
+
+<BaseLayout
+  title={`${title} — Physica`}
+  description={description ?? "Study notes"}
+  contentType="article"
+  layout="notes"
+>
+  <div class="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-368 items-start lg:grid-cols-[minmax(12rem,1fr)_minmax(0,56rem)_minmax(12rem,1fr)]">
+    <aside class="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto px-5 py-8 lg:block" aria-label="Notes">
+      <nav aria-label={`${module.data.title} notes`}>
+        <ul class="space-y-1">
+          {
+            notes.map((note) => (
+              <li>
+                <a
+                  href={`/${getNoteSlug(note)}`}
+                  aria-current={note.id === currentId ? "page" : undefined}
+                  class="block rounded-md px-3 py-2 text-sm leading-5 text-foreground-2 transition-colors hover:bg-background-1 hover:text-foreground-0 aria-[current=page]:bg-background-1 aria-[current=page]:font-medium aria-[current=page]:text-accent-1"
+                >
+                  {note.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="min-w-0 w-full max-w-4xl justify-self-center lg:max-w-none">
+      <details class="border-b border-border px-5 py-4 lg:hidden">
+        <summary class="cursor-pointer font-mono text-sm font-medium text-foreground-1">Browse notes</summary>
+        <nav class="mt-4 grid gap-1" aria-label="Mobile notes navigation">
+          <a href={`/${getModuleSlug(module)}`} class="rounded-md px-3 py-2 text-sm text-foreground-2 hover:bg-background-1">
+            {module.data.title} overview
+          </a>
+          {
+            notes.map((note) => (
+              <a
+                href={`/${getNoteSlug(note)}`}
+                aria-current={note.id === currentId ? "page" : undefined}
+                class="rounded-md px-3 py-2 text-sm text-foreground-2 hover:bg-background-1 aria-[current=page]:bg-background-1 aria-[current=page]:text-accent-1"
+              >
+                {note.data.title}
+              </a>
+            ))
+          }
+        </nav>
+      </details>
+
+      <slot />
+    </div>
+
+    <aside class="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto px-5 py-8 lg:block" aria-label="On this page">
+      {
+        tableOfContents.length > 0 && (
+          <>
+            <h2 class="font-mono text-[0.6875rem] tracking-[0.12em] text-foreground-3 uppercase">On this page</h2>
+            <nav class="mt-4">
+              <ul class="space-y-2">
+                {tableOfContents.map((heading) => (
+                  <li class:list={[heading.depth === 3 && "pl-3"]}>
+                    <a
+                      href={`#${heading.slug}`}
+                      class="block text-sm leading-5 text-foreground-2 transition-colors hover:text-accent-1"
+                    >
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </>
+        )
+      }
+    </aside>
+  </div>
+</BaseLayout>

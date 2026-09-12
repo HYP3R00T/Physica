@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content"
+
+import ModulePage from "@/components/content/ModulePage.astro"
+import NotePage from "@/components/content/NotePage.astro"
+import {
+  getModuleFolder,
+  getModuleNotes,
+  getModuleSlug,
+  getNoteSlug,
+  isModule,
+  validateContent,
+} from "@/lib/content"
+import type { LearningEntry } from "@/lib/content"
+
+export async function getStaticPaths() {
+  const candidates = await getCollection("learning", ({ data }) => !import.meta.env.PROD || !data.draft)
+  const modules = candidates.filter(isModule)
+  const visibleFolders = new Set(modules.map(getModuleFolder))
+  const entries = candidates.filter((entry) => isModule(entry) || visibleFolders.has(getModuleFolder(entry)))
+
+  validateContent(entries)
+
+  return [
+    ...modules.map((module) => ({
+      params: { slug: getModuleSlug(module) },
+      props: {
+        kind: "module" as const,
+        entry: module,
+        notes: getModuleNotes(entries, module),
+        modules,
+      },
+    })),
+    ...entries.filter((entry) => !isModule(entry)).map((note) => {
+      const module = modules.find((entry) => getModuleFolder(entry) === getModuleFolder(note))
+      if (!module) throw new Error(`Unable to find the module for "${note.id}".`)
+
+      return {
+        params: { slug: getNoteSlug(note) },
+        props: {
+          kind: "note" as const,
+          entry: note,
+          module,
+          notes: getModuleNotes(entries, module),
+        },
+      }
+    }),
+  ]
+}
+
+type Props =
+  | { kind: "module"; entry: LearningEntry; notes: LearningEntry[]; modules: LearningEntry[] }
+  | { kind: "note"; entry: LearningEntry; module: LearningEntry; notes: LearningEntry[] }
+
+const props = Astro.props as Props
+---
+
+{
+  props.kind === "module" ? (
+    <ModulePage module={props.entry} notes={props.notes} modules={props.modules} />
+  ) : (
+    <NotePage note={props.entry} module={props.module} notes={props.notes} />
+  )
+}

@@ -1,0 +1,99 @@
+---
+import { render } from "astro:content"
+
+import Section from "@/components/common/Section.astro"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getModuleSlug, getNoteSlug } from "@/lib/content"
+import type { LearningEntry } from "@/lib/content"
+
+interface Props {
+  module: LearningEntry
+  notes: LearningEntry[]
+  modules: LearningEntry[]
+}
+
+const { module, notes, modules } = Astro.props as Props
+const { Content } = await render(module)
+const modulesBySlug = new Map<string, LearningEntry>()
+
+for (const entry of modules) {
+  modulesBySlug.set(getModuleSlug(entry), entry)
+}
+
+const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
+  const entry = modulesBySlug.get(slug)
+  if (entry) entries.push(entry)
+  return entries
+}, [])
+---
+
+<BaseLayout
+  title={`${module.data.title} — Physica`}
+  description={module.data.description}
+  layout="focused"
+>
+  <Section frameClass="max-w-[56rem]">
+    <header class="px-5 py-12 md:px-10 md:py-16 lg:px-15">
+      <div class="max-w-3xl">
+        <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Module</p>
+        <h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-foreground-0 md:text-5xl">
+          {module.data.title}
+        </h1>
+        {module.data.description && <p class="mt-5 text-lg leading-8 text-foreground-2">{module.data.description}</p>}
+        <div class="prose mt-8">
+          <Content />
+        </div>
+      </div>
+    </header>
+  </Section>
+
+  {
+    related.length > 0 && (
+      <Section frameClass="max-w-[56rem]">
+        <section class="px-5 py-10 md:px-10 lg:px-15" aria-labelledby="related-modules-title">
+          <h2 id="related-modules-title" class="font-display text-2xl font-semibold text-foreground-0">
+            Related modules
+          </h2>
+          <ul class="mt-6 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2">
+            {related.map((entry) => (
+              <li class="bg-background-0">
+                <a href={`/${getModuleSlug(entry)}`} class="group block h-full p-5 hover:bg-background-1">
+                  <h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">
+                    {entry.data.title}
+                  </h3>
+                  {entry.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{entry.data.description}</p>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </Section>
+    )
+  }
+
+  <Section frameClass="max-w-[56rem]">
+    <section aria-label="Module notes">
+      {
+        notes.length > 0 ? (
+          <ol class="divide-y divide-border">
+            {notes.map((note, index) => (
+              <li>
+                <a href={`/${getNoteSlug(note)}`} class="group grid gap-3 px-5 py-6 md:grid-cols-[3rem_minmax(0,1fr)] md:px-10 lg:px-15">
+                  <span class="font-mono text-sm text-foreground-3">{String(index + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 class="font-display text-xl font-semibold text-foreground-0 group-hover:text-accent-1">
+                      {note.data.title}
+                    </h3>
+                    {note.data.description && <p class="mt-2 leading-7 text-foreground-2">{note.data.description}</p>}
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="px-5 py-10 text-foreground-2 md:px-10 lg:px-15">No published notes yet.</p>
+        )
+      }
+    </section>
+  </Section>
+</BaseLayout>

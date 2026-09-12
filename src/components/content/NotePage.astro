@@ -1,0 +1,56 @@
+---
+import { render } from "astro:content"
+
+import NotesLayout from "@/layouts/NotesLayout.astro"
+import { getModuleSlug } from "@/lib/content"
+import type { LearningEntry } from "@/lib/content"
+
+interface Props {
+  note: LearningEntry
+  module: LearningEntry
+  notes: LearningEntry[]
+}
+
+const { note, module, notes } = Astro.props as Props
+const { Content, headings } = await render(note)
+
+const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(date)
+---
+
+<NotesLayout
+  title={note.data.title}
+  description={note.data.description}
+  module={module}
+  notes={notes}
+  currentId={note.id}
+  headings={headings}
+>
+  <article>
+    <header class="border-b border-border px-5 py-12 md:px-10 md:py-16 lg:px-14">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-foreground-3">
+        <a href={`/${getModuleSlug(module)}`} class="text-accent-1 hover:text-accent-2">{module.data.title}</a>
+        {note.data.draft && <span class="text-orange-0">Draft</span>}
+      </div>
+
+      <h1 class="mt-4 font-display text-4xl leading-tight font-semibold tracking-tight text-foreground-0 md:text-5xl">
+        {note.data.title}
+      </h1>
+
+      {
+        (note.data.created || note.data.updated) && (
+          <p class="mt-5 font-mono text-xs text-foreground-3">
+            {note.data.updated
+              ? `Updated ${formatDate(note.data.updated)}`
+              : note.data.created && `Created ${formatDate(note.data.created)}`}
+          </p>
+        )
+      }
+
+    </header>
+
+    <div class="prose px-5 py-10 md:px-10 lg:px-14">
+      <Content />
+    </div>
+
+  </article>
+</NotesLayout>

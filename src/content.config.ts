@@ -29,4 +29,17 @@ const posts = defineCollection({
     }),
 })
 
-export const collections = { components, posts }
+const learning = defineCollection({
+  loader: glob({ base: "./content/notes", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    related: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+    created: z.coerce.date().optional(),
+    updated: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+  }),
+})
+
+export const collections = { components, posts, learning }
