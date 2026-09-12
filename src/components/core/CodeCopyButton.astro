@@ -1,100 +1,139 @@
----
-import { Icon } from "astro-icon/components";
-import { Button } from "@/components/ui/button";
----
-
 <style>
-  :global(.code-wrapper) {
-    position: relative;
+  :global(.code-block) {
+    overflow: hidden;
+    margin-block: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background-color: var(--shiki-light-bg);
+    color: var(--shiki-light);
   }
 
-  :global(.code-copy-actions) {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    z-index: 2;
+  :global(.code-block code[data-theme*=" "]),
+  :global(.code-block code[data-theme*=" "] span) {
+    background-color: var(--shiki-light-bg) !important;
+    color: var(--shiki-light) !important;
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
   }
 
-  :global(.code-copy-button),
-  :global(.code-copy-success) {
-    position: absolute;
-    top: 0;
-    right: 0;
+  :global(.dark .code-block) {
+    background-color: var(--shiki-dark-bg);
+    color: var(--shiki-dark);
   }
 
-  :global(.code-copy-button),
-  :global(.code-copy-success) {
+  :global(.dark .code-block code[data-theme*=" "]),
+  :global(.dark .code-block code[data-theme*=" "] span) {
+    background-color: var(--shiki-dark-bg) !important;
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+  }
+
+  :global(.code-block__header) {
+    display: flex;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-left: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  :global(.code-block__meta) {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  :global(.code-block__language) {
+    flex: none;
+    opacity: 0.62;
+    text-transform: uppercase;
+  }
+
+  :global(.code-block__filename) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.code-block__filename::before) {
+    margin-right: 0.625rem;
+    opacity: 0.38;
+    content: "/";
+  }
+
+  :global(.code-block__copy) {
+    align-self: stretch;
+    flex: none;
+    border: 0;
+    border-left: 1px solid var(--border);
+    padding-inline: 0.875rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+    opacity: 0.65;
     transition:
-      opacity 0.15s ease,
-      transform 0.15s ease;
+      background-color 150ms ease,
+      opacity 150ms ease;
   }
 
-  :global(.code-copy-success) {
-    opacity: 0;
-    transform: scale(0.95);
-    pointer-events: none;
-  }
-
-  :global(.code-wrapper[data-copied="true"] .code-copy-button) {
-    opacity: 0;
-    transform: scale(0.95);
-    pointer-events: none;
-  }
-
-  :global(.code-wrapper[data-copied="true"] .code-copy-success) {
+  :global(.code-block__copy:hover) {
+    background: color-mix(in srgb, currentColor 7%, transparent);
     opacity: 1;
-    transform: scale(1);
-    pointer-events: none;
+  }
+
+  :global(.code-block__copy:focus-visible) {
+    outline: 2px solid var(--accent-1);
+    outline-offset: -3px;
+    opacity: 1;
+  }
+
+  :global(.code-block__copy[data-copied="true"]) {
+    opacity: 1;
+  }
+
+  :global(.prose .code-block pre) {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 1.125rem 1.25rem;
+    background: transparent !important;
+  }
+
+  :global(.prose .code-block pre code) {
+    display: grid;
+    min-width: max-content;
   }
 </style>
 
-<template id="copyButtonTemplate">
-  <div class="code-copy-actions">
-    <Button className="code-copy-button" size="icon" variant="secondary" aria-label="Copy code" title="Copy">
-      <Icon name="copy" class="size-4" />
-    </Button>
-    <Button className="code-copy-success" size="icon" variant="secondary" aria-label="Copied" title="Copied">
-      <Icon name="check" class="text-green size-4" />
-    </Button>
-  </div>
-</template>
-
 <script>
   function initCodeCopyButtons() {
-    const template = document.getElementById("copyButtonTemplate");
-    if (!(template instanceof HTMLTemplateElement)) return;
+    document.querySelectorAll("[data-code-copy]").forEach((copyButton) => {
+      if (!(copyButton instanceof HTMLButtonElement) || copyButton.dataset.initialized === "true") return;
 
-    const templateButton = template.content.firstElementChild;
-    if (!templateButton) return;
-
-    document.querySelectorAll("pre").forEach((pre) => {
-      if (pre.parentElement?.classList.contains("code-wrapper")) return;
-      if (!navigator.clipboard) return;
-
-      const code = pre.querySelector("code");
-      if (!code) return;
-
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("code-wrapper");
-      wrapper.setAttribute("data-copied", "false");
-      pre.parentNode?.insertBefore(wrapper, pre);
-      wrapper.appendChild(pre);
-
-      const button = templateButton.cloneNode(true);
-      if (!(button instanceof HTMLElement)) return;
-
-      const copyButton = button.querySelector(".code-copy-button");
-      if (!(copyButton instanceof HTMLElement)) return;
-
+      copyButton.dataset.initialized = "true";
       copyButton.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(code.innerText);
-        wrapper.setAttribute("data-copied", "true");
-        setTimeout(() => {
-          wrapper.setAttribute("data-copied", "false");
-        }, 2000);
-      });
+        const code = copyButton.closest("[data-code-block]")?.querySelector("code");
+        if (!code || !navigator.clipboard) return;
 
-      wrapper.appendChild(button);
+        await navigator.clipboard.writeText(code.textContent ?? "");
+        copyButton.textContent = "Copied";
+        copyButton.dataset.copied = "true";
+
+        setTimeout(() => {
+          copyButton.textContent = "Copy";
+          delete copyButton.dataset.copied;
+        }, 1800);
+      });
     });
   }
 

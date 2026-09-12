@@ -1,15 +1,15 @@
-import placeholder1 from "@/assets/placeholder1.png"
+import placeholder from "@/assets/placeholder.png"
 import type { NavItem, SiteConfig } from "@/lib/types"
 
 export const SITE: SiteConfig = {
   website: "https://physica.hyperoot.dev",
-  author: "Rajesh",
+  author: "Rajesh Das",
   repo: "https://github.com/HYP3R00T/Physica",
   title: "Physica",
-  description: "",
-  image: placeholder1,
+  description: "Physics notes, derivations, and articles that connect intuition with equations and practice.",
+  image: placeholder,
   imageAlt: "Check out physica.hyperoot.dev",
-  contentType: "Portfolio",
+  contentType: "website",
   twitterHandle: "@HYP3R00T",
   pageSize: 10,
   lang: "en",
@@ -17,7 +17,7 @@ export const SITE: SiteConfig = {
 
 export const navItems: NavItem[] = [
   { href: "/components", label: "Components" },
-  { href: "/post", label: "Articles" },
+  { href: "/post", label: "Blog" },
 ]
 
 export const SOCIAL_LINKS = [

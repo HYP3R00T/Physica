@@ -1,0 +1,12 @@
+```astro title="src/pages/index.astro"
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import FeatureGrid from "@/components/FeatureGrid.astro"
+
+const features = await getCollection("features")
+---
+
+<BaseLayout title="Build something useful">
+  <FeatureGrid items={features} />
+</BaseLayout>
+```

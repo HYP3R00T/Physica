@@ -1,35 +1,42 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import { SITE } from "@data/config";
 import Header from "@/components/core/Header.astro";
 import HeadSEO from "@/components/core/HeadSEO.astro";
 import type { BaseLayoutProps } from "@/lib/types";
 import Footer from "@/components/core/Footer.astro";
+import CodeCopyButton from "@/components/core/CodeCopyButton.astro";
 
-const { title, description, image, imageAlt, contentType } = Astro.props as BaseLayoutProps;
+const { title, description, image, imageAlt, contentType, layout = "default" } = Astro.props as BaseLayoutProps;
+const frameWidth = layout === "default" ? "84rem" : "56rem";
 ---
 
-<html lang=`${SITE.lang ?? "en"}`>
+<html lang=`${SITE.lang ?? "en"}` style={`--site-frame-width: ${frameWidth}`}>
   <head>
     <HeadSEO title={title} description={description} image={image} imageAlt={imageAlt} contentType={contentType} />
+    <ClientRouter />
   </head>
 
-  <body class="flex flex-col">
+  <body class="relative flex min-h-screen flex-col" data-layout={layout}>
+    <a
+      href="#main-content"
+      class="sr-only fixed top-4 left-4 z-100 rounded-md bg-foreground-0 px-4 py-3 text-sm font-medium text-background-0 focus:not-sr-only"
+    >
+      Skip to content
+    </a>
+    <div aria-hidden="true" class="site-page-rails" transition:animate="none"></div>
     <Header />
-    <div class="flex flex-1 dot-pattern-interactive">
-      <main class="flex h-full w-full justify-center">
+    <div class="flex flex-1">
+      <main id="main-content" class="flex h-full w-full justify-center" tabindex="-1">
         <div class="flex w-full flex-col justify-center">
           <slot />
         </div>
       </main>
     </div>
-    <Footer />
+    <Footer showTopBorder={layout === "notes"} />
+    <CodeCopyButton />
   </body>
 </html>
-
-<script>
-  import initInteractiveDots from "@/lib/initInteractiveDots";
-  initInteractiveDots();
-</script>
 
 <script is:inline>
   (() => {
@@ -45,5 +52,29 @@ const { title, description, image, imageAlt, contentType } = Astro.props as Base
 
     applyTheme();
     document.addEventListener("astro:after-swap", applyTheme);
+
+    if (!window.__siteFrameTransitionBound) {
+      window.__siteFrameTransitionBound = true;
+
+      document.addEventListener("astro:before-swap", (event) => {
+        const root = document.documentElement;
+        const currentWidth = getComputedStyle(root).getPropertyValue("--site-frame-width").trim() || "84rem";
+        const targetWidth = event.newDocument.body.dataset.layout === "default" ? "84rem" : "56rem";
+
+        event.newDocument.documentElement.style.setProperty("--site-frame-width", currentWidth);
+        event.newDocument.documentElement.dataset.siteFrameTarget = targetWidth;
+      });
+
+      document.addEventListener("astro:after-swap", () => {
+        const root = document.documentElement;
+        const targetWidth = root.dataset.siteFrameTarget;
+        if (!targetWidth) return;
+
+        requestAnimationFrame(() => {
+          root.style.setProperty("--site-frame-width", targetWidth);
+          delete root.dataset.siteFrameTarget;
+        });
+      });
+    }
   })();
 </script>

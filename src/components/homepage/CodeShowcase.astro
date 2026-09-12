@@ -1,0 +1,34 @@
+---
+import Section from "@/components/common/Section.astro";
+import HomepageCodeSample from "@/components/homepage/HomepageCodeSample.mdx";
+---
+
+<Section id="example" frameClass="grid lg:grid-cols-[minmax(18rem,0.4fr)_minmax(0,0.6fr)]">
+  <div class="border-b border-border px-5 py-12 md:px-10 lg:border-r lg:border-b-0 lg:px-15 lg:py-16">
+    <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Clear by default</p>
+    <h2 class="mt-5 max-w-md font-display text-4xl font-medium tracking-[-0.035em] text-foreground-0 md:text-5xl">
+      Code that explains itself.
+    </h2>
+    <p class="mt-6 max-w-md leading-7 text-foreground-2">
+      Pages stay declarative. Content stays close to the product. Interactive pieces opt into JavaScript instead of
+      making it the default.
+    </p>
+
+    <dl class="mt-12 grid grid-cols-2 gap-px border border-border bg-border">
+      <div class="bg-background-0 p-4">
+        <dt class="font-mono text-[0.6875rem] tracking-wider text-foreground-3 uppercase">Output</dt>
+        <dd class="mt-2 text-sm font-medium text-foreground-0">Static-first</dd>
+      </div>
+      <div class="bg-background-0 p-4">
+        <dt class="font-mono text-[0.6875rem] tracking-wider text-foreground-3 uppercase">JavaScript</dt>
+        <dd class="mt-2 text-sm font-medium text-foreground-0">By component</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="px-5 py-12 md:px-10 lg:px-12 lg:py-16">
+    <div class="prose">
+      <HomepageCodeSample />
+    </div>
+  </div>
+</Section>

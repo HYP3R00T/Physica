@@ -1,53 +1,66 @@
 ---
+import type { NavItem } from "@/lib/types";
+
 interface Props {
-  navItems: Array<{ label: string; href: string; blank?: boolean }>;
+  navItems: NavItem[];
+  contactItem?: NavItem;
 }
 
-const { navItems } = Astro.props as Props;
+const { navItems, contactItem } = Astro.props as Props;
 
-import { SITE } from "@data/config";
 import { Icon } from "astro-icon/components";
-import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
+import { ModeToggle } from "@/components/core/ModeToggle";
+
+const pathname = Astro.url.pathname;
+const isCurrent = (href: string) => href.startsWith("/") && (href === "/" ? pathname === href : pathname.startsWith(href));
 ---
 
-<!-- Panel (full-screen overlay below header). Visibility controlled via data-open attr -->
 <div
   id="mobile-menu"
   data-mobile-menu
   data-open="false"
-  class="border-border pointer-events-none fixed inset-x-0 top-0 z-40 overflow-auto border-t bg-background opacity-0 transition duration-150 ease-out data-[open=true]:pointer-events-auto data-[open=true]:translate-y-0 data-[open=true]:opacity-100 md:hidden"
+  class="pointer-events-none fixed inset-x-0 z-60 max-h-0 overflow-hidden opacity-0 transition-opacity duration-150 ease-out data-[open=true]:pointer-events-auto data-[open=true]:max-h-[calc(100svh-4rem)] data-[open=true]:overflow-y-auto data-[open=true]:opacity-100 motion-reduce:transition-none md:hidden"
   role="dialog"
-  aria-modal="true"
   aria-hidden="true"
 >
-  <div class="px-4 py-4">
-    <nav class="space-y-4">
+  <div class="site-grid-frame border-b bg-background-0">
+    <nav class="grid divide-y divide-border" aria-label="Mobile navigation">
       {
-        navItems.map((item) => (
-          <a
-            href={item.href}
-            target={item.blank ? "_blank" : undefined}
-            rel={item.blank ? "noopener noreferrer" : undefined}
-            class="text-foreground-2 hover:text-foreground block text-sm tracking-wider uppercase transition-colors"
-          >
-            {item.label}
-          </a>
-        ))
+        navItems.map((item) => {
+          const isExternal = item.blank || item.href.startsWith("http");
+
+          return (
+            <a
+              href={item.href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+              aria-current={isCurrent(item.href) ? "page" : undefined}
+              class="flex min-h-14 items-center justify-between px-5 py-3 font-display text-lg text-foreground-1 transition-colors hover:bg-background-1 hover:text-accent-1 aria-[current=page]:text-accent-1"
+            >
+              <span>{item.label}</span>
+              {isExternal ? (
+                <Icon name="arrow-up-right" class="size-4 text-foreground-3" aria-hidden="true" />
+              ) : null}
+            </a>
+          );
+        })
       }
     </nav>
 
-    <div class="mt-6 pt-6 flex items-center gap-3">
-      <a href={SITE.repo} target="_blank" rel="noopener noreferrer" class="block">
-        <Button size="icon" variant="outline" aria-label="GitHub">
-          <Icon name="github" />
-        </Button>
-      </a>
-      <a href="https://rajeshdas.dev" target="_blank" rel="noopener noreferrer" class="block">
-        <Button size="icon" variant="outline" aria-label="Personal site">
-          <User />
-        </Button>
-      </a>
+    <div class="grid grid-cols-[4rem_minmax(0,1fr)] divide-x divide-border border-t border-border">
+      <ModeToggle client:load className="size-16" />
+      {
+        contactItem && (
+          <a
+            href={contactItem.href}
+            target={contactItem.blank ? "_blank" : undefined}
+            rel={contactItem.blank ? "noopener noreferrer" : undefined}
+            class="flex min-h-16 items-center justify-center bg-primary px-5 font-display text-base font-medium text-primary-foreground transition-colors hover:bg-primary/80"
+          >
+            {contactItem.label}
+          </a>
+        )
+      }
     </div>
   </div>
 </div>

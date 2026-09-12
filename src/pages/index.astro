@@ -1,14 +1,105 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import MinimalHero from "@/components/home/MinimalHero.astro";
+import { Icon } from "astro-icon/components"
+import { getCollection } from "astro:content"
+
+import Section from "@/components/common/Section.astro"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getModuleFolder, getModuleNotes, getModuleSlug, isModule, validateContent } from "@/lib/content"
+
+const candidates = await getCollection("learning", ({ data }) => !import.meta.env.PROD || !data.draft)
+const modules = candidates.filter(isModule)
+const visibleFolders = new Set(modules.map(getModuleFolder))
+const entries = candidates.filter((entry) => isModule(entry) || visibleFolders.has(getModuleFolder(entry)))
+
+validateContent(entries)
+modules.sort((left, right) => left.data.title.localeCompare(right.data.title))
 ---
 
 <BaseLayout
   title="Physica — Physics, understood visually"
-  description="Short, interactive learning modules that help you build intuition first — then connect what you see to equations, examples, and real problems."
+  description="A growing collection of structured learning modules and working notes."
 >
-  <div class="flex flex-col min-h-screen">
-    <!-- Hero Section -->
-    <MinimalHero />
-  </div>
+  <Section>
+    <header class="px-5 py-16 md:px-10 md:py-24 lg:px-15 lg:py-28">
+      <div class="max-w-4xl">
+        <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Learning in public</p>
+        <h1 class="mt-5 font-display text-5xl leading-[0.95] font-semibold tracking-tight text-foreground-0 md:text-7xl">
+          Physics built through study, derivation, and practice.
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-8 text-foreground-2 md:text-xl">
+          Choose a module, follow its ordered notes, and work through the reasoning behind each topic.
+        </p>
+      </div>
+    </header>
+  </Section>
+
+  <Section aria-labelledby="modules-title">
+    <div class="site-section-heading px-5 py-12 md:px-10 lg:px-15">
+      <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Module by module</p>
+      <div class="mt-4 grid gap-5 md:grid-cols-[minmax(0,0.7fr)_minmax(20rem,0.3fr)] md:items-end">
+        <h2 id="modules-title" class="font-display text-3xl font-semibold text-foreground-0 md:text-4xl">
+          Choose what to learn next.
+        </h2>
+        <p class="text-sm leading-6 text-foreground-2">
+          Each module groups a focused sequence of notes and points to useful related material.
+        </p>
+      </div>
+    </div>
+
+    {
+      modules.length > 0 ? (
+        <ul class="grid md:grid-cols-2">
+          {modules.map((module, index) => {
+            const noteCount = getModuleNotes(entries, module).length
+
+            return (
+              <li
+                class:list={[
+                  "border-border",
+                  index < modules.length - 1 && "border-b",
+                  index % 2 === 0 && "md:border-r",
+                  index >= modules.length - (modules.length % 2 || 2) && "md:border-b-0",
+                ]}
+              >
+                <a
+                  href={`/${getModuleSlug(module)}`}
+                  class="group flex h-full min-h-72 flex-col px-5 py-10 transition-colors hover:bg-background-1 md:px-10 lg:px-15"
+                >
+                  <div class="flex items-start justify-between gap-6">
+                    <p class="font-mono text-xs text-foreground-3">
+                      {noteCount} {noteCount === 1 ? "note" : "notes"}
+                    </p>
+                    <span
+                      class="h-px w-10 bg-border transition-[width,background-color] group-hover:w-16 group-hover:bg-accent-1"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <h3 class="mt-14 font-display text-2xl font-semibold text-foreground-0 group-hover:text-accent-1">
+                    {module.data.title}
+                  </h3>
+                  {module.data.description && <p class="mt-3 leading-7 text-foreground-2">{module.data.description}</p>}
+                  {module.data.tags.length > 0 && (
+                    <ul class="mt-auto flex flex-wrap gap-2 pt-6" aria-label={`${module.data.title} topics`}>
+                      {module.data.tags.map((tag) => (
+                        <li class="rounded-full border border-border px-3 py-1 font-mono text-xs text-foreground-2">{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      ) : (
+        <p class="px-5 py-12 text-foreground-2 md:px-10 lg:px-15">No published modules yet.</p>
+      )
+    }
+  </Section>
+  <Section>
+    <a href="/post" class="group block px-5 py-12 transition-colors hover:bg-background-1 md:px-10 lg:px-15">
+      <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Articles &amp; insights</p>
+      <h2 class="mt-4 font-display text-3xl font-semibold text-foreground-0 group-hover:text-accent-1">Explore how we learn physics <Icon name="arrow-right" class="inline-block size-8 align-middle" aria-hidden="true" /></h2>
+      <p class="mt-4 text-foreground-2">Learning methods, physics concepts, and the ideas behind Physica.</p>
+    </a>
+  </Section>
 </BaseLayout>

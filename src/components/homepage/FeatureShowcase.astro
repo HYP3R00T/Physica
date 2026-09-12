@@ -1,0 +1,67 @@
+---
+import Section from "@/components/common/Section.astro";
+
+const features = [
+  {
+    number: "01",
+    title: "Content-ready",
+    description: "Author pages in Astro or MDX, with syntax highlighting and a typography system already in place.",
+    detail: "MDX · Shiki · SEO",
+  },
+  {
+    number: "02",
+    title: "Islands, selectively",
+    description: "Use React when interaction earns its place. Everything else ships as straightforward HTML and CSS.",
+    detail: "React 19 · Astro islands",
+  },
+  {
+    number: "03",
+    title: "A real design base",
+    description: "Semantic tokens, dark mode, Tailwind utilities, and shadcn primitives form a system you can extend.",
+    detail: "Tailwind 4 · shadcn/ui",
+  },
+  {
+    number: "04",
+    title: "Repeatable tooling",
+    description: "The dev container, mise tasks, pnpm, Biome, and repository hooks keep environments predictable.",
+    detail: "Dev Container · mise · pnpm",
+  },
+];
+---
+
+<Section id="features">
+  <div class="site-section-heading px-5 py-12 md:px-10 lg:px-15">
+    <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Feature by feature</p>
+    <div class="mt-4 grid gap-5 md:grid-cols-[minmax(0,0.7fr)_minmax(20rem,0.3fr)] md:items-end">
+      <h2 class="font-display text-4xl font-medium tracking-[-0.035em] text-foreground-0 md:text-5xl">
+        Enough foundation to move quickly.
+      </h2>
+      <p class="max-w-md text-sm leading-6 text-foreground-2 md:justify-self-end">
+        Each layer is independent. Remove one without unravelling the rest, or keep the complete setup and start
+        shipping.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2">
+    {
+      features.map((feature, index) => (
+        <article
+          class:list={[
+            "group min-h-72 border-border px-5 py-10 transition-colors hover:bg-background-1 md:px-10 lg:px-15",
+            index % 2 === 0 && "md:border-r",
+            index < 2 && "border-b",
+          ]}
+        >
+          <div class="flex items-start justify-between gap-6">
+            <span class="font-mono text-xs text-foreground-3">{feature.number}</span>
+            <span class="h-px w-10 bg-border transition-[width,background-color] group-hover:w-16 group-hover:bg-accent-1" />
+          </div>
+          <h3 class="mt-14 font-display text-2xl font-medium tracking-tight text-foreground-0">{feature.title}</h3>
+          <p class="mt-4 max-w-xl leading-7 text-foreground-2">{feature.description}</p>
+          <p class="mt-8 font-mono text-xs tracking-[0.08em] text-foreground-3 uppercase">{feature.detail}</p>
+        </article>
+      ))
+    }
+  </div>
+</Section>

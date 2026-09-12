@@ -1,5 +1,6 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
+import Section from "@/components/common/Section.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 // 1. Generate a new path for every collection entry
@@ -17,10 +18,10 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout title={`${entry.data.title} - Components`} description={entry.data.description}>
-  <section class="relative flex items-center justify-center px-4 md:px-12">
-    <div class="mx-auto w-full max-w-5xl my-16">
+  <Section>
+    <div class="w-full px-5 py-16 md:px-10 lg:px-15">
       <header class="mb-6">
-        <h1 class="text-section-heading my-8">
+        <h1 class="font-display text-4xl font-semibold tracking-tight text-foreground-0 my-8">
           {entry.data.title}
         </h1>
         {
@@ -35,5 +36,5 @@ const { Content } = await render(entry);
         <Content />
       </div>
     </div>
-  </section>
+  </Section>
 </BaseLayout>

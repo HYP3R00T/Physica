@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import Section from "@/components/common/Section.astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Badge } from "@/components/ui/badge";
 import CardGrid from "@/components/common/CardGrid.astro";
@@ -8,12 +9,12 @@ const components = await getCollection("components");
 ---
 
 <BaseLayout title="Components" description="A concise list of the custom components available in this project.">
-  <section class="relative flex items-center justify-center px-4 md:px-12">
-    <div class="mx-auto w-full max-w-5xl my-16">
+  <Section>
+    <div class="w-full px-5 py-16 md:px-10 lg:px-15">
       <!-- Greeter -->
       <div class="mb-16">
         <Badge variant="default">Components</Badge>
-        <h1 class="text-section-heading my-8">
+        <h1 class="font-display text-4xl font-semibold tracking-tight text-foreground-0 my-8">
           <div>User</div>
           <div>Interface</div>
         </h1>
@@ -39,5 +40,5 @@ const components = await getCollection("components");
         }
       </div>
     </div>
-  </section>
+  </Section>
 </BaseLayout>

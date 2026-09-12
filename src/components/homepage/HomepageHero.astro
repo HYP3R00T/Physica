@@ -1,0 +1,61 @@
+---
+import Section from "@/components/common/Section.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { SITE } from "@data/config";
+import { Icon } from "astro-icon/components";
+
+const stack = ["Astro 7", "MDX", "React 19", "Tailwind 4", "shadcn/ui"];
+---
+
+<Section frameClass="grid lg:grid-cols-[minmax(0,1.45fr)_minmax(20rem,0.55fr)]">
+  <div class="border-b border-border px-5 py-16 md:px-10 md:py-24 lg:border-r lg:border-b-0 lg:px-15 lg:py-28">
+    <h1 class="mt-8 max-w-4xl font-display text-5xl leading-[0.94] font-medium tracking-[-0.045em] text-foreground-0 sm:text-6xl md:text-7xl lg:text-8xl">
+      Start with structure.<br />Build with intent.
+    </h1>
+
+    <p class="mt-8 max-w-2xl text-lg leading-8 text-foreground-2 md:text-xl">
+      A practical Astro foundation that handles the repetitive setup, then gets out of your way. Keep the parts you
+      need, replace the rest, and make the project yours.
+    </p>
+
+    <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+      <a
+        href="#example"
+        class={cn(buttonVariants({ size: "lg" }), "h-11 bg-accent-1 px-5 text-background-0 hover:bg-accent-2")}
+      >
+        Explore the setup
+      </a>
+      <a
+        href={SITE.repo}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={cn(buttonVariants({ variant: "outline", size: "lg" }), "h-11 px-5")}
+      >
+        View source
+        <Icon name="arrow-up-right" class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+
+  <aside class="grid content-between gap-16 px-5 py-10 md:px-10 lg:px-8 lg:py-12" aria-label="Template summary">
+    <div>
+      <p class="font-mono text-xs tracking-[0.14em] text-foreground-3 uppercase">Included stack</p>
+      <ul class="mt-6 divide-y divide-border border-y border-border">
+        {
+          stack.map((item, index) => (
+            <li class="flex items-center justify-between py-3.5 text-sm text-foreground-1">
+              <span>{item}</span>
+              <span class="font-mono text-xs text-foreground-3">0{index + 1}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="border-l-2 border-accent-1 pl-4">
+      <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Principle</p>
+      <p class="mt-2 text-sm leading-6 text-foreground-2">Useful defaults, visible decisions, no hidden architecture.</p>
+    </div>
+  </aside>
+</Section>

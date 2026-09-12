@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"section"> {
+  frameClass?: string;
+}
+
+const { class: className, frameClass, ...attributes } = Astro.props as Props;
+---
+
+<section {...attributes} class:list={["site-section", className]}>
+  <div class:list={["site-grid-frame", frameClass]}>
+    <slot />
+  </div>
+</section>

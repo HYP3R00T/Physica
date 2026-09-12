@@ -1,0 +1,58 @@
+---
+import Section from "@/components/common/Section.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { SITE } from "@data/config";
+import { Icon } from "astro-icon/components";
+
+const steps = [
+  { command: "Use template", copy: "Create a clean repository from the maintained starting point." },
+  { command: "Open container", copy: "Let the project install its declared runtime and development tools." },
+  { command: "mise run dev", copy: "Start Astro and turn the foundation into your own product." },
+];
+---
+
+<Section id="workflow">
+  <div class="grid lg:grid-cols-[minmax(0,0.7fr)_minmax(20rem,0.3fr)]">
+    <div class="border-b border-border px-5 py-12 md:px-10 lg:border-r lg:border-b-0 lg:px-15 lg:py-18">
+      <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">From zero to useful</p>
+      <h2 class="mt-5 font-display text-4xl font-medium tracking-[-0.035em] text-foreground-0 md:text-5xl">
+        Three steps. Then it is your project.
+      </h2>
+
+      <ol class="mt-12 divide-y divide-border border-y border-border">
+        {
+          steps.map((step, index) => (
+            <li class="grid gap-3 py-6 sm:grid-cols-[2rem_minmax(10rem,0.35fr)_minmax(0,0.65fr)] sm:items-start">
+              <span class="font-mono text-xs text-foreground-3">0{index + 1}</span>
+              <code class="font-mono text-sm font-medium text-foreground-0">{step.command}</code>
+              <p class="text-sm leading-6 text-foreground-2">{step.copy}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="flex flex-col justify-between gap-16 bg-foreground-0 px-5 py-12 text-background-0 md:px-10 lg:px-8 lg:py-18">
+      <div>
+        <p class="font-mono text-xs tracking-[0.14em] text-background-3 uppercase">A starting point, not a cage</p>
+        <p class="mt-6 font-display text-3xl leading-tight font-medium tracking-tight">
+          Delete freely. Extend deliberately. Keep ownership of every line.
+        </p>
+      </div>
+
+      <a
+        href={SITE.repo}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={cn(
+          buttonVariants({ variant: "secondary", size: "lg" }),
+          "h-11 w-fit border-background-3 bg-background-0 px-5 text-foreground-0 hover:bg-background-1",
+        )}
+      >
+        Start from the template
+        <Icon name="arrow-up-right" class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
+</Section>
