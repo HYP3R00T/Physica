@@ -6,159 +6,134 @@ featured: true
 draft: false
 tags:
   - learning
-description: "Most tutorial websites start at step four. Here's what steps one through three look like — and why skipping them is why most people feel like they can't learn physics."
+description: "How learning frameworks shape Physica, from a learner's first prediction to the problems they can solve on their own."
 category: Learning
 cover: "./images/how-people-actually-learn.png"
 coverAlt: Neofetch output of Arch Linux
 ---
 
-One common structure in physics courses and learning resources goes like this: open with a definition, show the relevant equations, work through an example, assign problems. It is a familiar sequence, and it has a certain logic to it.
+A physics lesson often starts with a definition, followed by equations, a worked example, and some problems to solve. The order is familiar. I wanted to understand what a learner needs before the definition will make sense.
 
-But research in learning science suggests that the order in which concepts are introduced matters considerably — and that the sequence itself is worth examining carefully.
+Building Physica made me ask a question I should have spent more time on during my own education: how do people actually learn something?
 
-Building this site forced me to ask a question I should have asked much earlier in my own education: *how do people actually learn something?*
+Instructional design and inquiry-based science education gave me ways to think about that question. They deal with practical decisions: when to explain a concept, when to let someone experiment, and how to find out whether they've understood it.
 
-The answer turns out to be reasonably well-studied. There's an entire field called **Instructional Design (ID)** that has been working on this problem for decades. And within science education specifically, there's a body of work called **Inquiry-Based Science Education (IBSE)** that offers detailed, evidence-backed frameworks for structuring learning experiences.
+The frameworks below inform how I want to teach physics here. Each draws attention to a part of learning that's easy to overlook when you're focused on getting the explanation right.
 
-This post is about what those frameworks say, why they agree more than they disagree, and what we've built from them here.
+## Start with what the learner already believes
 
----
+Constructivism describes learning as building on and revising existing understanding. A learner arrives with ideas about how the world works. Some are useful; others will get in the way of a new explanation.
 
-## The Foundation: Constructivism
+That matters in physics. Someone who believes heavier objects fall faster may be able to repeat the correct equation while still relying on their earlier belief when making a prediction. The lesson needs to give them a chance to examine that belief.
 
-Before the specific models, there's a single idea worth naming because everything else descends from it.
+Jean Piaget and Lev Vygotsky are associated with different strands of constructivist thought. For Physica, the practical point is to ask what someone expects before showing them what happens. Their answer gives the explanation somewhere to begin.
 
-**Constructivism** is the learning theory that says humans don't receive knowledge — they build it. A learner isn't a vessel you pour information into. They come to every learning experience with existing mental models, some correct and many wrong, and new information either attaches to those models, modifies them, or gets rejected by them. If you don't engage with what the learner already believes before you try to teach them something new, you haven't taught them anything. You've given them words that float unattached to anything real.
+## The 5E model
 
-This sounds obvious when stated plainly, which is part of why it's worth examining carefully — obvious principles have a way of being harder to implement than they appear.
+Developed by Rodger Bybee and colleagues at BSCS in 1987, the 5E model has five phases: Engage, Explore, Explain, Elaborate, and Evaluate.
 
-Constructivism as a formal theory is associated with Jean Piaget and Lev Vygotsky in the mid-twentieth century, but the ideas precede them and have been extensively validated since. Every framework below is constructivist in structure — they disagree on the finer details of sequencing, but they agree that the learner's prior beliefs must be activated and often disrupted before genuine learning can begin.
+The order of Explore and Explain is especially useful to me. Learners first investigate a phenomenon. They then have observations to discuss when the lesson introduces an explanation and the language needed to describe it.
 
----
+For a physics lesson, that might mean letting someone change a simulation's inputs and watch the result before presenting the equation. When the equation appears, they can connect its variables to something they've already seen.
 
-## The Models
+Elaborate gives them a chance to use the idea in another situation. Evaluate checks their understanding. Those phases also remind me that an explanation needs to lead to something the learner can try.
 
-### 1. The 5E Model
+## The 7E model
 
-**Bybee et al., BSCS, 1987**
-*Learning Cycle Model — Inquiry-Based Science Education*
+Arthur Eisenkraft's 2003 extension gives more attention to prior knowledge and transfer. Its phases are Elicit, Engage, Explore, Explain, Elaborate, Evaluate, and Extend.
 
-The 5E model is the most widely used framework in science education, and the most validated across age groups and subjects. Its five stages are: **Engage, Explore, Explain, Elaborate, Evaluate.**
+Elicit asks learners to make their current thinking explicit. Before a falling-object demonstration, for example, ask which object they expect to land first and why. Afterwards, they have a specific prediction to compare with what they observed. If the result surprises them, the lesson can address the reasoning behind their answer.
 
-The non-negotiable rule of 5E is that **Explain comes after Explore**. The formal concept — the vocabulary, the definition, the equation — is introduced only after the learner has had a hands-on or interactive encounter with the phenomenon. This sequence is deliberate. An explanation delivered before the learner has experienced the thing being explained has nothing to attach to. The experience creates the cognitive hooks; the explanation fills them. In 5E terms, leading with explanation is the equivalent of giving someone the answer key before they've seen the question.
+Extend asks whether they can use the idea beyond the setting in which they learned it. Near transfer involves a problem similar to the original. Far transfer involves recognising the same underlying idea in a less familiar context.
 
----
+A pendulum and an LC circuit offer an example. In the small-angle approximation, an ideal pendulum's motion and the oscillations of an ideal LC circuit follow the same mathematical form. Working through that connection asks more of a learner than changing the numbers in another pendulum problem.
 
-### 2. The 7E Model
+Of these frameworks, 7E comes closest to the sequence I want Physica's lessons to follow. It gives me a reason to include both an opening prediction and a later problem that looks different from the first one.
 
-**Arthur Eisenkraft, 2003**
-*Extended Learning Cycle Model*
+## Predict, Observe, Explain
 
-Eisenkraft took 5E and added two stages that address known gaps: **Elicit, Engage, Explore, Explain, Elaborate, Evaluate, Extend.**
+White and Gunstone described Predict, Observe, Explain (POE) in 1992. It's a short activity that can sit within a larger lesson.
 
-The first addition, **Elicit**, goes before Engage. It explicitly surfaces the learner's prior beliefs before showing them anything. This isn't a quiz — it's an act of making the learner's existing mental model visible to themselves. Why does this matter? Because if a student believes heavier objects fall faster and you show them a demonstration without first making that belief explicit, they will unconsciously reinterpret what they see to fit the belief they already hold. Eliciting the wrong belief first makes it possible to confront it directly.
+First, the learner predicts what will happen and explains their reasoning. Next, they observe the result. Finally, they try to explain what happened, including any difference between the result and their prediction.
 
-The second addition, **Extend**, comes after Elaborate and addresses the difference between **near transfer** and **far transfer**. Near transfer is using a concept in a situation similar to how it was learned. Far transfer is recognizing that a concept applies in a completely different context — and using it there. Far transfer is where genuine understanding lives. Pendulum mechanics, for instance, is the same mathematics as an LC oscillator circuit. A student who can only solve pendulum problems hasn't understood the concept; they've learned a procedure.
+Writing down the prediction matters. Without it, it's easy to see the result and feel as though you expected it all along. A recorded answer gives you something specific to reconsider. Even a correct prediction is worth discussing: the reasoning behind it may still need work.
 
-The 7E model maps more precisely to how this site is structured than any other single framework.
+This is the idea behind what I'm calling the Calibration Block in Physica: an input where you estimate a numerical value before seeing the result. The useful part comes afterwards, when you work out why your estimate was close or far off.
 
----
+A lesson can use this activity more than once. After an explanation, a new prediction gives the learner a chance to see whether their reasoning has changed.
 
-### 3. POE — Predict, Observe, Explain
+## Kolb's experiential learning cycle
 
-**White & Gunstone, 1992**
-*Conceptual Change Teaching Strategy*
+David Kolb's 1984 model describes four stages: Concrete Experience, Reflective Observation, Abstract Conceptualization, and Active Experimentation.
 
-POE is not a full learning sequence — it's a micro-cycle designed to produce a specific cognitive event: **the confrontation between a committed prediction and a contradictory observation.**
+You have an experience, think about it, develop an explanation, and test that explanation. The test gives you another experience to reflect on. This cycle makes room for understanding to develop over several attempts.
 
-The sequence is simple. Before showing a learner anything, you ask them to commit to a specific prediction about what will happen. Then you show them what actually happens. Then you ask them to explain the gap between their prediction and the reality.
+In a physics lesson, a learner might observe a simulation, describe a pattern, propose a rule, and then change an input to test it. If the rule fails, the next attempt starts with a more specific question.
 
-The key word is *commit*. The learner doesn't just vaguely expect something — they state a specific outcome. This means the observation either confirms or directly contradicts *their personal belief*, not some abstract general notion. The research is clear: a contradicted prediction that you were committed to produces significantly more learning than watching a demonstration passively, even if you were paying close attention.
+Kolb also developed a learning-style account associated with preferences within this cycle. I don't use those preferences to assign learners a fixed type or limit how they're taught. The cycle is the part I'm drawing on here.
 
-POE is a loop. It can repeat multiple times within a single concept. On this site, this is the mechanism behind what I'm calling the **Calibration Block** — an interactive input where you guess a numerical value before seeing the correct result.
+For Physica, it means a lesson should be easy to revisit. Someone who returns after working through a problem may notice something they missed the first time. I want the structure to support that return, with the explanation and opportunities to experiment still easy to find.
 
----
+## Gagné's nine events of instruction
 
-### 4. Kolb's Experiential Learning Cycle
+Robert Gagné's work, beginning in 1965 and developed in later editions, including 1988, describes nine instructional events:
 
-**David Kolb, 1984**
-*Experiential Learning Theory (ELT)*
+1. Gain attention.
+2. Inform learners of the objectives.
+3. Stimulate recall of prior learning.
+4. Present the content.
+5. Provide learning guidance.
+6. Elicit performance.
+7. Provide feedback.
+8. Assess performance.
+9. Enhance retention and transfer.
 
-Kolb's model has four stages: **Concrete Experience, Reflective Observation, Abstract Conceptualization, Active Experimentation** — arranged in a cycle, not a line.
+I find this useful when checking whether a lesson asks enough of the learner. Presenting the content is only one event. The lesson also needs to help someone attempt the work and respond to their attempt.
 
-The cycle is the important structural insight. Learning is not a path that ends at understanding; it's a loop that you keep traversing at higher resolution. You experience something, you reflect on it, you build a theory from the reflection, you test the theory, and the test generates a new concrete experience. Mastery is many loops, not one completion.
+Informing learners of the objective can be straightforward: state the question they'll be able to answer by the end. That gives them a reason to pay attention to the details that follow.
 
-Kolb's model is also where **learning style theory** originated — the idea that people prefer one phase of the cycle over others. The strong version of learning styles (that you should only teach someone through their "preferred style") has been largely discredited by subsequent research. But the cycle itself, stripped of that claim, remains a sound description of how humans develop competence.
+Eliciting performance and providing feedback belong together. Asking a question without helping the learner understand their answer leaves part of the teaching unfinished. Feedback should explain the reasoning, especially when an incorrect answer came from a plausible assumption.
 
-For this site, Kolb's primary contribution is the reminder that a single pass through a concept is not learning — it's an introduction. Return visits need to be easy and rewarding.
+The final event, retention and transfer, also pushes me to look beyond the immediate exercise. Can the learner recall the idea later? Can they recognise when it applies to a different problem?
 
----
+## Teaching through problem solving
 
-### 5. Gagné's Nine Events of Instruction
+Teaching Through Problem Solving (TTP), associated with Japanese mathematics teaching, puts a problem before the formal introduction of its solution method.
 
-**Robert Gagné, 1965, updated 1988**
-*Systematic Instructional Design Model*
+Students attempt the problem using what they already know. The teacher then selects approaches for the class to compare and discuss, including attempts that didn't work. This discussion is often called neriage. The lesson develops the mathematical idea through those comparisons and gives students time to reflect on what they've learned.
 
-Gagné's framework is the most complete from an instructional design standpoint. His nine events are: **Gain Attention, Inform Learners of Objectives, Stimulate Recall of Prior Learning, Present Content, Provide Learning Guidance, Elicit Performance, Provide Feedback, Assess Performance, Enhance Retention and Transfer.**
+The initial attempt gives the later explanation a purpose. A student who has tried an approach can examine where it worked, where it failed, and what a different method makes possible.
 
-A few observations worth making here.
+Manu Kapur's research on productive failure explores a related sequence of problem solving followed by instruction. In his [2014 studies on learning standard deviation](https://onlinelibrary.wiley.com/doi/10.1111/cogs.12107), students who attempted problems before instruction performed better on measures of conceptual understanding and transfer than students taught first. Both groups showed comparable procedural knowledge.
 
-"Inform learners of objectives" sounds bureaucratic but is backed by metacognitive research — learners who know what they are trying to understand retain more than learners who don't. This is not about writing a formal learning outcome at the top of a page; it's about framing the question the concept is answering before you answer it.
+That finding gives me a reason to include carefully chosen problems before an explanation. The follow-up teaching matters: an unsuccessful attempt needs to be revisited so the learner can understand what went wrong. I don't take it as a reason to leave someone stuck indefinitely.
 
-"Elicit Performance" and "Provide Feedback" are steps 6 and 7 — well over halfway through. These are the steps where passive content consumption becomes active learning. A learner who reads or watches without ever being asked to do something with the knowledge has been exposed to it, not necessarily changed by it.
+## Merrill's first principles of instruction
 
-"Enhance Retention and Transfer" is Gagné's equivalent of Eisenkraft's Extend — making sure the learner can use the concept in new territory, not just reproduce it in familiar territory.
+M. David Merrill's [2002 paper](https://mdavidmerrill.files.wordpress.com/2019/04/firstprinciplesbymerrill.pdf) looked for principles shared by several instructional design theories. He described five: learning centred on real-world problems, activation of prior knowledge, demonstration, application, and integration.
 
----
+The last four form phases around the problem. Learners recall relevant experience, see how a task is done, attempt it themselves, and connect what they've learned to their own use of it.
 
-### 6. Japanese Teaching Through Problem Solving (TTP)
+I use this as a check on the whole lesson. What problem gives the material a purpose? What does the learner already know? Where do they get to practise, and how will they use the result?
 
-**Embedded in Japan's national mathematics and science curriculum since the 1980s**
-*Problem-Based Learning / Discovery Learning*
+Merrill's paper is a synthesis of design theories, rather than an empirical test of all five principles. It gives me a way to review a lesson; the lesson still needs to work for the person using it.
 
-Japan's consistently high PISA performance in mathematics and science is not an accident of culture or selection. It is, in significant part, a result of a specific pedagogical structure called **Teaching Through Problem Solving (TTP)**, which operates as follows.
+## What this means for Physica
 
-The teacher presents a problem that students **cannot yet solve**. They have not been taught the method. They are asked to attempt it anyway, individually, in silence. This is the **Struggle** phase. Then approaches are compared and discussed — a Japanese classroom practice called **Neriage**, meaning "kneading," where the teacher draws out and examines multiple student approaches, including wrong ones. Then the teacher formalizes the best reasoning into the official method. Then there is **Reflection**.
+These frameworks help me make different decisions. POE shapes an individual activity. Gagné helps me check the support around it. The learning cycles help me think about the order of the lesson and what happens when someone returns to it.
 
-What is notable about the structure is that the problem precedes the method. The struggle is not a failure to be avoided — it is the mechanism. This is consistent with researcher Manu Kapur's work on **Productive Failure**, which showed that students who attempt a problem before receiving instruction outperform students who receive instruction first and then practice — even when the pre-instruction attempts are entirely wrong.
+I'm using a nine-stage sequence to guide Physica's development, drawing especially on 7E, POE, and productive failure:
 
-The wrong attempt is doing real cognitive work. It creates the question to which the instruction becomes the answer.
+1. Activation: ask what the learner already believes about the topic.
+2. Provocation: introduce a phenomenon that gives them a reason to question that belief.
+3. Exploration: let them change a simulation's inputs and observe what happens.
+4. Prediction: ask for a specific estimate, then compare it with the result.
+5. Intuitive explanation: explain the behaviour in plain language and address the misconceptions that arose.
+6. Formalization: introduce the mathematics and explain the reasoning behind each step of the derivation.
+7. Near application: practise with problems similar to the example.
+8. Far application: work through a problem where the same idea appears in a different setting.
+9. Metacognitive reflection: revisit the initial prediction and identify what remains unclear.
 
----
+This is my adaptation for a site someone can work through on their own. It gives me concrete questions to ask while building a lesson: did I give the learner enough to attempt the problem? Did the explanation address what they observed? Can they use the idea without following the worked example line by line?
 
-### 7. Merrill's First Principles of Instruction
-
-**M. David Merrill, 2002**
-*Synthesis of Instructional Design Research*
-
-Merrill took a different approach from the others. Rather than proposing a new model, he asked: what do the best-validated instructional frameworks actually agree on? What are the principles that hold across models, contexts, and subjects?
-
-He identified four: **Activation, Demonstration, Application, Integration.**
-
-Learning is facilitated when learners activate prior knowledge before encountering new information. Learning is facilitated when the instruction demonstrates — not just describes — what is to be learned. Learning is facilitated when learners apply new knowledge, not just receive it. Learning is facilitated when learners integrate new knowledge into their existing understanding through reflection, discussion, or creation.
-
-These four are the highest-confidence claims in instructional design. If a learning experience violates any of them, something is wrong. If it satisfies all four, it is at minimum defensible.
-
----
-
-## How This Site Is Structured — And Why
-
-The honest observation about these seven frameworks is that they largely agree. They disagree on granularity and emphasis. They come from different research traditions. But the core sequence is the same: activate prior knowledge, create experience before explanation, build intuition before formalism, apply in near and far contexts, reflect metacognitively.
-
-Every concept on this site is structured around a nine-stage learning sequence that synthesizes primarily from 7E, POE, and the productive failure literature, adapted for a self-directed, asynchronous web environment:
-
-1. **Activation** — Surface the learner's prior belief before showing them anything
-2. **Provocation** — Create cognitive dissonance; make the phenomenon surprising
-3. **Exploration** — Free-form interaction with a simulation; no explanation yet
-4. **Prediction** — Commit to a specific value; see how far off you were (POE loop)
-5. **Intuitive Explanation** — Plain language, no mathematics; dismantle misconceptions explicitly
-6. **Formalization** — Mathematics and derivation, with every step annotated for *why*, not just *what*
-7. **Near Application** — Solve problems in familiar territory
-8. **Far Application** — Recognize and use the concept in an unfamiliar context
-9. **Metacognitive Reflection** — What did you believe before this that turned out to be wrong? What do you still not understand?
-
-This is not an arbitrary sequence. Every stage is ordered because it creates the cognitive conditions that the next stage requires. You cannot productively formalize a concept you don't yet have an intuition for. You cannot build intuition for something you haven't explored. You cannot explore something meaningfully if your prior wrong beliefs haven't been surfaced and made available for contradiction.
-
-The sequence is the pedagogy. And the pedagogy is not new — it is assembled from decades of careful research into how people actually build understanding.
-
-That is the foundation this site is built on.
+Those are the checks I want to make before calling a Physica lesson finished.
