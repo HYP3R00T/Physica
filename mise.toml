@@ -1,20 +1,24 @@
 [tools]
-github-cli = "latest"
+biome = "latest"
 node = "lts"
 pnpm = "latest"
 prek = "latest"
 rumdl = "latest"
-uv = "latest"
+shellcheck = { version = "latest", os = ["linux", "macos"] }
 
 [settings]
 experimental = true
+lockfile = true
+
+[settings.github]
+use_git_credentials = true
 
 [hooks]
 enter = "bash ./scripts/enter_project.sh"
 
 [env]
-_.file = '.env'                                # for sensitive data
-_.path = ['{{config_root}}/node_modules/.bin']
+_.file = ".env"  # for sensitive data
+_.path = ["{{config_root}}/node_modules/.bin"]
 
 [tasks.dev]
 description = "Dev Mode"

@@ -1,9 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
+  workflow_run:
+    workflows: [Quality Gate]
+    types: [completed]
     branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,24 +12,16 @@ permissions:
   id-token: write
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout your repository using git
-        uses: actions/checkout@v7
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v2
-        with:
-          version: 2.4.6
-      - name: Run Biome checks
-        run: biome ci .
-
   build:
-    needs: lint
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Install, build, and upload your site
         uses: withastro/action@v6
 
