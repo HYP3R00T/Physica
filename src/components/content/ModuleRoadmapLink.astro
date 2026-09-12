@@ -1,0 +1,20 @@
+---
+import { Icon } from "astro-icon/components"
+import type { LearningEntry } from "@/lib/content"
+import { getRoadmap } from "@/lib/roadmap"
+
+interface Props { module: LearningEntry }
+const { module } = Astro.props
+const segment = module.data.roadmap
+  ? (await getRoadmap()).segments.find(({ id }) => id === module.data.roadmap)
+  : undefined
+---
+
+{segment && (
+  <nav data-module-roadmap class="mt-6" aria-label="Physics roadmap">
+    <a href={`/roadmap#segment-${segment.id}`} class="inline-flex items-center gap-3 rounded-md border border-border px-4 py-3 text-sm text-foreground-2 hover:border-accent-1 hover:text-accent-1 focus-visible:outline-2 focus-visible:outline-ring">
+      <span><span class="mb-1 block font-mono text-xs text-foreground-3">Roadmap</span>{segment.title}</span>
+      <Icon name="arrow-up-right" class="size-4 shrink-0" aria-hidden="true" />
+    </a>
+  </nav>
+)}

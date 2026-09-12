@@ -5,14 +5,14 @@ import RoadmapPanel from "@/components/roadmap/RoadmapPanel.astro"
 import { getRoadmap } from "@/lib/roadmap"
 import "katex/dist/katex.min.css"
 
-const { entries: roadmapEntries, segments, strands } = await getRoadmap()
+const { entries: roadmapEntries, segments, strands, modulesBySegment } = await getRoadmap()
 const byId = new Map(segments.map(segment => [segment.id, segment]))
 ---
 <BaseLayout showFooterBorder title="Physics roadmap — Physica" description="Follow physics from its mathematical foundations through connected subjects, notes and further study.">
   <div class="site-grid-frame w-full">
     {segments.length ? <RoadmapExplorer client:load segments={segments} strands={strands}>
       <div>
-        {roadmapEntries.map((entry, index) => <RoadmapPanel entry={entry} initial={index === 0} prerequisites={entry.data.dependencies.map(id => byId.get(id)!)} />)}
+        {roadmapEntries.map((entry, index) => <RoadmapPanel module={modulesBySegment.get(entry.id)} entry={entry} initial={index === 0} prerequisites={entry.data.dependencies.map(id => byId.get(id)!)} />)}
       </div>
     </RoadmapExplorer> : <p class="p-10">No roadmap segments published yet.</p>}
     <noscript><p class="p-6">Enable JavaScript to select segments and explore their connections. The initial segment and full route are shown above.</p></noscript>

@@ -55,6 +55,20 @@ This keeps prerequisites above their dependents and gives a repeatable display o
 
 Missing references, invalid strand names, duplicate identities or aliases, repeated dependencies, circular dependencies and published-to-draft dependencies fail the build. Drafts are validated too, but do not appear on the page.
 
+## Connect a study module
+
+Set `roadmap` in the module's `content/notes/<module>/index.mdx`:
+
+```yaml
+roadmap: functions-trigonometry-and-vectors
+```
+
+This creates a one-to-one connection: a module can reference one segment, and a segment can have one module. The segment displays a highlighted Study module card below its title, with an Open module button. Prerequisites and authored content follow it. The module overview and all its notes display the corresponding roadmap link automatically. No links need to be duplicated in their bodies.
+
+Use the current segment slug. Unknown targets, multiple modules assigned to the same segment, mappings placed on individual notes, and published modules linked to draft segments fail the build. Draft modules are not shown in the roadmap. Segments without modules remain unchanged, so modules can be added one at a time.
+
+The `roadmap` field is optional. Modules without it show no roadmap link and do not appear as study modules in the roadmap.
+
 ## Write the explanation
 
 Everything below the frontmatter is authored content. Use headings, paragraphs, equations, links and MDX components as you do in notes:

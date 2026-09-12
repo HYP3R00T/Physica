@@ -1,15 +1,19 @@
 ---
 import { render } from "astro:content"
+import { Icon } from "astro-icon/components"
+import { buttonVariants } from "@/components/ui/button"
+import { getModuleSlug, type LearningEntry } from "@/lib/content"
 import RoadmapPrerequisites from "./RoadmapPrerequisites.astro"
 import type { RoadmapEntry, RoadmapSegment } from "@/lib/roadmap"
 
 interface Props {
+  module?: LearningEntry
   entry: RoadmapEntry
   initial: boolean
   prerequisites: RoadmapSegment[]
 }
 
-const { entry, initial, prerequisites } = Astro.props
+const { entry, initial, prerequisites, module } = Astro.props
 const { Content } = await render(entry)
 ---
 
@@ -21,8 +25,21 @@ const { Content } = await render(entry)
   tabindex="-1"
 >
   <header class="prose mb-8">
-    <h1 id={`title-${entry.id.toLowerCase()}`}>{entry.data.title}</h1>
+    <h1 class="text-foreground-2!" id={`title-${entry.id.toLowerCase()}`}>{entry.data.title}</h1>
   </header>
+  {module && (
+    <section data-roadmap-module class="mb-8 rounded-lg border border-ring/30 bg-ring/5 p-6" aria-labelledby={`module-${entry.id}`}>
+      <p class="mb-3 font-mono text-xs tracking-wide text-ring uppercase">Study module</p>
+      <h2 id={`module-${entry.id}`} class="font-display text-2xl leading-tight font-semibold text-foreground-0">{module.data.title}</h2>
+      {module.data.description && <p class="mt-3 text-sm leading-6 text-foreground-2">{module.data.description}</p>}
+      <div class="mt-5">
+        <a href={`/${getModuleSlug(module)}`} class={buttonVariants({ variant: "default" })}>
+          Open module
+          <Icon name="arrow-right" class="size-4" aria-hidden="true" />
+        </a>
+      </div>
+    </section>
+  )}
   <RoadmapPrerequisites segmentId={entry.id} prerequisites={prerequisites} />
   <div class="prose mt-0 [&_.contains-task-list]:list-none [&_.contains-task-list]:p-0 [&_.task-list-item]:relative [&_.task-list-item]:mb-[.85rem] [&_.task-list-item]:pl-[1.6rem] [&_.task-list-item_input]:absolute [&_.task-list-item_input]:top-[calc((1lh-0.875rem)/2+1px)] [&_.task-list-item_input]:left-0 [&_.task-list-item_input]:size-3.5 [&_.task-list-item_input]:cursor-pointer [&_.task-list-item_input]:p-0 [&_.task-list-item_input]:appearance-none
     [&_.task-list-item_input]:rounded-sm

@@ -1,5 +1,6 @@
 ---
 import { render } from "astro:content"
+import ModuleRoadmapLink from "./ModuleRoadmapLink.astro"
 
 import NotesLayout from "@/layouts/NotesLayout.astro"
 import { getModuleSlug } from "@/lib/content"
@@ -46,6 +47,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "m
         )
       }
 
+      <ModuleRoadmapLink module={module} />
     </header>
 
     <div class="prose px-5 py-10 md:px-10 lg:px-14">

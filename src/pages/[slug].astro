@@ -9,6 +9,7 @@ import {
   getModuleSlug,
   getNoteSlug,
   isModule,
+  mapRoadmapModules,
   validateContent,
 } from "@/lib/content"
 import type { LearningEntry } from "@/lib/content"
@@ -20,6 +21,7 @@ export async function getStaticPaths() {
   const entries = candidates.filter((entry) => isModule(entry) || visibleFolders.has(getModuleFolder(entry)))
 
   validateContent(entries)
+  mapRoadmapModules(candidates, await getCollection("roadmap"))
 
   return [
     ...modules.map((module) => ({

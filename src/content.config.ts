@@ -35,7 +35,10 @@ const learning = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     related: z.array(z.string()).default([]),
-    roadmap: z.array(z.string()).default([]),
+    roadmap: z
+      .string()
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      .optional(),
     tags: z.array(z.string()).default([]),
     created: z.coerce.date().optional(),
     updated: z.coerce.date().optional(),

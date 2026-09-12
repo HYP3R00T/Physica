@@ -1,5 +1,6 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
+import { mapRoadmapModules } from "../src/lib/content.ts"
 import rehypeRoadmapContent from "../src/lib/rehype-roadmap-content.mjs"
 import { migrateRoadmapProgress, resolveRoadmapHash } from "../src/lib/roadmap-identity.ts"
 import { getRoadmapStrands } from "../src/lib/roadmap-strands.ts"
@@ -129,4 +130,32 @@ test("assigns colors by first strand appearance and cycles after pink", () => {
     ),
   )
   assert.deepEqual(getRoadmapStrands([]), [])
+})
+
+test("maps modules to roadmap segments from module metadata", () => {
+  const module = {
+    id: "demo/index",
+    filePath: "content/notes/demo/index.mdx",
+    data: { roadmap: "vectors", draft: false },
+  }
+  const targets = [{ id: "vectors", data: { draft: false } }]
+  assert.equal(mapRoadmapModules([module], targets).get("vectors"), module)
+  assert.equal(mapRoadmapModules([{ ...module, data: { draft: false } }], targets).size, 0)
+  assert.equal(mapRoadmapModules([{ ...module, data: { ...module.data, draft: true } }], targets).size, 0)
+})
+
+test("rejects duplicate module mappings, unknown targets, note mappings and published-to-draft links", () => {
+  const module = {
+    id: "demo/index",
+    filePath: "content/notes/demo/index.mdx",
+    data: { roadmap: "vectors", draft: false },
+  }
+  const targets = [{ id: "vectors", data: { draft: false } }]
+  assert.throws(() => mapRoadmapModules([module, { ...module, id: "other/index" }], targets), /linked to both/)
+  assert.throws(() => mapRoadmapModules([module], []), /unknown roadmap segment/)
+  assert.throws(
+    () => mapRoadmapModules([{ ...module, filePath: "content/notes/demo/note.mdx" }], targets),
+    /module index/,
+  )
+  assert.throws(() => mapRoadmapModules([module], [{ id: "vectors", data: { draft: true } }]), /draft roadmap/)
 })
