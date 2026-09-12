@@ -9,7 +9,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const visibleNavItems = navItems.filter((item) => !item.special);
-const blogItem = visibleNavItems.find((item) => item.href === "/post");
 const contactItem = visibleNavItems.find((item) => item.href === "/contact");
 const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact");
 ---
@@ -23,51 +22,51 @@ const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact
     data-header-nav
     data-menu-open="false"
     transition:animate="none"
-    class="site-grid-frame grid min-h-16 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:grid-cols-[minmax(12rem,1fr)_auto_minmax(12rem,1fr)]"
+    class="site-grid-frame flex min-h-16 items-center justify-between gap-4"
   >
-    <div class="flex min-w-0 items-center px-5 lg:px-8">
-      <a href="/" class="flex min-w-0 flex-row font-mono text-base md:text-lg" aria-label={`${SITE.title} home`}>
+    <div class="flex min-w-0 items-center gap-8 pl-5 lg:gap-12 lg:pl-8">
+      <a href="/" class="flex shrink-0 flex-row font-mono text-base md:text-lg" aria-label={`${SITE.title} home`}>
         <AnimatedText client:load text={SITE.title.toLowerCase()} className="text-accent-1" auto={true} hover={true} />
       </a>
-    </div>
-
-    <div class="flex min-w-0 items-center justify-center px-2">
-      <SearchPalette client:load />
-    </div>
-
-    <div class="hidden min-w-0 items-center justify-end gap-2 px-5 md:flex lg:px-8">
-      {blogItem && (
-        <nav aria-label="Primary navigation">
+      <nav aria-label="Primary navigation" class="hidden items-center gap-5 md:flex">
+        {primaryNavItems.map((item) => (
           <a
-            href={blogItem.href}
-            aria-current={Astro.url.pathname === "/post" || Astro.url.pathname.startsWith("/post/") ? "page" : undefined}
-            class="rounded-md px-3 py-2 font-mono text-sm text-foreground-2 transition-colors hover:text-accent-1 aria-[current=page]:text-accent-1"
+            href={item.href}
+            target={item.blank ? "_blank" : undefined}
+            rel={item.blank ? "noopener noreferrer" : undefined}
+            aria-current={Astro.url.pathname === item.href || Astro.url.pathname.startsWith(`${item.href}/`) ? "page" : undefined}
+            class="rounded-md py-2 font-mono text-sm text-foreground-2 transition-colors hover:text-accent-1 aria-[current=page]:text-accent-1"
           >
-            {blogItem.label}
+            {item.label}
           </a>
-        </nav>
-      )}
-      <ModeToggle
-        client:load
-        className="size-10 border-0 hover:bg-transparent hover:text-foreground-0"
-      />
+        ))}
+      </nav>
+    </div>
+
+    <div class="ml-auto flex shrink-0 items-center gap-2 md:gap-3 md:pr-5 lg:pr-8">
+      <SearchPalette client:load />
+      <div class="hidden md:block">
+        <ModeToggle
+          client:load
+          className="size-10 border-0 hover:bg-transparent hover:text-foreground-0"
+        />
+      </div>
       {
         contactItem && (
           <a
             href={contactItem.href}
             class={cn(
               buttonVariants({ variant: "default" }),
-              "h-9 border-0 bg-accent-1 px-4 text-background-0 hover:bg-accent-2",
+              "hidden h-9 border-0 bg-accent-1 px-4 text-background-0 hover:bg-accent-2 md:inline-flex",
             )}
           >
             {contactItem.label}
           </a>
         )
       }
-    </div>
-
-    <div class="justify-self-end md:hidden">
-      <MobileMenuToggle />
+      <div class="md:hidden">
+        <MobileMenuToggle />
+      </div>
     </div>
   </div>
   <MobileMenuPanel navItems={primaryNavItems} contactItem={contactItem} />

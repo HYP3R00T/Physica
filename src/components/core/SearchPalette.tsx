@@ -1,5 +1,5 @@
 import type Fuse from "fuse.js"
-import { BookOpen, FileText, Hash, Search, X } from "lucide-react"
+import { BookOpen, FileText, Search, X } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 import * as React from "react"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
@@ -7,29 +7,27 @@ import { fuseOptions } from "@/lib/search/fuseConfig"
 import type { SearchIndex, SearchItem, SearchItemType } from "@/lib/search/types"
 import { cn } from "@/lib/utils"
 
-type SearchFilter = "all" | SearchItemType
+type SearchFilter = "all" | "learn" | "blogs"
 
 const filters: Array<{ label: string; value: SearchFilter }> = [
   { label: "All", value: "all" },
-  { label: "Modules", value: "module" },
-  { label: "Notes", value: "note" },
-  { label: "Articles", value: "article" },
-  { label: "Headings", value: "heading" },
+  { label: "Learn", value: "learn" },
+  { label: "Blogs", value: "blogs" },
 ]
 
-const typeLabels: Record<SearchItemType, string> = {
-  article: "Articles",
-  module: "Modules",
-  note: "Notes",
-  heading: "Headings",
+const resultLabels: Record<SearchItemType, string> = {
+  article: "Blog",
+  module: "Module",
+  note: "Note",
 }
 
 const typeIcons = {
   article: FileText,
   module: BookOpen,
   note: FileText,
-  heading: Hash,
 }
+
+const resultGroup = (item: SearchItem) => (item.type === "article" ? "blogs" : "learn")
 
 export function SearchPalette() {
   const [open, setOpen] = React.useState(false)
@@ -66,15 +64,18 @@ export function SearchPalette() {
 
       try {
         const [response, { default: FuseSearch }] = await Promise.all([
-          fetch("/api/search-index.json"),
+          fetch("/api/search-index.json", { cache: "no-cache" }),
           import("fuse.js"),
         ])
 
         if (!response.ok) throw new Error(`Search index returned ${response.status}`)
 
         const index = (await response.json()) as SearchIndex
-        setItems(index.items)
-        fuse.current = new FuseSearch(index.items, fuseOptions)
+        const searchableItems = index.items.filter(
+          (item) => item.type === "module" || item.type === "note" || item.type === "article",
+        )
+        setItems(searchableItems)
+        fuse.current = new FuseSearch(searchableItems, fuseOptions)
       } catch (searchError) {
         console.error("Unable to load the search index", searchError)
         setError(true)
@@ -90,17 +91,19 @@ export function SearchPalette() {
     const normalizedQuery = query.trim()
     const matches =
       normalizedQuery && fuse.current ? fuse.current.search(normalizedQuery).map(({ item }) => item) : items
-    const filtered = filter === "all" ? matches : matches.filter((item) => item.type === filter)
-    const usefulDefaults =
-      !normalizedQuery && filter === "all" ? filtered.filter((item) => item.type !== "heading") : filtered
-
-    return usefulDefaults.slice(0, 24)
+    const filtered = filter === "all" ? matches : matches.filter((item) => resultGroup(item) === filter)
+    return filtered.slice(0, 24)
   }, [filter, items, query])
 
   const groups = React.useMemo(
     () =>
-      (["module", "note", "article", "heading"] as SearchItemType[])
-        .map((type) => ({ type, items: results.filter((item) => item.type === type) }))
+      filters
+        .filter(({ value }) => value !== "all")
+        .map(({ value, label }) => ({
+          type: value,
+          label,
+          items: results.filter((item) => resultGroup(item) === value),
+        }))
         .filter((group) => group.items.length > 0),
     [results],
   )
@@ -120,7 +123,7 @@ export function SearchPalette() {
   const onInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "ArrowDown") {
       event.preventDefault()
-      setActiveIndex((current) => Math.min(current + 1, orderedResults.length - 1))
+      setActiveIndex((current) => Math.max(0, Math.min(current + 1, orderedResults.length - 1)))
     }
 
     if (event.key === "ArrowUp") {
@@ -147,12 +150,12 @@ export function SearchPalette() {
       <DialogPrimitive.Trigger asChild>
         <button
           type="button"
-          className="group flex h-9 w-9 items-center gap-2 rounded-md border border-border bg-background-0 px-2.5 text-sm text-foreground-2 transition-colors hover:border-foreground-3 hover:bg-background-1 hover:text-foreground-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:w-48 lg:w-56"
-          aria-label="Search Physica"
+          className="group inline-flex h-9 min-w-32 shrink-0 items-center justify-between gap-5 rounded-md border border-border bg-background-0 px-3 text-sm text-foreground-2 transition-colors hover:border-foreground-3 hover:bg-background-1 hover:text-foreground-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          aria-label={`Search Physica (${modifierKey}+K)`}
+          title={`Search Physica (${modifierKey}+K)`}
         >
           <Search className="size-4 shrink-0" aria-hidden="true" />
-          <span className="hidden truncate sm:inline">Search Physica</span>
-          <KbdGroup className="ml-auto hidden lg:inline-flex">
+          <KbdGroup className="inline-flex">
             <Kbd>{modifierKey}</Kbd>
             <Kbd>K</Kbd>
           </KbdGroup>
@@ -162,7 +165,7 @@ export function SearchPalette() {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-100 bg-background-0/75 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <DialogPrimitive.Content
-          className="fixed top-[10vh] left-1/2 z-101 flex max-h-[80vh] w-[min(calc(100%-2rem),44rem)] -translate-x-1/2 flex-col overflow-hidden rounded-lg border border-border bg-background-0 shadow-2xl focus:outline-none"
+          className="fixed top-[10vh] left-1/2 z-101 flex max-h-[80dvh] w-[min(calc(100%-2rem),44rem)] -translate-x-1/2 flex-col overflow-hidden rounded-lg border border-border bg-background-0 shadow-2xl focus:outline-none"
           onOpenAutoFocus={(event) => {
             event.preventDefault()
             input.current?.focus()
@@ -170,10 +173,10 @@ export function SearchPalette() {
         >
           <DialogPrimitive.Title className="sr-only">Search Physica</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">
-            Search modules, notes, articles, headings, and content.
+            Search modules and notes under Learn, or blog posts under Blogs.
           </DialogPrimitive.Description>
 
-          <div className="flex h-14 items-center gap-3 border-b border-border px-4">
+          <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
             <Search className="size-5 shrink-0 text-foreground-3" aria-hidden="true" />
             <input
               ref={input}
@@ -185,7 +188,7 @@ export function SearchPalette() {
               }}
               onKeyDown={onInputKeyDown}
               className="h-full min-w-0 flex-1 bg-transparent text-base text-foreground-0 outline-none placeholder:text-foreground-3"
-              placeholder="Search notes, articles, and topics…"
+              placeholder="Search anything…"
               autoComplete="off"
               spellCheck={false}
             />
@@ -201,7 +204,7 @@ export function SearchPalette() {
           </div>
 
           <fieldset
-            className="flex items-center gap-1 overflow-x-auto border-b border-border px-3 py-2"
+            className="flex shrink-0 items-center gap-1 border-b border-border px-3 py-2"
             aria-label="Search filters"
           >
             {filters.map((item) => (
@@ -220,7 +223,11 @@ export function SearchPalette() {
             ))}
           </fieldset>
 
-          <div className="min-h-48 flex-1 overflow-y-auto p-2" role="listbox" aria-label="Search results">
+          <div
+            className="min-h-[min(12rem,30dvh)] flex-1 overflow-y-auto overscroll-contain p-3 [scrollbar-gutter:stable]"
+            role="listbox"
+            aria-label="Search results"
+          >
             {loading && <p className="px-3 py-10 text-center text-sm text-foreground-3">Preparing search…</p>}
             {error && <p className="px-3 py-10 text-center text-sm text-foreground-3">Search is unavailable.</p>}
             {!loading && !error && results.length === 0 && (
@@ -235,19 +242,14 @@ export function SearchPalette() {
                     id={`search-${group.type}-label`}
                     className="px-3 py-2 font-mono text-[0.6875rem] tracking-[0.12em] text-foreground-3 uppercase"
                   >
-                    {typeLabels[group.type]}
+                    {group.label}
                   </h2>
                   <div className="grid gap-1">
                     {group.items.map((result) => {
                       resultIndex += 1
                       const currentIndex = resultIndex
                       const ResultIcon = typeIcons[result.type]
-                      const subtitle =
-                        result.type === "module"
-                          ? result.description
-                          : result.type === "heading"
-                            ? `${result.parentTitle} · ${result.moduleTitle}`
-                            : result.moduleTitle
+                      const subtitle = result.type === "note" ? result.moduleTitle : result.description
 
                       return (
                         <button
@@ -270,7 +272,9 @@ export function SearchPalette() {
                               <span className="mt-1 block truncate text-xs text-foreground-3">{subtitle}</span>
                             )}
                           </span>
-                          <span className="font-mono text-[0.625rem] text-foreground-3 uppercase">{result.type}</span>
+                          <span className="font-mono text-[0.625rem] text-foreground-3 uppercase">
+                            {resultLabels[result.type]}
+                          </span>
                         </button>
                       )
                     })}
@@ -279,7 +283,7 @@ export function SearchPalette() {
               ))}
           </div>
 
-          <div className="hidden items-center gap-4 border-t border-border px-4 py-2 text-xs text-foreground-3 sm:flex">
+          <div className="hidden shrink-0 items-center gap-4 border-t border-border px-4 py-2 text-xs text-foreground-3 sm:flex">
             <span className="inline-flex items-center gap-1.5">
               <KbdGroup>
                 <Kbd>↑</Kbd>

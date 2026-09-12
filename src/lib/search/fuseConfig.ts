@@ -4,8 +4,7 @@ import type { SearchItem } from "@/lib/search/types"
 
 export const fuseOptions: IFuseOptions<SearchItem> = {
   keys: [
-    { name: "title", weight: 0.4 },
-    { name: "parentTitle", weight: 0.2 },
+    { name: "title", weight: 0.6 },
     { name: "moduleTitle", weight: 0.15 },
     { name: "tags", weight: 0.1 },
     { name: "description", weight: 0.1 },

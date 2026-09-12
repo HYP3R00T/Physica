@@ -1,4 +1,4 @@
-export type SearchItemType = "article" | "module" | "note" | "heading"
+export type SearchItemType = "article" | "module" | "note"
 
 export interface SearchItem {
   id: string
@@ -6,9 +6,7 @@ export interface SearchItem {
   url: string
   title: string
   moduleTitle: string
-  parentTitle?: string
   description?: string
-  depth?: number
   tags: string[]
   body: string
 }

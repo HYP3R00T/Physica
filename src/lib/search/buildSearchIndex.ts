@@ -1,4 +1,4 @@
-import { getCollection, render } from "astro:content"
+import { getCollection } from "astro:content"
 import type { LearningEntry } from "@/lib/content"
 import { getModuleFolder, getModuleSlug, getNoteSlug, isModule, validateContent } from "@/lib/content"
 import type { SearchIndex, SearchItem, SearchItemType } from "@/lib/search/types"
@@ -40,22 +40,6 @@ export async function buildSearchIndex(): Promise<SearchIndex> {
       tags: entry.data.tags,
       body: searchableBody(entry),
     })
-
-    const { headings } = await render(entry)
-
-    for (const heading of headings.filter(({ depth }) => depth >= 2 && depth <= 4)) {
-      items.push({
-        id: `heading:${entry.id}:${heading.slug}`,
-        type: "heading",
-        url: `${url}#${heading.slug}`,
-        title: heading.text,
-        moduleTitle: module.data.title,
-        parentTitle: entry.data.title,
-        depth: heading.depth,
-        tags: entry.data.tags,
-        body: "",
-      })
-    }
   }
 
   const posts = await getCollection("posts", ({ data }) => !data.draft)
@@ -66,25 +50,11 @@ export async function buildSearchIndex(): Promise<SearchIndex> {
       type: "article",
       url,
       title: post.data.title,
-      moduleTitle: "Articles",
+      moduleTitle: "Blogs",
       description: post.data.description,
       tags: post.data.tags,
       body: post.body?.replace(/\s+/g, " ").trim() ?? "",
     })
-    const { headings } = await render(post)
-    for (const heading of headings.filter(({ depth }) => depth >= 2 && depth <= 4)) {
-      items.push({
-        id: `heading:article:${post.id}:${heading.slug}`,
-        type: "heading",
-        url: `${url}#${heading.slug}`,
-        title: heading.text,
-        moduleTitle: "Articles",
-        parentTitle: post.data.title,
-        depth: heading.depth,
-        tags: post.data.tags,
-        body: "",
-      })
-    }
   }
   return { items }
 }
