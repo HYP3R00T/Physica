@@ -1,32 +1,89 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
 import rehypeRoadmapContent from "../src/lib/rehype-roadmap-content.mjs"
+import { migrateRoadmapProgress, resolveRoadmapHash } from "../src/lib/roadmap-identity.ts"
+import { getRoadmapStrands } from "../src/lib/roadmap-strands.ts"
 import { validateRoadmap } from "../src/lib/roadmap-validation.ts"
 
-const entry = (segment, order, dependencies = [], draft = false) => ({
-  id: segment.toLowerCase(),
-  data: { segment, order, dependencies, draft },
+const entry = (id, dependencies = [], strand = "physics", draft = false, aliases = []) => ({
+  id,
+  data: { strand, dependencies, draft, aliases },
 })
+const sort = (entries) => validateRoadmap(entries).map(({ id }) => id)
 
-test("accepts independent branches, order gaps, and unsorted collection results", () => {
-  assert.doesNotThrow(() => validateRoadmap([entry("Q1", 30, ["M1"]), entry("M1", 1), entry("CM1", 10, ["M1"])]))
+test("sorts dependencies before dependents regardless of input order", () => {
+  const entries = [entry("spectra", ["atoms"]), entry("atoms", ["vectors"]), entry("vectors")]
+  assert.deepEqual(sort(entries), ["vectors", "atoms", "spectra"])
+  assert.deepEqual(sort(entries.reverse()), ["vectors", "atoms", "spectra"])
 })
-test("rejects dangling dependencies", () => {
-  assert.throws(() => validateRoadmap([entry("M1", 1, ["CM1"])]), /unknown/)
+test("inserts a segment without renaming or ordering existing files", () => {
+  assert.deepEqual(sort([entry("lasers", ["spectra"]), entry("atoms"), entry("spectra", ["atoms"])]), [
+    "atoms",
+    "spectra",
+    "lasers",
+  ])
 })
-test("rejects cycles and backwards links", () => {
-  assert.throws(() => validateRoadmap([entry("M1", 1, ["CM1"]), entry("CM1", 2, ["M1"])]), /earlier/)
+test("resolves independent roots, branching, merging, and a new strand", () => {
+  const entries = [
+    entry("merge", ["left", "right"]),
+    entry("right", ["root"], "new-strand"),
+    entry("left", ["root"]),
+    entry("root"),
+    entry("independent"),
+  ]
+  assert.deepEqual(sort(entries), ["independent", "root", "left", "right", "merge"])
 })
-test("rejects duplicate segment IDs and orders", () => {
-  assert.throws(() => validateRoadmap([entry("M1", 1), entry("M1", 2)]), /Duplicate roadmap segment/)
-  assert.throws(() => validateRoadmap([entry("M1", 1), entry("M2", 1)]), /Duplicate roadmap order/)
+test("rejects missing dependencies, invalid strand names, repeated links and invalid filenames", () => {
+  assert.throws(() => sort([entry("atoms", ["missing"])]), /unknown roadmap segment/)
+  assert.throws(() => sort([entry("atoms", [], "invalid strand")]), /Invalid strand/)
+  assert.throws(() => sort([entry("root"), entry("atoms", ["root", "root"])]), /Repeated/)
+  assert.throws(() => sort([entry("Folder/Atoms")]), /filename/)
+})
+test("rejects cycles, including disconnected cycles and self-dependencies", () => {
+  assert.throws(() => sort([entry("root"), entry("a", ["b"]), entry("b", ["a"])]), /Circular.*a, b/)
+  assert.throws(() => sort([entry("self", ["self"])]), /Circular/)
+})
+test("rejects duplicate IDs and conflicting aliases", () => {
+  assert.throws(() => sort([entry("atoms"), entry("atoms")]), /Duplicate/)
+  assert.throws(() => sort([entry("atoms", [], "physics", false, ["old"]), entry("old")]), /alias/)
+  assert.throws(
+    () => sort([entry("a", [], "physics", false, ["old"]), entry("b", [], "physics", false, ["old"])]),
+    /alias/,
+  )
 })
 test("published segments cannot depend on drafts", () => {
-  assert.throws(() => validateRoadmap([entry("M1", 1, [], true), entry("CM1", 2, ["M1"])]), /depends on draft/)
+  assert.throws(() => sort([entry("draft", [], "physics", true), entry("atoms", ["draft"])]), /depends on draft/)
 })
-test("checks filenames and repeated links", () => {
-  assert.throws(() => validateRoadmap([{ ...entry("M1", 1), id: "wrong-name" }]), /filename/)
-  assert.throws(() => validateRoadmap([entry("M1", 1), entry("CM1", 2, ["M1", "M1"])]), /Repeated/)
+test("resolves descriptive slugs, old links and scoped heading links", () => {
+  const segments = [{ id: "atomic-structure", aliases: ["am1"] }]
+  assert.deepEqual(resolveRoadmapHash("#segment-AM1--references", segments), {
+    id: "atomic-structure",
+    hash: "#segment-atomic-structure--references",
+  })
+  assert.deepEqual(resolveRoadmapHash("#segment-atomic-structure", segments), {
+    id: "atomic-structure",
+    hash: "#segment-atomic-structure",
+  })
+  assert.equal(resolveRoadmapHash("#segment-missing", segments), undefined)
+  assert.equal(resolveRoadmapHash("#%broken", segments), undefined)
+})
+test("preserves old checklist progress while migrating to slugs", () => {
+  const segments = [{ id: "atomic-structure", aliases: ["am1"] }]
+  assert.deepEqual(
+    [
+      ...migrateRoadmapProgress(
+        [
+          JSON.stringify(["AM1", "Hydrogen"]),
+          JSON.stringify(["atomic-structure", "Hydrogen"]),
+          JSON.stringify(["unavailable-segment", "Saved topic"]),
+          "broken",
+          null,
+        ],
+        segments,
+      ),
+    ],
+    [JSON.stringify(["atomic-structure", "Hydrogen"]), JSON.stringify(["unavailable-segment", "Saved topic"])],
+  )
 })
 test("MDX headings, equation IDs and local links are scoped to their segment", () => {
   const tree = {
@@ -39,13 +96,13 @@ test("MDX headings, equation IDs and local links are scoped to their segment", (
       { type: "element", tagName: "a", properties: { href: "/roadmap#segment-m2" }, children: [] },
     ],
   }
-  const path = "/project/content/roadmap/m1.mdx"
+  const path = "/project/content/roadmap/functions-and-vectors.mdx"
   rehypeRoadmapContent()(tree, { path, history: [path], data: {} })
-  assert.equal(tree.children[0].properties.id, "segment-m1--what-to-study")
+  assert.equal(tree.children[0].properties.id, "segment-functions-and-vectors--what-to-study")
   assert.equal(tree.children[0].tagName, "h2")
-  assert.equal(tree.children[1].properties.id, "segment-m1--energy")
-  assert.equal(tree.children[2].properties.href, "#segment-m1--what-to-study")
-  assert.equal(tree.children[3].properties.href, "#segment-m1--energy")
+  assert.equal(tree.children[1].properties.id, "segment-functions-and-vectors--energy")
+  assert.equal(tree.children[2].properties.href, "#segment-functions-and-vectors--what-to-study")
+  assert.equal(tree.children[3].properties.href, "#segment-functions-and-vectors--energy")
   assert.equal(tree.children[4].properties.href, "/roadmap#segment-m2")
 })
 test("leaves notes and posts unchanged", () => {
@@ -56,4 +113,20 @@ test("leaves notes and posts unchanged", () => {
   const before = structuredClone(tree)
   rehypeRoadmapContent()(tree, { path: "/project/content/posts/example.mdx" })
   assert.deepEqual(tree, before)
+})
+
+test("assigns colors by first strand appearance and cycles after pink", () => {
+  const names = Array.from({ length: 11 }, (_, i) => `strand-${i}`)
+  const strands = getRoadmapStrands([{ strand: names[0] }, ...names.map((strand) => ({ strand }))])
+  assert.deepEqual(
+    strands.map(({ id }) => id),
+    names,
+  )
+  assert.deepEqual(
+    strands.map(({ color }) => color),
+    ["red", "orange", "yellow", "green", "teal", "cyan", "blue", "purple", "pink", "red", "orange"].map(
+      (name) => `var(--${name}-0)`,
+    ),
+  )
+  assert.deepEqual(getRoadmapStrands([]), [])
 })

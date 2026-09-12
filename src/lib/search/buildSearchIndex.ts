@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content"
 import type { LearningEntry } from "@/lib/content"
 import { getModuleFolder, getModuleSlug, getNoteSlug, isModule, validateContent } from "@/lib/content"
+import { getRoadmap } from "@/lib/roadmap"
 import type { SearchIndex, SearchItem, SearchItemType } from "@/lib/search/types"
 
 const searchableBody = (entry: LearningEntry) => {
@@ -54,6 +55,20 @@ export async function buildSearchIndex(): Promise<SearchIndex> {
       description: post.data.description,
       tags: post.data.tags,
       body: post.body?.replace(/\s+/g, " ").trim() ?? "",
+    })
+  }
+  const { entries: roadmapEntries, segments } = await getRoadmap()
+  const bodies = new Map(roadmapEntries.map(({ id, body }) => [id, body ?? ""]))
+  for (const segment of segments) {
+    items.push({
+      id: `roadmap:${segment.id}`,
+      type: "roadmap",
+      url: `/roadmap#segment-${segment.id}`,
+      title: segment.title,
+      moduleTitle: segment.subject,
+      description: segment.subject,
+      tags: [segment.strand, segment.id, ...segment.aliases],
+      body: (bodies.get(segment.id) ?? "").replace(/\s+/g, " ").trim(),
     })
   }
   return { items }

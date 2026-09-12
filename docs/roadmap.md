@@ -1,37 +1,63 @@
 # Writing the physics roadmap
 
-The page lives at `/roadmap`. Each file in `content/roadmap/` is one segment. Astro reads its frontmatter to build the graph and renders its Markdown or MDX body in the detail column. There is no separate JSON curriculum to keep in sync.
+The page lives at `/roadmap`. Each file in `content/roadmap/` is a segment. Its filename gives it a stable identity, its frontmatter defines its relationships, and its Markdown or MDX body provides the explanation and checklist.
 
-## A segment file
+## Add a segment
 
-Use the lowercase segment code as its filename, such as `cm1.mdx`:
+Use a descriptive filename, such as `atomic-spectra.mdx`:
 
 ```yaml
 ---
-segment: CM1
-order: 4
-title: Motion and Newtonian dynamics
-subject: Classical mechanics
-lane: mechanics
-scope: Core
-dependencies: [E1]
-draft: false
+title: Atomic spectra
+strand: matter
+scope: Breadth
+dependencies:
+  - atoms-and-molecules
+  - angular-momentum-symmetry-and-composite-systems
 ---
 ```
 
-- `segment` is the stable code used by connections and links.
-- `order` sets the reading order. Values must be unique positive integers; gaps are allowed.
-- `subject` is the subject name shown to readers.
-- `lane` places the node in one of the graph's narrow subject groups: `mathematics`, `mechanics`, `waves`, `electromagnetism`, `thermal`, `quantum`, `matter`, `space` or `methods`.
+- The filename, without its extension, is the segment's slug. Use lowercase words separated by single hyphens. Keep files directly in `content/roadmap/`.
+- `title` is the name readers see. Changing it does not change the slug or links.
+- `strand` names the graph lane. Use lowercase words separated by hyphens; no separate definition file is needed.
+- `subject` is an optional, more specific subject label. It defaults to the strand name with spaces in place of hyphens.
 - `scope` is `Core`, `Breadth`, `Bridge` or `Integration`.
-- `dependencies` lists the earlier segments used here. Outgoing connections are calculated automatically.
-- `draft: true` keeps the segment off the public roadmap. Published segments cannot depend on drafts.
+- `dependencies` lists prerequisite slugs. It defaults to an empty list; outgoing connections are calculated automatically.
+- `draft: true` hides a segment. Published segments cannot depend on drafts.
+- `aliases` is an optional list of previous slugs or codes, used to preserve links and saved checklist progress. Dependencies must reference current slugs.
 
-Adding a valid file adds a node, its connections and searchable content. No changes to the graph component are needed. Duplicate codes or orders, unknown dependencies and backwards connections fail the build.
+There are no numbered segment codes or manually assigned positions. Adding a valid file adds its node, connections and searchable content.
+
+## Insert material between segments
+
+Suppose `lasers-and-controlled-atoms` depends on `atoms-and-molecules`. To put `atomic-spectra` between them:
+
+1. Create `atomic-spectra.mdx` with `atoms-and-molecules` in its dependencies.
+2. Change the relevant dependency of `lasers-and-controlled-atoms` to `atomic-spectra`. Keep any other prerequisites it still needs.
+
+The graph then places atoms before spectra, and spectra before lasers. No existing file needs renumbering. Adding a related topic alone does not make it a prerequisite; add that relationship only when it is needed.
+
+## Add a strand
+
+Set a new strand name in a segment's frontmatter, such as `strand: biophysics`. It appears automatically once that segment is published.
+
+Lanes and colors follow each strand's first appearance in the calculated learning order. Colors use the site's theme variables in this order: red, orange, yellow, green, teal, cyan, blue, purple, pink. Further strands cycle back to red, then orange, and so on. All segments in a strand share its color.
+
+The graph gutter grows with the lane count; the learning path can scroll horizontally when there are too many lanes to fit.
+
+A segment belongs to one visual strand, but can depend on segments from any number of strands. Those dependency edges create the forks and merges.
+
+## How ordering works
+
+The build checks dependencies and calculates a topological order. Segments with no prerequisites come first. Each following layer contains segments whose prerequisites are all in earlier layers. Within a layer, slugs sort alphabetically, independently of filesystem order.
+
+This keeps prerequisites above their dependents and gives a repeatable display order. Two independent segments can appear in either order educationally; their vertical placement does not mean one requires the other. Follow the connections to see actual prerequisites.
+
+Missing references, invalid strand names, duplicate identities or aliases, repeated dependencies, circular dependencies and published-to-draft dependencies fail the build. Drafts are validated too, but do not appear on the page.
 
 ## Write the explanation
 
-Everything below the frontmatter is authored content. Use headings, paragraphs, equations, links and MDX components as you do in notes. For example:
+Everything below the frontmatter is authored content. Use headings, paragraphs, equations, links and MDX components as you do in notes:
 
 ```md
 ## How to approach this segment
@@ -48,22 +74,20 @@ Draw the motion before writing an equation. Explain what each axis and variable 
 Describe motion with a graph and use its slope to calculate velocity.
 ```
 
-The existing topic groups and milestones have been migrated without changing their content. Add study guidance wherever it helps. Put reading recommendations and links directly in the body under a heading such as `## References`.
+Put reading recommendations and links directly in the body wherever they help. The panel adds the segment title as an H1 and prerequisites under an H2 above this content. The body renders directly, preserving authored heading levels.
 
-Markdown task lists become checkboxes. Checks are saved in this browser, not in an account or in the source files. Their keys use the segment code and topic text; rewriting a topic gives it a new key. If browser storage is unavailable, checks remain usable for the visit.
+Markdown task lists become checkboxes. Checks are saved in the browser. Their keys use the segment slug and topic text, so rewriting a topic gives it a new key. Existing numbered keys migrate using aliases. If browser storage is unavailable, checks remain usable during the visit.
 
-The panel shows the segment title as an H1 and prerequisite links under an H2 above the authored Markdown or MDX body. Their codes and full titles come from the dependency metadata, and selecting one opens that segment. The MDX body is rendered directly, without changes to its heading levels or inserted note lists. Heading levels stay as written: `##` renders as `<h2>`. Headings and equations receive unique IDs to avoid collisions between segments. A local heading link such as `#references` is scoped to its segment. To link to another segment, use `/roadmap#segment-m2`.
+Headings and equations receive segment-specific IDs to prevent collisions. Local links such as `#references` are scoped automatically. To link to another segment, use `/roadmap#segment-atoms-and-molecules`, or `/roadmap#segment-atoms-and-molecules--references` for its References heading. Old links such as `/roadmap#segment-am1` still resolve through aliases.
 
-## Link notes and other pages
-
-Write ordinary Markdown links directly in the segment body. You control their placement and wording. The panel does not generate a notes list from frontmatter.
+When renaming a file, update dependencies that reference it and add its old slug to `aliases`. Keep previous aliases so older links and progress continue to work.
 
 ## Scrolling and navigation
 
-The graph follows the normal page scroll. On desktop, the selected explanation stays beside it below the site navigation and scrolls independently when it is long. The page releases the sticky panel at the end of the graph, as with the article sidebars. Search and the map guide sit together in the header.
+The graph follows the normal page scroll. On desktop, the selected explanation stays below the site navigation and scrolls independently. The sticky panel ends with the graph. The global search includes roadmap titles, subjects, aliases and body content. Its Roadmap filter limits results to segments; selecting a result opens that segment directly.
 
-On a small screen, the path and segment details have separate views. Selecting a segment opens its details; “Learning path” returns to the selected row. Search, direct links and browser back work with segment selection.
+On small screens, the path and segment details have separate views. Selecting a segment opens its details; “Learning path” returns to the selected row. Search, direct links and browser back work with segment selection.
 
 ## Curriculum provenance
 
-The initial 60 segments came from the segmented roadmap drafted on 12 September 2026, informed by the SVNIT, IIT Kanpur, IISER Pune, MIT, Cambridge and Caltech source review. The boundaries and ordering are editorial choices, not an institutional consensus or a complete source audit. Supporting mathematics stays within the physics curriculum, beginning from a Class 10 baseline.
+The initial 60 segments came from the segmented roadmap drafted on 12 September 2026, informed by the SVNIT, IIT Kanpur, IISER Pune, MIT, Cambridge and Caltech source review. The boundaries and dependencies are editorial choices, not an institutional consensus or a complete source audit. Supporting mathematics stays within the physics curriculum, beginning from a Class 10 baseline.

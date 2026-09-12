@@ -18,8 +18,7 @@ const labelId = `prerequisites-${segmentId.toLowerCase()}`
     <ul class="mt-4 grid list-none gap-2 p-0">
       {prerequisites.map(segment => (
         <li class="m-0!">
-          <a class="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-[.6rem] rounded-[.3rem] border border-border px-3 py-[.65rem] text-[.85rem] leading-[1.6] text-foreground-1! no-underline hover:border-accent-1 hover:text-accent-1!" href={`#segment-${segment.id.toLowerCase()}`}>
-            <span class="font-mono text-xs text-accent-1">{segment.id}</span>
+          <a class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-[.6rem] rounded-[.3rem] border border-border px-3 py-[.65rem] text-[.85rem] leading-[1.6] text-foreground-1! no-underline hover:border-accent-1 hover:text-accent-1!" href={`#segment-${segment.id.toLowerCase()}`}>
             <span>{segment.title}</span>
             <Icon name="arrow-up-right" class="size-[1.1rem] shrink-0" aria-hidden="true" />
           </a>

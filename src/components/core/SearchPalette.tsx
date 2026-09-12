@@ -1,5 +1,5 @@
 import type Fuse from "fuse.js"
-import { BookOpen, FileText, Search, X } from "lucide-react"
+import { BookOpen, FileText, Route, Search, X } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 import * as React from "react"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
@@ -7,27 +7,31 @@ import { fuseOptions } from "@/lib/search/fuseConfig"
 import type { SearchIndex, SearchItem, SearchItemType } from "@/lib/search/types"
 import { cn } from "@/lib/utils"
 
-type SearchFilter = "all" | "learn" | "blogs"
+type SearchFilter = "all" | "learn" | "blogs" | "roadmap"
 
 const filters: Array<{ label: string; value: SearchFilter }> = [
   { label: "All", value: "all" },
   { label: "Learn", value: "learn" },
+  { label: "Roadmap", value: "roadmap" },
   { label: "Blogs", value: "blogs" },
 ]
 
 const resultLabels: Record<SearchItemType, string> = {
   article: "Blog",
+  roadmap: "Roadmap",
   module: "Module",
   note: "Note",
 }
 
 const typeIcons = {
   article: FileText,
+  roadmap: Route,
   module: BookOpen,
   note: FileText,
 }
 
-const resultGroup = (item: SearchItem) => (item.type === "article" ? "blogs" : "learn")
+const resultGroup = (item: SearchItem) =>
+  item.type === "article" ? "blogs" : item.type === "roadmap" ? "roadmap" : "learn"
 
 export function SearchPalette() {
   const [open, setOpen] = React.useState(false)
@@ -72,7 +76,8 @@ export function SearchPalette() {
 
         const index = (await response.json()) as SearchIndex
         const searchableItems = index.items.filter(
-          (item) => item.type === "module" || item.type === "note" || item.type === "article",
+          (item) =>
+            item.type === "module" || item.type === "note" || item.type === "article" || item.type === "roadmap",
         )
         setItems(searchableItems)
         fuse.current = new FuseSearch(searchableItems, fuseOptions)
@@ -173,7 +178,7 @@ export function SearchPalette() {
         >
           <DialogPrimitive.Title className="sr-only">Search Physica</DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">
-            Search modules and notes under Learn, or blog posts under Blogs.
+            Search modules, notes, roadmap topics, and blog posts.
           </DialogPrimitive.Description>
 
           <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">

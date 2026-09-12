@@ -1,20 +1,27 @@
 import type { CollectionEntry } from "astro:content"
 import { getCollection } from "astro:content"
+import { getRoadmapStrands } from "./roadmap-strands"
 import { validateRoadmap } from "./roadmap-validation"
 
+export type { RoadmapStrand } from "./roadmap-strands"
+
 export type RoadmapEntry = CollectionEntry<"roadmap">
-export type RoadmapSegment = Omit<RoadmapEntry["data"], "segment" | "draft"> & {
+export type RoadmapSegment = Omit<RoadmapEntry["data"], "draft" | "subject"> & {
   id: string
-  searchText: string
+  subject: string
 }
 
 export async function getRoadmap() {
   const all = await getCollection("roadmap")
-  validateRoadmap(all)
-  const entries = all.filter((entry) => !entry.data.draft).sort((a, b) => a.data.order - b.data.order)
-  const segments: RoadmapSegment[] = entries.map(({ data, body }) => {
-    const { segment, draft: _draft, ...metadata } = data
-    return { ...metadata, id: segment, searchText: body ?? "" }
+  const entries = validateRoadmap(all).filter((entry) => !entry.data.draft)
+  const segments: RoadmapSegment[] = entries.map(({ id, data }) => {
+    const { draft: _draft, ...metadata } = data
+    return {
+      ...metadata,
+      id,
+      subject: data.subject ?? data.strand.replaceAll("-", " ").replace(/^./, (letter) => letter.toUpperCase()),
+    }
   })
-  return { entries, segments, segmentIds: new Set(segments.map((segment) => segment.id)) }
+  const strands = getRoadmapStrands(segments)
+  return { entries, segments, strands, segmentIds: new Set(segments.map((segment) => segment.id)) }
 }

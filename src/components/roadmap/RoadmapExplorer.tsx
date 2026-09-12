@@ -1,13 +1,11 @@
 import type { CSSProperties, MouseEvent, ReactNode } from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import type { RoadmapSegment } from "@/lib/roadmap"
-import { roadmapLanes } from "@/lib/roadmap-lanes"
+import type { RoadmapSegment, RoadmapStrand } from "@/lib/roadmap"
+import { migrateRoadmapProgress, resolveRoadmapHash } from "@/lib/roadmap-identity"
 
 const ROW = 96
-const lanes = Object.keys(roadmapLanes)
 const anchor = (id: string) => `segment-${id.toLowerCase()}`
-const hashId = (hash: string) => hash.match(/^#segment-([a-z]+[1-9][0-9]*)(?:--|$)/i)?.[1].toUpperCase()
 const PROGRESS_KEY = "physica.roadmap.checklist.v1"
 
 function UpArrow() {
@@ -30,31 +28,29 @@ function UpArrow() {
 
 export default function RoadmapExplorer({
   segments,
+  strands,
   children: content,
 }: {
   segments: RoadmapSegment[]
+  strands: RoadmapStrand[]
   children?: ReactNode
 }) {
   const [selected, setSelected] = useState(segments[0].id)
-  const [query, setQuery] = useState("")
   const [mobileView, setMobileView] = useState("path")
   const panels = useRef<HTMLDivElement>(null)
   const body = useRef<HTMLDivElement>(null)
   const columns = useRef<HTMLDivElement>(null)
+  const lanes = strands.map(({ id }) => id)
+  const strandById = new Map(strands.map((strand) => [strand.id, strand]))
+  const graphWidth = lanes.length * 15 + 25
   const positions = new Map(segments.map((segment, index) => [segment.id, index]))
   const current = segments.find((segment) => segment.id === selected) ?? segments[0]
   const children = segments.filter((segment) => segment.dependencies.includes(current.id))
   const connected = new Set([current.id, ...current.dependencies, ...children.map((segment) => segment.id)])
-  const needle = query.trim().toLowerCase()
-  const matches = needle
-    ? segments.filter((segment) =>
-        `${segment.id} ${segment.title} ${segment.subject} ${segment.searchText}`.toLowerCase().includes(needle),
-      )
-    : []
   const edges = segments.flatMap((target) => target.dependencies.map((source) => ({ source, target: target.id })))
   const byId = new Map(segments.map((segment) => [segment.id, segment]))
-  const color = (id: string) => roadmapLanes[byId.get(id)?.lane ?? "methods"].color
-  const x = (id: string) => 12 + lanes.indexOf(byId.get(id)?.lane ?? "methods") * 15
+  const color = (id: string) => strandById.get(byId.get(id)?.strand ?? "")?.color ?? "var(--foreground-2)"
+  const x = (id: string) => 12 + lanes.indexOf(byId.get(id)?.strand ?? "") * 15
   // Paint shared strokes together so antialiased edges do not accumulate at overlaps.
   const edgePaths = [false, true]
     .flatMap((active) =>
@@ -64,7 +60,7 @@ export default function RoadmapExplorer({
         d: edges
           .filter(
             ({ source, target }) =>
-              byId.get(source)?.lane === lane && (source === selected || target === selected) === active,
+              byId.get(source)?.strand === lane && (source === selected || target === selected) === active,
           )
           .map(({ source, target }) => {
             const y1 = (positions.get(source) ?? 0) * ROW + ROW / 2
@@ -121,20 +117,21 @@ export default function RoadmapExplorer({
     const link = (event.target as Element).closest<HTMLAnchorElement>("a[href]")
     if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     if (link.origin !== location.origin || link.pathname !== location.pathname) return
-    const id = hashId(link.hash)
-    if (!id || !byId.has(id)) return
+    const target = resolveRoadmapHash(link.hash, segments)
+    if (!target) return
     event.preventDefault()
-    choose(id, link.hash)
-    if (link.hash.includes("--"))
+    choose(target.id, target.hash)
+    if (target.hash.includes("--"))
       requestAnimationFrame(() =>
-        document.getElementById(decodeURIComponent(link.hash.slice(1)))?.scrollIntoView({ block: "nearest" }),
+        document.getElementById(decodeURIComponent(target.hash.slice(1)))?.scrollIntoView({ block: "nearest" }),
       )
   }
 
   useEffect(() => {
     function restore() {
-      const id = hashId(location.hash)
-      const match = segments.find((segment) => segment.id === id)
+      const target = resolveRoadmapHash(location.hash, segments)
+      const match = segments.find((segment) => segment.id === target?.id)
+      if (target && location.hash !== target.hash) history.replaceState(null, "", target.hash)
       setSelected(match?.id ?? segments[0].id)
       if (match) {
         const mobile = window.matchMedia("(width < 850px)").matches
@@ -142,6 +139,8 @@ export default function RoadmapExplorer({
         requestAnimationFrame(() => {
           if (mobile) columns.current?.scrollIntoView({ block: "start" })
           else reveal(match.id)
+          if (target?.hash.includes("--"))
+            document.getElementById(target.hash.slice(1))?.scrollIntoView({ block: "nearest" })
         })
       }
     }
@@ -169,8 +168,7 @@ export default function RoadmapExplorer({
     let completed = new Set<string>()
     try {
       const stored: unknown = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? "[]")
-      if (Array.isArray(stored))
-        completed = new Set(stored.filter((value): value is string => typeof value === "string"))
+      completed = migrateRoadmapProgress(stored, segments)
       localStorage.setItem(PROGRESS_KEY, JSON.stringify([...completed]))
     } catch {
       // Keep the checklist usable when browser storage is unavailable.
@@ -198,20 +196,18 @@ export default function RoadmapExplorer({
     }
     container.addEventListener("change", save)
     return () => container.removeEventListener("change", save)
-  }, [])
+  }, [segments])
 
   return (
     <section
       data-roadmap
-      className="group/roadmap text-foreground-0 [&_button]:cursor-pointer [&_:is(button,a,input,summary):focus-visible]:outline-2 [&_:is(button,a,input,summary):focus-visible]:outline-accent-1 [&_:is(button,a,input,summary):focus-visible]:-outline-offset-2"
+      style={{ "--ring": color(current.id) } as CSSProperties}
+      className="group/roadmap text-foreground-0 [&_button]:cursor-pointer [&_:is(button,a,input,summary):focus-visible]:outline-2 [&_:is(button,a,input,summary):focus-visible]:outline-ring [&_:is(button,a,input,summary):focus-visible]:-outline-offset-2"
       aria-label="Physics curriculum explorer"
       data-mobile-view={mobileView}
     >
-      <header
-        data-roadmap-header
-        className="grid grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] items-start gap-12 border-b border-border px-15 py-10 max-[1100px]:gap-8 max-[1100px]:p-8 max-[850px]:grid-cols-1 max-[850px]:gap-6 max-[850px]:p-6"
-      >
-        <div className="[&>p]:text-base [&>p]:leading-7 [&>p]:text-foreground-2">
+      <header data-roadmap-header className="border-b border-border px-15 py-10 max-[1100px]:p-8 max-[850px]:p-6">
+        <div className="max-w-2xl [&>p]:text-base [&>p]:leading-7 [&>p]:text-foreground-2">
           <p className="font-mono text-[.7rem]! leading-[1.75] tracking-[.12em] text-accent-1! uppercase">
             A path through physics
           </p>
@@ -225,64 +221,6 @@ export default function RoadmapExplorer({
           <p className="mt-3 text-[.8rem]! leading-[1.75] text-foreground-3!">
             {segments.length} segments · Class 10 starting point · Curriculum draft
           </p>
-        </div>
-        <div className="min-w-0 self-center">
-          <div className="relative">
-            <label htmlFor="roadmap-search" className="mb-[.6rem] block font-mono text-xs text-foreground-2">
-              Find a topic
-            </label>
-            <input
-              id="roadmap-search"
-              className="w-full rounded-[.35rem] border border-input bg-background-0 px-[.9rem] py-[.7rem] text-sm"
-              type="search"
-              placeholder="Try calculus, waves, or Q2"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              aria-controls={needle ? "roadmap-results" : undefined}
-            />
-            {needle && (
-              <div
-                id="roadmap-results"
-                className="absolute inset-x-0 top-full z-30 mt-2 max-h-64 overflow-y-auto border border-border bg-background-0 shadow-[0_8px_24px_#0002]"
-              >
-                <p role="status" className="px-3 py-2 text-xs text-foreground-2">
-                  {matches.length} {matches.length === 1 ? "segment" : "segments"} found
-                </p>
-                {matches.map((segment) => (
-                  <button
-                    type="button"
-                    key={segment.id}
-                    className="block w-full px-3 py-[.65rem] text-left text-[.85rem] hover:bg-background-2"
-                    onClick={() => {
-                      choose(segment.id)
-                      setQuery("")
-                    }}
-                  >
-                    <span className="text-accent-1">{segment.id}</span> {segment.title}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <details className="pt-[.8rem] text-[.8rem] leading-[1.7] text-foreground-2 [&>p]:mt-[.8rem]">
-            <summary className="cursor-pointer text-foreground-0">How to read this map</summary>
-            <p>
-              Read downwards. Curves connect a segment to the material it uses. Select a row to highlight its
-              connections. The path follows the page scroll; the explanation stays beside it.
-            </p>
-            <ul className="mt-[.8rem] grid grid-cols-2 gap-1">
-              {Object.values(roadmapLanes).map((lane) => (
-                <li key={lane.label}>
-                  <i className="mr-2 inline-block size-2 rounded-full" style={{ background: lane.color }} />
-                  {lane.label}
-                </li>
-              ))}
-            </ul>
-            <p>
-              Core: develop working fluency. Breadth: explore a branch. Bridge: enter an advanced framework. Synthesis:
-              bring subjects together.
-            </p>
-          </details>
         </div>
       </header>
       <div data-roadmap-columns className="grid scroll-mt-16 grid-cols-2 items-start max-[850px]:block" ref={columns}>
@@ -304,7 +242,7 @@ export default function RoadmapExplorer({
             aria-pressed={mobileView === "details"}
             onClick={() => setMobileView("details")}
           >
-            {current.id} · Segment details
+            Segment details
           </button>
         </nav>
         <div
@@ -338,67 +276,70 @@ export default function RoadmapExplorer({
               </Button>
             </div>
           </div>
-          <div className="relative" style={{ height: segments.length * ROW }}>
-            <svg
-              data-roadmap-graph
-              className="pointer-events-none absolute top-0 left-2.5 max-[450px]:left-0 max-[450px]:origin-left max-[450px]:scale-x-75"
-              width="148"
-              height={segments.length * ROW}
-              aria-hidden="true"
+          <div className="overflow-x-auto">
+            <div
+              className="relative min-w-[calc(var(--roadmap-gutter)+12rem)] [--roadmap-gutter:var(--roadmap-full-gutter)] max-[450px]:[--roadmap-gutter:calc(var(--roadmap-full-gutter)*.7)]"
+              style={{ height: segments.length * ROW, "--roadmap-full-gutter": `${graphWidth}px` } as CSSProperties}
             >
-              {edgePaths.map(({ lane, active, d }) => (
-                <path
-                  key={`${lane}-${active}`}
-                  d={d}
-                  fill="none"
-                  stroke={`color-mix(in srgb, ${roadmapLanes[lane as keyof typeof roadmapLanes].color} ${active ? 95 : 13}%, var(--background-0))`}
-                  strokeWidth={active ? 2.5 : 1.2}
-                />
-              ))}
-              {segments.map((segment, index) => (
-                <circle
-                  key={segment.id}
-                  cx={x(segment.id)}
-                  cy={index * ROW + ROW / 2}
-                  r={segment.id === selected ? 7 : 4}
-                  fill="var(--background-0)"
-                  stroke={color(segment.id)}
-                  strokeWidth={segment.id === selected ? 3 : 2}
-                />
-              ))}
-            </svg>
-            <ol data-roadmap-rows className="m-0 list-none p-0 pl-40 max-[450px]:pl-27.5">
-              {segments.map((segment, index) => (
-                <li key={segment.id} style={{ height: ROW }}>
-                  <button
-                    type="button"
-                    id={anchor(segment.id)}
-                    aria-pressed={selected === segment.id}
-                    aria-controls="roadmap-detail"
-                    onClick={() => choose(segment.id)}
-                    className="group/segment flex h-full w-full scroll-mt-32 flex-col justify-center gap-2 border-b border-l-2 border-b-border border-l-transparent px-4 py-3 text-left hover:bg-background-1 aria-pressed:border-l-(--segment-color) aria-pressed:bg-(--segment-color)/8 max-[450px]:px-[.65rem] max-[450px]:py-2"
-                    data-connected={connected.has(segment.id)}
-                    style={{ "--segment-color": color(segment.id) } as CSSProperties}
-                  >
-                    <span
-                      data-roadmap-row-meta
-                      className="flex justify-between gap-2 font-mono text-[.65rem] text-foreground-3 group-data-[connected=true]/segment:text-(--segment-color) max-[450px]:text-[.6rem]"
+              <svg
+                data-roadmap-graph
+                className="pointer-events-none absolute top-0 left-2.5 max-[450px]:left-0 max-[450px]:origin-left max-[450px]:scale-x-70"
+                width={graphWidth - 12}
+                height={segments.length * ROW}
+                aria-hidden="true"
+              >
+                {edgePaths.map(({ lane, active, d }) => (
+                  <path
+                    key={`${lane}-${active}`}
+                    d={d}
+                    fill="none"
+                    stroke={`color-mix(in srgb, ${strandById.get(lane)?.color} ${active ? 95 : 13}%, var(--background-0))`}
+                    strokeWidth={active ? 2.5 : 1.2}
+                  />
+                ))}
+                {segments.map((segment, index) => (
+                  <circle
+                    key={segment.id}
+                    cx={x(segment.id)}
+                    cy={index * ROW + ROW / 2}
+                    r={segment.id === selected ? 7 : 4}
+                    fill="var(--background-0)"
+                    stroke={color(segment.id)}
+                    strokeWidth={segment.id === selected ? 3 : 2}
+                  />
+                ))}
+              </svg>
+              <ol data-roadmap-rows className="m-0 list-none p-0 pl-(--roadmap-gutter)">
+                {segments.map((segment) => (
+                  <li key={segment.id} style={{ height: ROW }}>
+                    <button
+                      type="button"
+                      id={anchor(segment.id)}
+                      aria-pressed={selected === segment.id}
+                      aria-controls="roadmap-detail"
+                      onClick={() => choose(segment.id)}
+                      className="group/segment flex h-full w-full scroll-mt-32 flex-col justify-center gap-2 border-b border-l-2 border-b-border border-l-transparent px-4 py-3 text-left hover:bg-background-1 aria-pressed:border-l-(--segment-color) aria-pressed:bg-(--segment-color)/8 max-[450px]:px-[.65rem] max-[450px]:py-2"
+                      data-connected={connected.has(segment.id)}
+                      style={{ "--segment-color": color(segment.id), "--ring": color(segment.id) } as CSSProperties}
                     >
-                      <span>
-                        {String(index + 1).padStart(2, "0")} / {segment.id}
+                      <span
+                        data-roadmap-row-meta
+                        className="flex justify-between gap-2 font-mono text-[.65rem] text-foreground-3 group-data-[connected=true]/segment:text-(--segment-color) max-[450px]:text-[.6rem]"
+                      >
+                        <span className="min-w-0 truncate">{segment.subject}</span>
+                        <span className="shrink-0">{segment.scope}</span>
                       </span>
-                      <span>{segment.scope}</span>
-                    </span>
-                    <span
-                      data-roadmap-row-title
-                      className="text-[.85rem] leading-[1.35] text-foreground-1 group-aria-pressed/segment:font-semibold group-aria-pressed/segment:text-foreground-0 max-[450px]:text-[.8rem]"
-                    >
-                      {segment.title}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ol>
+                      <span
+                        data-roadmap-row-title
+                        className="text-[.85rem] leading-[1.35] text-foreground-1 group-aria-pressed/segment:font-semibold group-aria-pressed/segment:text-foreground-0 max-[450px]:text-[.8rem]"
+                      >
+                        {segment.title}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </div>
         <aside
@@ -415,9 +356,7 @@ export default function RoadmapExplorer({
               className="flex min-w-0 flex-1 items-center justify-between gap-3 px-6 py-3 [&>span]:text-foreground-2"
             >
               <h2>In this segment</h2>
-              <span aria-live="polite">
-                {current.id} · {current.scope}
-              </span>
+              <span aria-live="polite">{current.scope}</span>
             </div>
             <div
               data-roadmap-heading-actions
@@ -437,7 +376,7 @@ export default function RoadmapExplorer({
           </div>
           <div
             data-roadmap-detail-body
-            className="min-h-0 overflow-y-auto overscroll-contain px-10 pt-8 pb-12 scrollbar-gutter-stable focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:-outline-offset-2 max-[1100px]:p-6 max-[850px]:overflow-visible max-[850px]:p-6"
+            className="min-h-0 overflow-y-auto overscroll-contain px-10 pt-8 pb-12 scrollbar-gutter-stable focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 max-[1100px]:p-6 max-[850px]:overflow-visible max-[850px]:p-6"
             ref={body}
           >
             {/* Links and checkboxes in the server-rendered MDX retain native keyboard behaviour. */}

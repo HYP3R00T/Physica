@@ -14,16 +14,16 @@ const { Content } = await render(entry)
 ---
 
 <article
-  id={`panel-${entry.data.segment.toLowerCase()}`}
-  data-segment-panel={entry.data.segment}
+  id={`panel-${entry.id.toLowerCase()}`}
+  data-segment-panel={entry.id}
   hidden={!initial}
-  aria-labelledby={`title-${entry.data.segment.toLowerCase()}`}
+  aria-labelledby={`title-${entry.id.toLowerCase()}`}
   tabindex="-1"
 >
   <header class="prose mb-8">
-    <h1 id={`title-${entry.data.segment.toLowerCase()}`}>{entry.data.title}</h1>
+    <h1 id={`title-${entry.id.toLowerCase()}`}>{entry.data.title}</h1>
   </header>
-  <RoadmapPrerequisites segmentId={entry.data.segment} prerequisites={prerequisites} />
+  <RoadmapPrerequisites segmentId={entry.id} prerequisites={prerequisites} />
   <div class="prose mt-0 [&_.contains-task-list]:list-none [&_.contains-task-list]:p-0 [&_.task-list-item]:relative [&_.task-list-item]:mb-[.85rem] [&_.task-list-item]:pl-[1.6rem] [&_.task-list-item_input]:absolute [&_.task-list-item_input]:top-[calc((1lh-0.875rem)/2+1px)] [&_.task-list-item_input]:left-0 [&_.task-list-item_input]:size-3.5 [&_.task-list-item_input]:cursor-pointer [&_.task-list-item_input]:p-0 [&_.task-list-item_input]:appearance-none
     [&_.task-list-item_input]:rounded-sm
     [&_.task-list-item_input]:border
@@ -38,9 +38,9 @@ const { Content } = await render(entry)
     [&_.task-list-item_input:focus-visible]:ring-ring/50
     [&_.task-list-item_input]:after:absolute
     [&_.task-list-item_input]:after:top-px
-    [&_.task-list-item_input]:after:left-[3px]
+    [&_.task-list-item_input]:after:left-0.75
     [&_.task-list-item_input]:after:h-2
-    [&_.task-list-item_input]:after:w-[5px]
+    [&_.task-list-item_input]:after:w-1.25
     [&_.task-list-item_input]:after:rotate-45
     [&_.task-list-item_input]:after:border-r-2
     [&_.task-list-item_input]:after:border-b-2

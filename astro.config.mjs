@@ -29,6 +29,7 @@ const rehypePlugins = [
       },
     },
   ],
+  // Scope roadmap heading links to each segment’s descriptive slug.
   rehypeRoadmapContent,
 ]
 
