@@ -1,5 +1,6 @@
 import type { CSSProperties, MouseEvent, ReactNode } from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { Button } from "@/components/ui/button"
 import type { RoadmapSegment } from "@/lib/roadmap"
 import { roadmapLanes } from "@/lib/roadmap-lanes"
 
@@ -308,15 +309,16 @@ export default function RoadmapExplorer({
               data-roadmap-heading-actions
               className="flex shrink-0 items-center justify-center border-l border-border px-3 py-2"
             >
-              <button
+              <Button
                 type="button"
-                className="relative inline-flex size-8 items-center justify-center rounded border border-border bg-background-1 text-accent-1 transition-[background-color,border-color] duration-150 hover:border-accent-1 hover:bg-background-2"
+                variant="ghost"
+                size="icon-sm"
                 aria-label="Scroll to top of page"
                 title="Scroll to top of page"
                 onClick={() => scrollToTop("page")}
               >
                 <UpArrow />
-              </button>
+              </Button>
             </div>
           </div>
           <div className="relative" style={{ height: segments.length * ROW }}>
@@ -411,15 +413,16 @@ export default function RoadmapExplorer({
               data-roadmap-heading-actions
               className="flex shrink-0 items-center justify-center border-l border-border px-3 py-2"
             >
-              <button
+              <Button
                 type="button"
-                className="relative inline-flex size-8 items-center justify-center rounded border border-border bg-background-1 text-accent-1 transition-[background-color,border-color] duration-150 hover:border-accent-1 hover:bg-background-2"
+                variant="ghost"
+                size="icon-sm"
                 aria-label="Scroll to top of segment"
                 title="Scroll to top of segment"
                 onClick={() => scrollToTop("segment")}
               >
                 <UpArrow />
-              </button>
+              </Button>
             </div>
           </div>
           <div
