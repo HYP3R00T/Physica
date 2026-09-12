@@ -11,6 +11,7 @@ import rehypeKatex from "rehype-katex"
 import remarkMath from "remark-math"
 import rehypeCodeBlocks from "./src/lib/rehype-code-blocks.mjs"
 import rehypeEquationReferences from "./src/lib/rehype-equation-references.mjs"
+import rehypeRoadmapContent from "./src/lib/rehype-roadmap-content.mjs"
 
 /** @type {import("@astrojs/markdown-remark").RemarkPlugins} */
 const remarkPlugins = [remarkMath]
@@ -28,6 +29,7 @@ const rehypePlugins = [
       },
     },
   ],
+  rehypeRoadmapContent,
 ]
 
 export default defineConfig({

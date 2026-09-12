@@ -13,6 +13,7 @@ export interface HeadSEOProps {
 }
 
 export interface BaseLayoutProps extends HeadSEOProps {
+  showFooterBorder?: boolean
   layout?: "default" | "focused" | "notes"
 }
 

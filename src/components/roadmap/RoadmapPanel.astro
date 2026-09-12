@@ -1,0 +1,28 @@
+---
+import { render } from "astro:content"
+import RoadmapPrerequisites from "./RoadmapPrerequisites.astro"
+import type { RoadmapEntry, RoadmapSegment } from "@/lib/roadmap"
+
+interface Props {
+  entry: RoadmapEntry
+  initial: boolean
+  prerequisites: RoadmapSegment[]
+}
+
+const { entry, initial, prerequisites } = Astro.props
+const { Content } = await render(entry)
+---
+
+<article
+  id={`panel-${entry.data.segment.toLowerCase()}`}
+  data-segment-panel={entry.data.segment}
+  hidden={!initial}
+  aria-labelledby={`title-${entry.data.segment.toLowerCase()}`}
+  tabindex="-1"
+>
+  <header class="prose mb-8">
+    <h1 id={`title-${entry.data.segment.toLowerCase()}`}>{entry.data.title}</h1>
+  </header>
+  <RoadmapPrerequisites segmentId={entry.data.segment} prerequisites={prerequisites} />
+  <div class="prose mt-0 [&_.contains-task-list]:list-none [&_.contains-task-list]:p-0 [&_.task-list-item]:relative [&_.task-list-item]:mb-[.85rem] [&_.task-list-item]:pl-[1.6rem] [&_.task-list-item_input]:absolute [&_.task-list-item_input]:top-[.4rem] [&_.task-list-item_input]:left-0 [&_.task-list-item_input]:size-[.95rem] [&_.task-list-item_input]:cursor-pointer [&_.task-list-item_input]:p-0 [&_.task-list-item_input]:accent-accent-1 [&_.task-list-item:has(>input:checked)]:text-foreground-3 [&_:is(pre,table,.katex-display)]:max-w-full [&_:is(pre,table,.katex-display)]:overflow-x-auto [&_a]:wrap-anywhere"><Content /></div>
+</article>

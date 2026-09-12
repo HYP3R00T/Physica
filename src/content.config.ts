@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content"
 import { glob } from "astro/loaders"
 import { z } from "astro/zod"
+import { roadmapLanes } from "./lib/roadmap-lanes"
 
 const components = defineCollection({
   loader: glob({
@@ -35,6 +36,7 @@ const learning = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     related: z.array(z.string()).default([]),
+    roadmap: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
     created: z.coerce.date().optional(),
     updated: z.coerce.date().optional(),
@@ -42,4 +44,18 @@ const learning = defineCollection({
   }),
 })
 
-export const collections = { components, posts, learning }
+const roadmap = defineCollection({
+  loader: glob({ base: "./content/roadmap", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    segment: z.string().regex(/^[A-Z]+[1-9][0-9]*$/),
+    order: z.number().int().positive(),
+    title: z.string().min(1),
+    subject: z.string().min(1),
+    lane: z.enum(Object.keys(roadmapLanes) as [keyof typeof roadmapLanes, ...Array<keyof typeof roadmapLanes>]),
+    scope: z.enum(["Core", "Breadth", "Bridge", "Integration"]),
+    dependencies: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+})
+
+export const collections = { components, posts, learning, roadmap }

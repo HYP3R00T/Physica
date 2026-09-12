@@ -1,0 +1,30 @@
+---
+import { Icon } from "astro-icon/components"
+import type { RoadmapSegment } from "@/lib/roadmap"
+
+interface Props {
+  segmentId: string
+  prerequisites: RoadmapSegment[]
+}
+
+const { segmentId, prerequisites } = Astro.props
+const labelId = `prerequisites-${segmentId.toLowerCase()}`
+---
+
+{prerequisites.length > 0 && (
+  <nav data-roadmap-prerequisites class="prose mb-8 border-b border-border pb-6" aria-labelledby={labelId}>
+    <h2 id={labelId} class="mt-0! mb-4!">Prerequisites</h2>
+    <p class="mt-2 text-[.8rem] leading-[1.6] text-foreground-2">Cover these segments before starting this one.</p>
+    <ul class="mt-4 grid list-none gap-2 p-0">
+      {prerequisites.map(segment => (
+        <li class="m-0!">
+          <a class="grid grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-[.6rem] rounded-[.3rem] border border-border px-3 py-[.65rem] text-[.85rem] leading-[1.6] text-foreground-1! no-underline hover:border-accent-1 hover:text-accent-1!" href={`#segment-${segment.id.toLowerCase()}`}>
+            <span class="font-mono text-xs text-accent-1">{segment.id}</span>
+            <span>{segment.title}</span>
+            <Icon name="arrow-up-right" class="size-[1.1rem] shrink-0" aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}

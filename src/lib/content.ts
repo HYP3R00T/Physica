@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content"
 
 export type LearningEntry = CollectionEntry<"learning">
 
-const RESERVED_SLUGS = new Set(["404", "api", "assets", "_astro", "post", "components"])
+const RESERVED_SLUGS = new Set(["404", "api", "assets", "_astro", "post", "components", "roadmap"])
 const withoutExtension = (id: string) => id.replace(/\.(?:md|mdx)$/, "")
 const pathParts = (entry: LearningEntry) => withoutExtension(entry.id).split("/")
 

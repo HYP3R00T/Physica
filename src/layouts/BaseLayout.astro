@@ -7,7 +7,7 @@ import type { BaseLayoutProps } from "@/lib/types";
 import Footer from "@/components/core/Footer.astro";
 import CodeCopyButton from "@/components/core/CodeCopyButton.astro";
 
-const { title, description, image, imageAlt, contentType, layout = "default" } = Astro.props as BaseLayoutProps;
+const { title, description, image, imageAlt, contentType, layout = "default", showFooterBorder = layout === "notes" } = Astro.props as BaseLayoutProps;
 const frameWidth = layout === "default" ? "84rem" : "56rem";
 ---
 
@@ -33,7 +33,7 @@ const frameWidth = layout === "default" ? "84rem" : "56rem";
         </div>
       </main>
     </div>
-    <Footer showTopBorder={layout === "notes"} />
+    <Footer showTopBorder={showFooterBorder} />
     <CodeCopyButton />
   </body>
 </html>

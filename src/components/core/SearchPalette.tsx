@@ -224,7 +224,7 @@ export function SearchPalette() {
           </fieldset>
 
           <div
-            className="min-h-[min(12rem,30dvh)] flex-1 overflow-y-auto overscroll-contain p-3 [scrollbar-gutter:stable]"
+            className="min-h-[min(12rem,30dvh)] flex-1 overflow-y-auto overscroll-contain p-3 scrollbar-gutter-stable"
             role="listbox"
             aria-label="Search results"
           >
