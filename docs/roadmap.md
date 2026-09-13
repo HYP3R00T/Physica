@@ -88,11 +88,11 @@ Draw the motion before writing an equation. Explain what each axis and variable 
 Describe motion with a graph and use its slope to calculate velocity.
 ```
 
-Put reading recommendations and links directly in the body wherever they help. The panel adds the segment title as an H1 and prerequisites under an H2 above this content. The body renders directly, preserving authored heading levels.
+Keep What to study and By the end as the segment’s scope and intended outcome. Add book or chapter recommendations directly in the body when useful; a References section is optional, and empty placeholders are unnecessary. The panel adds the segment title as an H1 and prerequisites under an H2 above this content. The body renders directly, preserving authored heading levels.
 
 Markdown task lists become checkboxes. Checks are saved in the browser. Their keys use the segment slug and topic text, so rewriting a topic gives it a new key. Existing numbered keys migrate using aliases. If browser storage is unavailable, checks remain usable during the visit.
 
-Headings and equations receive segment-specific IDs to prevent collisions. Local links such as `#references` are scoped automatically. To link to another segment, use `/roadmap#segment-atoms-and-molecules`, or `/roadmap#segment-atoms-and-molecules--references` for its References heading. Old links such as `/roadmap#segment-am1` still resolve through aliases.
+Headings and equations receive segment-specific IDs to prevent collisions. Local links such as `#what-to-study` are scoped automatically. To link to another segment, use `/roadmap#segment-atoms-and-molecules`, or `/roadmap#segment-atoms-and-molecules--what-to-study` for its What to study heading. Old links such as `/roadmap#segment-am1` still resolve through aliases.
 
 When renaming a file, update dependencies that reference it and add its old slug to `aliases`. Keep previous aliases so older links and progress continue to work.
 
