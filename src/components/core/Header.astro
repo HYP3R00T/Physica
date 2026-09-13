@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { SITE, navItems } from "@data/config";
 import ModeToggle from "@/components/core/ModeToggle.astro";
 import { SearchPalette } from "@/components/core/SearchPalette";
@@ -45,10 +46,20 @@ const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact
 
     <div class="ml-auto flex shrink-0 items-center gap-2 md:gap-3 md:pr-5 lg:pr-8">
       <SearchPalette client:search />
-      <div class="hidden md:block">
+      <div class="hidden items-center md:flex">
         <ModeToggle
           className="size-10 border-0 hover:bg-transparent hover:text-foreground-0"
         />
+        <a
+          href={SITE.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View Physica source on GitHub (opens in a new tab)"
+          title="View source on GitHub"
+          class={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-10 text-foreground-2")}
+        >
+          <Icon name="github" class="size-4" aria-hidden="true" />
+        </a>
       </div>
       {
         contactItem && (
