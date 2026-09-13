@@ -200,23 +200,6 @@ export default function RoadmapExplorer({
       aria-label="Physics curriculum explorer"
       data-mobile-view={mobileView}
     >
-      <header data-roadmap-header className="border-b border-border px-15 py-10 max-[1100px]:p-8 max-[850px]:p-6">
-        <div className="max-w-2xl [&>p]:text-base [&>p]:leading-7 [&>p]:text-foreground-2">
-          <p className="font-mono text-[.7rem]! leading-[1.75] tracking-[.12em] text-accent-1! uppercase">
-            A path through physics
-          </p>
-          <h1 className="mt-4 mb-5 font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.1] font-semibold tracking-[-.035em]">
-            Follow the connections.
-          </h1>
-          <p>
-            Start with the mathematics, then follow the branches. Choose a segment to see what it covers and the notes
-            that go with it.
-          </p>
-          <p className="mt-3 text-[.8rem]! leading-[1.75] text-foreground-3!">
-            {segments.length} segments · Class 10 starting point · Curriculum draft
-          </p>
-        </div>
-      </header>
       <div data-roadmap-columns className="grid scroll-mt-16 grid-cols-2 items-start max-[850px]:block" ref={columns}>
         <nav
           className="hidden max-[850px]:sticky max-[850px]:top-16 max-[850px]:z-20 max-[850px]:flex max-[850px]:border-b max-[850px]:border-border max-[850px]:bg-background-0"
