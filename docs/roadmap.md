@@ -2,6 +2,8 @@
 
 The page lives at `/roadmap`. Each file in `content/roadmap/` is a segment. Its filename gives it a stable identity, its frontmatter defines its relationships, and its Markdown or MDX body provides the explanation and checklist.
 
+Browse the [segment index](roadmap-index.md) to review all segments by strand, including drafts and their prerequisites. Regenerate it with `pnpm docs:roadmap` after changing the roadmap files.
+
 ## Add a segment
 
 Use a descriptive filename, such as `atomic-spectra.mdx`:
