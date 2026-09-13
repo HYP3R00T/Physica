@@ -9,7 +9,7 @@ interface Props {
 const { navItems, contactItem } = Astro.props as Props;
 
 import { Icon } from "astro-icon/components";
-import { ModeToggle } from "@/components/core/ModeToggle";
+import ModeToggle from "@/components/core/ModeToggle.astro";
 
 const pathname = Astro.url.pathname;
 const isCurrent = (href: string) => href.startsWith("/") && (href === "/" ? pathname === href : pathname.startsWith(href));
@@ -48,7 +48,7 @@ const isCurrent = (href: string) => href.startsWith("/") && (href === "/" ? path
     </nav>
 
     <div class="grid grid-cols-[4rem_minmax(0,1fr)] divide-x divide-border border-t border-border">
-      <ModeToggle client:load className="size-16" />
+      <ModeToggle className="size-16" />
       {
         contactItem && (
           <a

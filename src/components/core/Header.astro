@@ -1,8 +1,8 @@
 ---
 import { SITE, navItems } from "@data/config";
-import { ModeToggle } from "@/components/core/ModeToggle";
+import ModeToggle from "@/components/core/ModeToggle.astro";
 import { SearchPalette } from "@/components/core/SearchPalette";
-import AnimatedText from "@/components/common/AnimatedText.tsx";
+import AnimatedText from "@/components/common/AnimatedText.astro";
 import MobileMenuToggle from "@/components/core/MobileMenuToggle.astro";
 import MobileMenuPanel from "@/components/core/MobileMenuPanel.astro";
 import { buttonVariants } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact
   >
     <div class="flex min-w-0 items-center gap-8 pl-5 lg:gap-12 lg:pl-8">
       <a href="/" class="flex shrink-0 flex-row font-mono text-base md:text-lg" aria-label={`${SITE.title} home`}>
-        <AnimatedText client:load text={SITE.title.toLowerCase()} className="text-accent-1" auto={true} hover={true} />
+        <AnimatedText text={SITE.title.toLowerCase()} className="text-accent-1" auto={true} hover={true} />
       </a>
       <nav aria-label="Primary navigation" class="hidden items-center gap-5 md:flex">
         {primaryNavItems.map((item) => (
@@ -44,10 +44,9 @@ const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact
     </div>
 
     <div class="ml-auto flex shrink-0 items-center gap-2 md:gap-3 md:pr-5 lg:pr-8">
-      <SearchPalette client:load />
+      <SearchPalette client:search />
       <div class="hidden md:block">
         <ModeToggle
-          client:load
           className="size-10 border-0 hover:bg-transparent hover:text-foreground-0"
         />
       </div>

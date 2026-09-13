@@ -1,0 +1,27 @@
+---
+interface Props { text: string; auto?: boolean; hover?: boolean; className?: string }
+const { text, auto = false, hover = true, className } = Astro.props
+---
+<div data-animated-text data-value={text} data-auto={String(auto)} data-hover={String(hover)} class={className}>{text}</div>
+<script>
+  const timers = new Map<HTMLElement, ReturnType<typeof setInterval>>()
+  function play(node: HTMLElement) {
+    clearInterval(timers.get(node))
+    const target = node.dataset.value ?? ""
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
+    let iteration = 0
+    const timer = setInterval(() => {
+      node.textContent = target.split("").map((letter, i) => i < iteration ? letter : letters[Math.floor(Math.random() * letters.length)]).join("")
+      if (iteration >= target.length) { clearInterval(timer); timers.delete(node) }
+      iteration += 1 / 3
+    }, 30)
+    timers.set(node, timer)
+  }
+  document.addEventListener("mouseover", (event) => {
+    if (event.target instanceof HTMLElement && event.target.matches('[data-animated-text][data-hover="true"]')) play(event.target)
+  })
+  document.addEventListener("astro:page-load", () => {
+    document.querySelectorAll<HTMLElement>('[data-animated-text][data-auto="true"]').forEach(play)
+  })
+  document.addEventListener("astro:before-swap", () => { timers.forEach(clearInterval); timers.clear() })
+</script>

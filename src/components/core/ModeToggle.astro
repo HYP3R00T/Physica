@@ -1,0 +1,36 @@
+---
+import { Sun, Moon } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+interface Props { className?: string }
+---
+<Button data-theme-toggle type="button" variant="ghost" size="icon" className={cn("relative text-foreground-2", Astro.props.className)} aria-label="Switch theme" title="Switch theme">
+  <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+  <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+  <span class="sr-only" data-theme-label>Switch theme</span>
+</Button>
+<script>
+  const media = window.matchMedia("(prefers-color-scheme: dark)")
+  function syncTheme() {
+    const saved = localStorage.getItem("theme")
+    const dark = saved === "dark" || (saved !== "light" && media.matches)
+    document.documentElement.classList.toggle("dark", dark)
+    document.documentElement.style.colorScheme = dark ? "dark" : "light"
+    const label = `Switch to ${dark ? "light" : "dark"} theme`
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach(button => {
+      button.setAttribute("aria-label", label)
+      button.title = label
+      const text = button.querySelector("[data-theme-label]")
+      if (text) text.textContent = label
+    })
+  }
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element) || !event.target.closest("[data-theme-toggle]")) return
+    localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "light" : "dark")
+    syncTheme()
+  })
+  media.addEventListener("change", syncTheme)
+  window.addEventListener("storage", event => { if (event.key === "theme") syncTheme() })
+  document.addEventListener("astro:after-swap", syncTheme)
+  syncTheme()
+</script>

@@ -49,6 +49,14 @@ export default defineConfig({
   },
 
   integrations: [
+    {
+      name: "search-on-interaction",
+      hooks: {
+        "astro:config:setup": ({ addClientDirective }) => {
+          addClientDirective({ name: "search", entrypoint: "./src/directives/search.ts" })
+        },
+      },
+    },
     icon({
       iconDir: "src/assets/icons",
       svgoOptions: {

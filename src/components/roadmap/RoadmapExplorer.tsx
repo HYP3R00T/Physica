@@ -1,10 +1,10 @@
 import type { CSSProperties, MouseEvent, ReactNode } from "react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import type { RoadmapSegment, RoadmapStrand } from "@/lib/roadmap"
+import { getRoadmapEdges, ROADMAP_ROW_HEIGHT as ROW } from "@/lib/roadmap-geometry"
 import { migrateRoadmapProgress, resolveRoadmapHash } from "@/lib/roadmap-identity"
 
-const ROW = 96
 const anchor = (id: string) => `segment-${id.toLowerCase()}`
 const PROGRESS_KEY = "physica.roadmap.checklist.v1"
 
@@ -40,14 +40,13 @@ export default function RoadmapExplorer({
   const panels = useRef<HTMLDivElement>(null)
   const body = useRef<HTMLDivElement>(null)
   const columns = useRef<HTMLDivElement>(null)
+  const edges = useMemo(() => getRoadmapEdges(segments, strands), [segments, strands])
   const lanes = strands.map(({ id }) => id)
   const strandById = new Map(strands.map((strand) => [strand.id, strand]))
   const graphWidth = lanes.length * 15 + 25
-  const positions = new Map(segments.map((segment, index) => [segment.id, index]))
   const current = segments.find((segment) => segment.id === selected) ?? segments[0]
   const children = segments.filter((segment) => segment.dependencies.includes(current.id))
   const connected = new Set([current.id, ...current.dependencies, ...children.map((segment) => segment.id)])
-  const edges = segments.flatMap((target) => target.dependencies.map((source) => ({ source, target: target.id })))
   const byId = new Map(segments.map((segment) => [segment.id, segment]))
   const color = (id: string) => strandById.get(byId.get(id)?.strand ?? "")?.color ?? "var(--foreground-2)"
   const x = (id: string) => 12 + lanes.indexOf(byId.get(id)?.strand ?? "") * 15
@@ -59,15 +58,10 @@ export default function RoadmapExplorer({
         active,
         d: edges
           .filter(
-            ({ source, target }) =>
-              byId.get(source)?.strand === lane && (source === selected || target === selected) === active,
+            ({ source, target, lane: edgeLane }) =>
+              edgeLane === lane && (source === selected || target === selected) === active,
           )
-          .map(({ source, target }) => {
-            const y1 = (positions.get(source) ?? 0) * ROW + ROW / 2
-            const y2 = (positions.get(target) ?? 0) * ROW + ROW / 2
-            const bend = Math.min(48, (y2 - y1) / 2)
-            return `M ${x(source)} ${y1} L ${x(source)} ${y2 - bend} C ${x(source)} ${y2 - bend / 2}, ${x(target)} ${y2 - bend / 2}, ${x(target)} ${y2}`
-          })
+          .map(({ d }) => d)
           .join(" "),
       })),
     )

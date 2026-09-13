@@ -46,6 +46,11 @@ export function SearchPalette() {
   const input = React.useRef<HTMLInputElement>(null)
 
   React.useEffect(() => {
+    const requested = document.querySelector("[data-search-requested]")
+    if (requested) {
+      requested.removeAttribute("data-search-requested")
+      setOpen(true)
+    }
     setModifierKey(/Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl")
 
     const onKeyDown = (event: KeyboardEvent) => {
