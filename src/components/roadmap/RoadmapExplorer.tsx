@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import type { RoadmapSegment, RoadmapStrand } from "@/lib/roadmap"
 import { filterRoadmap, type RoadmapFilter } from "@/lib/roadmap-domain"
-import { getRoadmapEdges, ROADMAP_ROW_HEIGHT as ROW } from "@/lib/roadmap-geometry"
+import { getRoadmapLayout, ROADMAP_ROW_HEIGHT as ROW } from "@/lib/roadmap-geometry"
 import { readRoadmapProgress, resolveRoadmapHash } from "@/lib/roadmap-identity"
 
 const anchor = (id: string) => `segment-${id.toLowerCase()}`
@@ -49,16 +49,19 @@ export default function RoadmapExplorer({
     () => strands.filter((strand) => visibleSegments.some((segment) => segment.strand === strand.id)),
     [strands, visibleSegments],
   )
-  const edges = useMemo(() => getRoadmapEdges(visibleSegments, visibleStrands), [visibleSegments, visibleStrands])
+  const { edges, nodeX, laneCount } = useMemo(
+    () => getRoadmapLayout(visibleSegments, visibleStrands),
+    [visibleSegments, visibleStrands],
+  )
   const lanes = visibleStrands.map(({ id }) => id)
   const strandById = new Map(strands.map((strand) => [strand.id, strand]))
-  const graphWidth = lanes.length * 15 + 25
+  const graphWidth = laneCount * 15 + 25
   const current = segments.find((segment) => segment.id === selected) ?? segments[0]
   const children = segments.filter((segment) => segment.dependencies.includes(current.id))
   const connected = new Set([current.id, ...current.dependencies, ...children.map((segment) => segment.id)])
   const byId = new Map(segments.map((segment) => [segment.id, segment]))
   const color = (id: string) => strandById.get(byId.get(id)?.strand ?? "")?.color ?? "var(--foreground-2)"
-  const x = (id: string) => 12 + lanes.indexOf(byId.get(id)?.strand ?? "") * 15
+  const x = (id: string) => nodeX.get(id) ?? 12
 
   useEffect(() => {
     const scroller = graphScroller.current
