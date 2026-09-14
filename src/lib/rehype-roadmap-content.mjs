@@ -4,7 +4,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 export default function rehypeRoadmapContent() {
   return (tree, file) => {
     const path = String(file.path ?? "").replaceAll("\\", "/")
-    const match = path.match(/\/content\/roadmap\/([a-z0-9]+(?:-[a-z0-9]+)*)\.mdx?$/i)
+    const match = path.match(/\/content\/roadmap\/(?:mathematics|physics)\/([a-z0-9]+(?:-[a-z0-9]+)*)\.mdx?$/i)
     if (!match) return
     rehypeHeadingIds()(tree, file)
     const prefix = `segment-${match[1].toLowerCase()}--`

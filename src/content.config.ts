@@ -1,6 +1,7 @@
 import { defineCollection } from "astro:content"
 import { glob } from "astro/loaders"
 import { z } from "astro/zod"
+import { roadmapFileIdentity } from "./lib/roadmap-domain"
 
 const components = defineCollection({
   loader: glob({
@@ -47,12 +48,20 @@ const learning = defineCollection({
 })
 
 const roadmap = defineCollection({
-  loader: glob({ base: "./content/roadmap", pattern: "**/*.{md,mdx}" }),
+  loader: glob({
+    base: "./content/roadmap",
+    pattern: "**/*.{md,mdx}",
+    generateId: ({ entry, data }) => {
+      const { id, domain } = roadmapFileIdentity(entry)
+      data.domain = domain
+      return id
+    },
+  }),
   schema: z.object({
     title: z.string().min(1),
+    domain: z.enum(["mathematics", "physics"]),
     subject: z.string().min(1).optional(),
     strand: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    aliases: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([]),
     scope: z.enum(["Core", "Breadth", "Bridge", "Integration"]),
     dependencies: z.array(z.string()).default([]),
     draft: z.boolean().default(false),

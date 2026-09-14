@@ -622,3 +622,8 @@ body[data-focus-mode="true"] .focus-mode-only {
     letter-spacing: -0.025em;
   }
 }
+
+/* Match KaTeX's unlayered stylesheet without changing its internal script sizes. */
+.prose .katex:not(.katex-display > .katex) {
+  font-size: 1.05em;
+}
