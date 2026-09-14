@@ -21,6 +21,7 @@ export async function getRoadmap() {
     return {
       ...metadata,
       id,
+      strand: `${data.domain}/${data.strand}`,
       subject: data.subject ?? data.strand.replaceAll("-", " ").replace(/^./, (letter) => letter.toUpperCase()),
     }
   })

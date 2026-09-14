@@ -1,46 +1,115 @@
 # Roadmap segment index
 
-Segments are grouped by strand in dependency order, including drafts. Indented names are direct prerequisites, which may belong to other strands.
+Segments are grouped by domain and strand in dependency order, including drafts. Indented names are direct prerequisites, which may belong to other domains or strands.
 
 Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 
 ## Mathematics
 
-- Functions, trigonometry and vectors
-- Calculus for motion and accumulation
-  - Functions, trigonometry and vectors
-- Complex numbers, linear algebra and differential equations
-  - Calculus for motion and accumulation
-- Multivariable calculus and variational methods
-  - Complex numbers, linear algebra and differential equations
-- Probability and statistical methods
-  - Complex numbers, linear algebra and differential equations
-- Vector calculus and fields
-  - Multivariable calculus and variational methods
-- Transforms and boundary-value methods
-  - Vector calculus and fields
-  - Wave propagation and sound
-- Mathematics of quantum states
-  - Transforms and boundary-value methods
-  - Probability and statistical methods
-- Geometry for gravitation
+### Foundations
+
+- Sets, relations and functions
+
+### Algebra
+
+- Algebra
+  - Sets, relations and functions
+- Matrices and determinants
+  - Algebra
+- Complex numbers and complex exponentials
+  - Trigonometry
+- Linear algebra
+  - Matrices and determinants
+  - Vectors
+  - Complex numbers and complex exponentials
+- Groups and symmetry
+  - Linear algebra
+- Hilbert spaces and operators
+  - Linear algebra
+  - Partial differential equations and boundary-value problems
+  - Probability distributions and statistical methods
+
+### Probability and statistics
+
+- Probability and statistics
+  - Algebra
+- Probability distributions and statistical methods
+  - Probability and statistics
+  - Multivariable calculus
+
+### Geometry and vectors
+
+- Trigonometry
+  - Algebra
+- Analytical geometry
+  - Trigonometry
+- Vectors
+  - Analytical geometry
+- Tensors
+  - Linear algebra
+  - Multivariable calculus
+- Differential geometry for gravitation
+  - Tensors
   - Vector calculus and fields
   - Relativistic dynamics and electromagnetism
-- Symmetry and advanced analytic methods
-  - Mathematics of quantum states
-  - Analytical mechanics and normal modes
-  - Angular momentum, symmetry and composite systems
-  - Field energy and electromagnetic waves
 
-## Methods
+### Calculus and analysis
+
+- Differential calculus
+  - Analytical geometry
+- Integral calculus
+  - Differential calculus
+- Sequences, series and approximations
+  - Integral calculus
+- Multivariable calculus
+  - Integral calculus
+  - Vectors
+  - Sequences, series and approximations
+  - Matrices and determinants
+- Calculus of variations
+  - Multivariable calculus
+  - Linear differential equations
+- Complex analysis
+  - Complex numbers and complex exponentials
+  - Multivariable calculus
+  - Sequences, series and approximations
+- Vector calculus and fields
+  - Multivariable calculus
+- Asymptotic and perturbation methods
+  - Complex analysis
+  - Linear differential equations
+  - Sequences, series and approximations
+- Fourier and Laplace transforms
+  - Complex analysis
+  - Linear differential equations
+- Special functions
+  - Linear differential equations
+  - Complex analysis
+
+### Differential equations
+
+- Introductory differential equations
+  - Integral calculus
+- Linear differential equations
+  - Introductory differential equations
+  - Linear algebra
+- Partial differential equations and boundary-value problems
+  - Vector calculus and fields
+  - Fourier and Laplace transforms
+  - Special functions
+
+## Physics
+
+### Methods
 
 - Measurement and physical reasoning
-  - Calculus for motion and accumulation
+  - Algebra
+  - Differential calculus
 - Computation, inference and instruments
   - Measurement and physical reasoning
   - Magnetism, induction and changing currents
-  - Transforms and boundary-value methods
-  - Probability and statistical methods
+  - Partial differential equations and boundary-value problems
+  - Probability distributions and statistical methods
 - Advanced numerical methods
   - Computation, inference and instruments
   - Classical statistical mechanics
@@ -53,36 +122,15 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Reconstructing a substantial physical result
   - Experimental methods across branches
 
-## Mechanics
-
-- Motion and Newtonian dynamics
-  - Measurement and physical reasoning
-- Work, conservation and particle systems
-  - Motion and Newtonian dynamics
-- Rotation, gravity and open systems
-  - Work, conservation and particle systems
-- Analytical mechanics and normal modes
-  - Rotation, gravity and open systems
-  - Oscillations
-  - Multivariable calculus and variational methods
-- Elasticity and elementary fluids
-  - Rotation, gravity and open systems
-- Continuous media, elasticity and fluid dynamics
-  - Elasticity and elementary fluids
-  - Transforms and boundary-value methods
-  - Systematic thermodynamics
-- Hamiltonian structure and nonlinear dynamics
-  - Analytical mechanics and normal modes
-  - Computation, inference and instruments
-
-## Waves
+### Waves
 
 - Ray optics
-  - Functions, trigonometry and vectors
+  - Analytical geometry
   - Measurement and physical reasoning
 - Oscillations
   - Work, conservation and particle systems
-  - Complex numbers, linear algebra and differential equations
+  - Linear differential equations
+  - Sequences, series and approximations
 - Wave propagation and sound
   - Oscillations
 - Wave optics
@@ -91,14 +139,41 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Optical systems and propagation
   - Wave optics
   - Field energy and electromagnetic waves
-  - Transforms and boundary-value methods
+  - Partial differential equations and boundary-value problems
 - Quantum optics and light–matter physics
   - Lasers and controlled atoms
   - Advanced dynamics, scattering and relativistic quantum mechanics
   - Quantum statistical mechanics
   - Classical fields
 
-## Electromagnetism
+### Mechanics
+
+- Motion and Newtonian dynamics
+  - Measurement and physical reasoning
+  - Vectors
+  - Introductory differential equations
+- Work, conservation and particle systems
+  - Motion and Newtonian dynamics
+  - Integral calculus
+- Rotation, gravity and open systems
+  - Work, conservation and particle systems
+- Analytical mechanics and normal modes
+  - Rotation, gravity and open systems
+  - Oscillations
+  - Multivariable calculus
+  - Calculus of variations
+  - Tensors
+- Elasticity and elementary fluids
+  - Rotation, gravity and open systems
+- Continuous media, elasticity and fluid dynamics
+  - Elasticity and elementary fluids
+  - Partial differential equations and boundary-value problems
+  - Systematic thermodynamics
+- Hamiltonian structure and nonlinear dynamics
+  - Analytical mechanics and normal modes
+  - Computation, inference and instruments
+
+### Electromagnetism
 
 - Electrostatics
   - Work, conservation and particle systems
@@ -110,7 +185,7 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Oscillations
 - Field theory and boundary-value electrostatics
   - Magnetism, induction and changing currents
-  - Transforms and boundary-value methods
+  - Partial differential equations and boundary-value problems
 - Field energy and electromagnetic waves
   - Field theory and boundary-value electrostatics
   - Wave propagation and sound
@@ -118,17 +193,17 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Field energy and electromagnetic waves
   - Relativistic dynamics and electromagnetism
 
-## Thermal
+### Thermal
 
 - Heat and introductory thermodynamics
   - Work, conservation and particle systems
 - Systematic thermodynamics
   - Heat and introductory thermodynamics
-  - Multivariable calculus and variational methods
+  - Multivariable calculus
 - Classical statistical mechanics
   - Systematic thermodynamics
   - Analytical mechanics and normal modes
-  - Probability and statistical methods
+  - Probability distributions and statistical methods
 - Quantum statistical mechanics
   - Classical statistical mechanics
   - Angular momentum, symmetry and composite systems
@@ -136,7 +211,7 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Quantum statistical mechanics
   - Computation, inference and instruments
 
-## Space
+### Space
 
 - Special relativity: first treatment
   - Work, conservation and particle systems
@@ -149,16 +224,18 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Hamiltonian structure and nonlinear dynamics
   - Field energy and electromagnetic waves
   - Relativistic dynamics and electromagnetism
-  - Symmetry and advanced analytic methods
+  - Groups and symmetry
+  - Tensors
+  - Asymptotic and perturbation methods
+- General relativity and relativistic cosmology
+  - Differential geometry for gravitation
+  - Classical fields
+  - Systematic thermodynamics
 - Collective charged matter
   - Radiation and advanced electrodynamics
   - Continuous media, elasticity and fluid dynamics
   - Interactions, critical phenomena and nonequilibrium
   - Hamiltonian structure and nonlinear dynamics
-- General relativity and relativistic cosmology
-  - Geometry for gravitation
-  - Classical fields
-  - Systematic thermodynamics
 - Introductory quantum field theory
   - Classical fields
   - Advanced dynamics, scattering and relativistic quantum mechanics
@@ -169,7 +246,7 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Radiation and advanced electrodynamics
   - Optical systems and propagation
 
-## Quantum
+### Quantum
 
 - Evidence and the departure from classical models
   - Special relativity: first treatment
@@ -178,7 +255,7 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Electrostatics
 - States, dynamics and solvable systems
   - Evidence and the departure from classical models
-  - Mathematics of quantum states
+  - Hilbert spaces and operators
   - Oscillations
 - Angular momentum, symmetry and composite systems
   - States, dynamics and solvable systems
@@ -192,9 +269,9 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Analytical mechanics and normal modes
 - Information in quantum systems
   - Advanced dynamics, scattering and relativistic quantum mechanics
-  - Probability and statistical methods
+  - Probability distributions and statistical methods
 
-## Matter
+### Matter
 
 - Atoms and molecules
   - Approximations and transitions
@@ -221,7 +298,11 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Interacting quantum systems
   - Semiconductors and collective material behaviour
   - Advanced dynamics, scattering and relativistic quantum mechanics
-  - Symmetry and advanced analytic methods
+  - Groups and symmetry
+  - Tensors
+  - Asymptotic and perturbation methods
 - Particles, interactions and evidence
   - Structure, decay and reactions
-  - Symmetry and advanced analytic methods
+  - Groups and symmetry
+  - Tensors
+  - Asymptotic and perturbation methods

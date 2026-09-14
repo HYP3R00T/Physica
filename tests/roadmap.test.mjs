@@ -2,13 +2,15 @@ import assert from "node:assert/strict"
 import { test } from "node:test"
 import { mapRoadmapModules } from "../src/lib/content.ts"
 import rehypeRoadmapContent from "../src/lib/rehype-roadmap-content.mjs"
-import { migrateRoadmapProgress, resolveRoadmapHash } from "../src/lib/roadmap-identity.ts"
+import { filterRoadmap, roadmapFileIdentity } from "../src/lib/roadmap-domain.ts"
+import { getRoadmapEdges } from "../src/lib/roadmap-geometry.ts"
+import { readRoadmapProgress, resolveRoadmapHash } from "../src/lib/roadmap-identity.ts"
 import { getRoadmapStrands } from "../src/lib/roadmap-strands.ts"
 import { validateRoadmap } from "../src/lib/roadmap-validation.ts"
 
-const entry = (id, dependencies = [], strand = "physics", draft = false, aliases = []) => ({
+const entry = (id, dependencies = [], strand = "physics", draft = false) => ({
   id,
-  data: { strand, dependencies, draft, aliases },
+  data: { domain: "physics", strand, dependencies, draft },
 })
 const sort = (entries) => validateRoadmap(entries).map(({ id }) => id)
 
@@ -44,20 +46,15 @@ test("rejects cycles, including disconnected cycles and self-dependencies", () =
   assert.throws(() => sort([entry("root"), entry("a", ["b"]), entry("b", ["a"])]), /Circular.*a, b/)
   assert.throws(() => sort([entry("self", ["self"])]), /Circular/)
 })
-test("rejects duplicate IDs and conflicting aliases", () => {
+test("rejects duplicate IDs", () => {
   assert.throws(() => sort([entry("atoms"), entry("atoms")]), /Duplicate/)
-  assert.throws(() => sort([entry("atoms", [], "physics", false, ["old"]), entry("old")]), /alias/)
-  assert.throws(
-    () => sort([entry("a", [], "physics", false, ["old"]), entry("b", [], "physics", false, ["old"])]),
-    /alias/,
-  )
 })
 test("published segments cannot depend on drafts", () => {
   assert.throws(() => sort([entry("draft", [], "physics", true), entry("atoms", ["draft"])]), /depends on draft/)
 })
-test("resolves descriptive slugs, old links and scoped heading links", () => {
-  const segments = [{ id: "atomic-structure", aliases: ["am1"] }]
-  assert.deepEqual(resolveRoadmapHash("#segment-AM1--references", segments), {
+test("resolves current slugs and scoped heading links", () => {
+  const segments = [{ id: "atomic-structure" }]
+  assert.deepEqual(resolveRoadmapHash("#segment-atomic-structure--references", segments), {
     id: "atomic-structure",
     hash: "#segment-atomic-structure--references",
   })
@@ -68,20 +65,15 @@ test("resolves descriptive slugs, old links and scoped heading links", () => {
   assert.equal(resolveRoadmapHash("#segment-missing", segments), undefined)
   assert.equal(resolveRoadmapHash("#%broken", segments), undefined)
 })
-test("preserves old checklist progress while migrating to slugs", () => {
-  const segments = [{ id: "atomic-structure", aliases: ["am1"] }]
+test("reads saved checklist keys and ignores malformed values", () => {
   assert.deepEqual(
     [
-      ...migrateRoadmapProgress(
-        [
-          JSON.stringify(["AM1", "Hydrogen"]),
-          JSON.stringify(["atomic-structure", "Hydrogen"]),
-          JSON.stringify(["unavailable-segment", "Saved topic"]),
-          "broken",
-          null,
-        ],
-        segments,
-      ),
+      ...readRoadmapProgress([
+        JSON.stringify(["atomic-structure", "Hydrogen"]),
+        JSON.stringify(["unavailable-segment", "Saved topic"]),
+        "broken",
+        null,
+      ]),
     ],
     [JSON.stringify(["atomic-structure", "Hydrogen"]), JSON.stringify(["unavailable-segment", "Saved topic"])],
   )
@@ -94,17 +86,22 @@ test("MDX headings, equation IDs and local links are scoped to their segment", (
       { type: "element", tagName: "figure", properties: { id: "energy" }, children: [] },
       { type: "element", tagName: "a", properties: { href: "#what-to-study" }, children: [] },
       { type: "element", tagName: "a", properties: { href: "#energy" }, children: [] },
-      { type: "element", tagName: "a", properties: { href: "/roadmap#segment-m2" }, children: [] },
+      {
+        type: "element",
+        tagName: "a",
+        properties: { href: "/roadmap#segment-differential-calculus" },
+        children: [],
+      },
     ],
   }
-  const path = "/project/content/roadmap/functions-and-vectors.mdx"
+  const path = "/project/content/roadmap/mathematics/functions-and-vectors.mdx"
   rehypeRoadmapContent()(tree, { path, history: [path], data: {} })
   assert.equal(tree.children[0].properties.id, "segment-functions-and-vectors--what-to-study")
   assert.equal(tree.children[0].tagName, "h2")
   assert.equal(tree.children[1].properties.id, "segment-functions-and-vectors--energy")
   assert.equal(tree.children[2].properties.href, "#segment-functions-and-vectors--what-to-study")
   assert.equal(tree.children[3].properties.href, "#segment-functions-and-vectors--energy")
-  assert.equal(tree.children[4].properties.href, "/roadmap#segment-m2")
+  assert.equal(tree.children[4].properties.href, "/roadmap#segment-differential-calculus")
 })
 test("leaves notes and posts unchanged", () => {
   const tree = {
@@ -158,4 +155,47 @@ test("rejects duplicate module mappings, unknown targets, note mappings and publ
     /module index/,
   )
   assert.throws(() => mapRoadmapModules([module], [{ id: "vectors", data: { draft: true } }]), /draft roadmap/)
+})
+
+test("derives domains from folders while keeping slugs stable", () => {
+  assert.deepEqual(roadmapFileIdentity("mathematics/vectors.mdx"), { id: "vectors", domain: "mathematics" })
+  assert.deepEqual(roadmapFileIdentity("physics/vectors.md"), { id: "vectors", domain: "physics" })
+  assert.equal(roadmapFileIdentity("mathematics\\vectors.mdx").id, "vectors")
+  for (const path of ["vectors.mdx", "chemistry/vectors.mdx", "physics/nested/vectors.mdx", "physics/Bad Name.mdx"])
+    assert.throws(() => roadmapFileIdentity(path), /Invalid roadmap path/)
+  assert.throws(
+    () => validateRoadmap([{ ...entry("bad"), data: { ...entry("bad").data, domain: "chemistry" } }]),
+    /Invalid roadmap domain/,
+  )
+  assert.throws(
+    () =>
+      validateRoadmap([entry("same"), { ...entry("same"), data: { ...entry("same").data, domain: "mathematics" } }]),
+    /Duplicate IDs|Duplicate roadmap/,
+  )
+})
+
+test("domain filtering removes hidden edges without bridging or mutating prerequisites", () => {
+  const segments = [
+    { id: "math", domain: "mathematics", strand: "algebra", dependencies: [] },
+    { id: "physics", domain: "physics", strand: "mechanics", dependencies: ["math"] },
+    { id: "more-math", domain: "mathematics", strand: "algebra", dependencies: ["physics"] },
+    { id: "last-math", domain: "mathematics", strand: "algebra", dependencies: ["math", "more-math"] },
+  ]
+  const view = filterRoadmap(segments, "mathematics")
+  assert.deepEqual(
+    view.map(({ id }) => id),
+    ["math", "more-math", "last-math"],
+  )
+  assert.deepEqual(view[1].dependencies, [])
+  assert.deepEqual(segments[2].dependencies, ["physics"])
+  const edges = getRoadmapEdges(view, getRoadmapStrands(view))
+  assert.deepEqual(
+    edges.map(({ source, target }) => [source, target]),
+    [
+      ["math", "last-math"],
+      ["more-math", "last-math"],
+    ],
+  )
+  assert.deepEqual(filterRoadmap(segments, "all"), segments)
+  assert.deepEqual(filterRoadmap(segments.slice(0, 1), "physics"), [])
 })

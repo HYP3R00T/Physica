@@ -67,7 +67,7 @@ export async function buildSearchIndex(): Promise<SearchIndex> {
       title: segment.title,
       moduleTitle: segment.subject,
       description: segment.subject,
-      tags: [segment.strand, segment.id, ...segment.aliases],
+      tags: [segment.domain, segment.strand, segment.id],
       body: (bodies.get(segment.id) ?? "").replace(/\s+/g, " ").trim(),
     })
   }

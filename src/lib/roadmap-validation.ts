@@ -1,6 +1,8 @@
+import { type RoadmapDomain, roadmapDomains } from "./roadmap-domain.ts"
+
 type RoadmapValidationEntry = {
   id: string
-  data: { strand: string; aliases: string[]; dependencies: string[]; draft: boolean }
+  data: { domain: RoadmapDomain; strand: string; dependencies: string[]; draft: boolean }
 }
 
 const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -9,16 +11,11 @@ const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 // Slugs break ties, so filesystem order never changes the resulting route.
 export function validateRoadmap<T extends RoadmapValidationEntry>(entries: T[]): T[] {
   const byId = new Map<string, T>()
-  const names = new Set<string>()
   for (const entry of entries) {
     if (!slug.test(entry.id)) throw new Error(`Invalid roadmap filename: ${entry.id}`)
     if (byId.has(entry.id)) throw new Error(`Duplicate roadmap segment: ${entry.id}`)
     byId.set(entry.id, entry)
-    for (const name of [entry.id, ...entry.data.aliases]) {
-      if (!slug.test(name)) throw new Error(`Invalid roadmap alias: ${name}`)
-      if (names.has(name)) throw new Error(`Duplicate roadmap ID or alias: ${name}`)
-      names.add(name)
-    }
+    if (!roadmapDomains.includes(entry.data.domain)) throw new Error(`Invalid roadmap domain in ${entry.id}`)
     if (!slug.test(entry.data.strand)) throw new Error(`Invalid strand in ${entry.id}: ${entry.data.strand}`)
   }
   const indegrees = new Map<string, number>()

@@ -2,8 +2,9 @@ import type { CSSProperties, MouseEvent, ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import type { RoadmapSegment, RoadmapStrand } from "@/lib/roadmap"
+import { filterRoadmap, type RoadmapFilter } from "@/lib/roadmap-domain"
 import { getRoadmapEdges, ROADMAP_ROW_HEIGHT as ROW } from "@/lib/roadmap-geometry"
-import { migrateRoadmapProgress, resolveRoadmapHash } from "@/lib/roadmap-identity"
+import { readRoadmapProgress, resolveRoadmapHash } from "@/lib/roadmap-identity"
 
 const anchor = (id: string) => `segment-${id.toLowerCase()}`
 const PROGRESS_KEY = "physica.roadmap.checklist.v1"
@@ -36,12 +37,18 @@ export default function RoadmapExplorer({
   children?: ReactNode
 }) {
   const [selected, setSelected] = useState(segments[0].id)
+  const [domain, setDomain] = useState<RoadmapFilter>("all")
   const [mobileView, setMobileView] = useState("path")
   const panels = useRef<HTMLDivElement>(null)
   const body = useRef<HTMLDivElement>(null)
   const columns = useRef<HTMLDivElement>(null)
-  const edges = useMemo(() => getRoadmapEdges(segments, strands), [segments, strands])
-  const lanes = strands.map(({ id }) => id)
+  const visibleSegments = useMemo(() => filterRoadmap(segments, domain), [segments, domain])
+  const visibleStrands = useMemo(
+    () => strands.filter((strand) => visibleSegments.some((segment) => segment.strand === strand.id)),
+    [strands, visibleSegments],
+  )
+  const edges = useMemo(() => getRoadmapEdges(visibleSegments, visibleStrands), [visibleSegments, visibleStrands])
+  const lanes = visibleStrands.map(({ id }) => id)
   const strandById = new Map(strands.map((strand) => [strand.id, strand]))
   const graphWidth = lanes.length * 15 + 25
   const current = segments.find((segment) => segment.id === selected) ?? segments[0]
@@ -71,13 +78,28 @@ export default function RoadmapExplorer({
     const row = document.getElementById(anchor(id))
     if (!row) return
     const bounds = row.getBoundingClientRect()
-    if (bounds.top < 120 || bounds.bottom > window.innerHeight) {
-      window.scrollTo({ top: Math.max(0, window.scrollY + bounds.top - 160), behavior: "instant" })
+    const header = columns.current?.querySelector<HTMLElement>("[data-roadmap-column-header]")
+    const offset = header ? Number.parseFloat(getComputedStyle(header).top) + header.offsetHeight : 120
+    const bottom = columns.current?.getBoundingClientRect().bottom ?? window.innerHeight
+    const maxScroll = Math.max(0, window.scrollY + bottom - window.innerHeight)
+    const needsReveal = bounds.top < offset || bounds.bottom > window.innerHeight
+    if (needsReveal || window.scrollY > maxScroll) {
+      const target = needsReveal ? window.scrollY + bounds.top - offset : window.scrollY
+      window.scrollTo({ top: Math.max(0, Math.min(target, maxScroll)), behavior: "instant" })
     }
   }, [])
 
+  function changeDomain(value: RoadmapFilter) {
+    setDomain(value)
+    requestAnimationFrame(() => {
+      if (value === "all" || current.domain === value) reveal(current.id)
+      else window.scrollTo({ top: 0, behavior: "instant" })
+    })
+  }
+
   function choose(id: string, hash = `#${anchor(id)}`) {
     if (!byId.has(id)) return
+    if (domain !== "all" && byId.get(id)?.domain !== domain) setDomain("all")
     setSelected(id)
     if (location.hash !== hash) history.pushState(null, "", hash)
     const mobile = window.matchMedia("(width < 850px)").matches
@@ -126,7 +148,9 @@ export default function RoadmapExplorer({
       const target = resolveRoadmapHash(location.hash, segments)
       const match = segments.find((segment) => segment.id === target?.id)
       if (target && location.hash !== target.hash) history.replaceState(null, "", target.hash)
-      setSelected(match?.id ?? segments[0].id)
+      const selectedSegment = match ?? segments[0]
+      setDomain((active) => (active === "all" || active === selectedSegment.domain ? active : "all"))
+      setSelected(selectedSegment.id)
       if (match) {
         const mobile = window.matchMedia("(width < 850px)").matches
         if (mobile) setMobileView("details")
@@ -162,7 +186,7 @@ export default function RoadmapExplorer({
     let completed = new Set<string>()
     try {
       const stored: unknown = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? "[]")
-      completed = migrateRoadmapProgress(stored, segments)
+      completed = readRoadmapProgress(stored)
       localStorage.setItem(PROGRESS_KEY, JSON.stringify([...completed]))
     } catch {
       // Keep the checklist usable when browser storage is unavailable.
@@ -190,7 +214,7 @@ export default function RoadmapExplorer({
     }
     container.addEventListener("change", save)
     return () => container.removeEventListener("change", save)
-  }, [segments])
+  }, [])
 
   return (
     <section
@@ -200,7 +224,11 @@ export default function RoadmapExplorer({
       aria-label="Physics curriculum explorer"
       data-mobile-view={mobileView}
     >
-      <div data-roadmap-columns className="grid scroll-mt-16 grid-cols-2 items-start max-[850px]:block" ref={columns}>
+      <div
+        data-roadmap-columns
+        className="grid min-h-[calc(100dvh-4rem)] scroll-mt-16 grid-cols-2 items-start max-[850px]:block max-[850px]:min-h-0"
+        ref={columns}
+      >
         <nav
           className="hidden max-[850px]:sticky max-[850px]:top-16 max-[850px]:z-20 max-[850px]:flex max-[850px]:border-b max-[850px]:border-border max-[850px]:bg-background-0"
           aria-label="Roadmap view"
@@ -224,19 +252,41 @@ export default function RoadmapExplorer({
         </nav>
         <div
           data-roadmap-path
-          className="min-w-0 border-r border-border max-[850px]:border-r-0 max-[850px]:group-data-[mobile-view=details]/roadmap:hidden"
+          className="min-w-0 self-stretch border-r border-border max-[850px]:border-r-0 max-[850px]:group-data-[mobile-view=details]/roadmap:hidden"
         >
           <div
             data-roadmap-column-header
-            className="flex min-h-12 items-stretch border-b border-border font-mono text-xs sticky top-16 z-10 bg-background-0 max-[850px]:top-[6.9rem]"
+            className="flex min-h-12 flex-wrap items-stretch border-b border-border font-mono text-xs sticky top-16 z-10 bg-background-0 max-[850px]:top-[6.9rem]"
           >
             <div
               data-roadmap-heading-text
-              className="flex min-w-0 flex-1 items-center justify-between gap-3 px-6 py-3 [&>span]:text-foreground-2"
+              className="flex min-w-40 flex-1 items-center justify-between gap-3 px-4 py-3 [&>span]:text-foreground-2"
             >
               <h2>The learning path</h2>
-              <span>{segments.length} segments</span>
+              <span aria-live="polite">{visibleSegments.length} segments</span>
             </div>
+            <fieldset className="flex items-center gap-1 border-l border-border px-2 py-2">
+              <legend className="sr-only">Filter learning path</legend>
+              {(
+                [
+                  ["all", "All"],
+                  ["physics", "Physics"],
+                  ["mathematics", "Mathematics"],
+                ] as const
+              ).map(([value, label]) => (
+                <Button
+                  key={value}
+                  type="button"
+                  size="xs"
+                  variant={domain === value ? "secondary" : "ghost"}
+                  aria-pressed={domain === value}
+                  aria-controls="roadmap-map"
+                  onClick={() => changeDomain(value)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </fieldset>
             <div
               data-roadmap-heading-actions
               className="flex shrink-0 items-center justify-center border-l border-border px-3 py-2"
@@ -253,16 +303,23 @@ export default function RoadmapExplorer({
               </Button>
             </div>
           </div>
-          <div className="overflow-x-auto">
+          <div id="roadmap-map" className="overflow-x-auto">
+            {visibleSegments.length === 0 && (
+              <p role="status" className="p-6 text-sm text-foreground-2">
+                No {domain === "mathematics" ? "mathematics" : "physics"} segments published yet.
+              </p>
+            )}
             <div
               className="relative min-w-[calc(var(--roadmap-gutter)+12rem)] [--roadmap-gutter:var(--roadmap-full-gutter)] max-[450px]:[--roadmap-gutter:calc(var(--roadmap-full-gutter)*.7)]"
-              style={{ height: segments.length * ROW, "--roadmap-full-gutter": `${graphWidth}px` } as CSSProperties}
+              style={
+                { height: visibleSegments.length * ROW, "--roadmap-full-gutter": `${graphWidth}px` } as CSSProperties
+              }
             >
               <svg
                 data-roadmap-graph
                 className="pointer-events-none absolute top-0 left-2.5 max-[450px]:left-0 max-[450px]:origin-left max-[450px]:scale-x-70"
                 width={graphWidth - 12}
-                height={segments.length * ROW}
+                height={visibleSegments.length * ROW}
                 aria-hidden="true"
               >
                 {edgePaths.map(({ lane, active, d }) => (
@@ -274,7 +331,7 @@ export default function RoadmapExplorer({
                     strokeWidth={active ? 2.5 : 1.2}
                   />
                 ))}
-                {segments.map((segment, index) => (
+                {visibleSegments.map((segment, index) => (
                   <circle
                     key={segment.id}
                     cx={x(segment.id)}
@@ -287,7 +344,7 @@ export default function RoadmapExplorer({
                 ))}
               </svg>
               <ol data-roadmap-rows className="m-0 list-none p-0 pl-(--roadmap-gutter)">
-                {segments.map((segment) => (
+                {visibleSegments.map((segment) => (
                   <li key={segment.id} style={{ height: ROW }}>
                     <button
                       type="button"
