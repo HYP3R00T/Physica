@@ -26,6 +26,7 @@ const lines = [
 for (const domain of roadmapDomains) {
   lines.push(`## ${heading(domain)}`, "")
   const domainEntries = ordered.filter((entry) => entry.data.domain === domain)
+  if (domainEntries.length === 0) lines.push("No active segments yet.", "")
   const strands = [...new Set(domainEntries.map((entry) => entry.data.strand))]
   for (const strand of strands) {
     lines.push(`### ${heading(strand)}`, "")
