@@ -11,11 +11,19 @@ const { navItems, contactItem } = Astro.props as Props;
 
 import { Icon } from "astro-icon/components";
 import ModeToggle from "@/components/core/ModeToggle.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const pathname = Astro.url.pathname;
 const isCurrent = (href: string) => href.startsWith("/") && (href === "/" ? pathname === href : pathname.startsWith(href));
 ---
 
+<div
+  data-mobile-menu-backdrop
+  data-open="false"
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-x-0 top-16 z-50 h-[calc(100dvh-4rem)] bg-background-0/40 opacity-0 backdrop-blur-sm transition-opacity duration-150 data-[open=true]:pointer-events-auto data-[open=true]:opacity-100 motion-reduce:transition-none md:hidden"
+></div>
 <div
   id="mobile-menu"
   data-mobile-menu
@@ -46,27 +54,27 @@ const isCurrent = (href: string) => href.startsWith("/") && (href === "/" ? path
           );
         })
       }
+    </nav>
+
+    <div class="flex items-center border-t border-border">
       <a
         href={SITE.repo}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="View Physica source on GitHub (opens in a new tab)"
-        class="flex min-h-14 items-center justify-between px-5 py-3 font-display text-lg text-foreground-1 transition-colors hover:bg-background-1 hover:text-accent-1"
+        title="View source on GitHub"
+        class={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-16 shrink-0 text-foreground-2")}
       >
-        <span class="flex items-center gap-3"><Icon name="github" class="size-4" aria-hidden="true" />GitHub</span>
-        <Icon name="arrow-up-right" class="size-4 text-foreground-3" aria-hidden="true" />
+        <Icon name="github" class="size-4" aria-hidden="true" />
       </a>
-    </nav>
-
-    <div class="grid grid-cols-[4rem_minmax(0,1fr)] divide-x divide-border border-t border-border">
-      <ModeToggle className="size-16" />
+      <ModeToggle className="size-16 shrink-0" />
       {
         contactItem && (
           <a
             href={contactItem.href}
             target={contactItem.blank ? "_blank" : undefined}
             rel={contactItem.blank ? "noopener noreferrer" : undefined}
-            class="flex min-h-16 items-center justify-center bg-primary px-5 font-display text-base font-medium text-primary-foreground transition-colors hover:bg-primary/80"
+            class="flex min-h-16 flex-1 items-center justify-center bg-primary px-5 font-display text-base font-medium text-primary-foreground transition-colors hover:bg-primary/80"
           >
             {contactItem.label}
           </a>
