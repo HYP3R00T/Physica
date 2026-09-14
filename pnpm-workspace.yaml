@@ -3,3 +3,7 @@ allowBuilds:
   esbuild: true
   msw: true
   sharp: true
+
+# Keep the math renderer on the same version as the imported KaTeX styles.
+overrides:
+  rehype-katex>katex: $katex

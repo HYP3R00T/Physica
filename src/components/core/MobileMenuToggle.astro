@@ -61,6 +61,7 @@
   document.addEventListener("astro:page-load", () => {
     const toggleBtn = document.querySelector("[data-mobile-menu-toggle]");
     const menu = document.querySelector("[data-mobile-menu]");
+    const backdrop = document.querySelector<HTMLElement>("[data-mobile-menu-backdrop]");
     if (!toggleBtn || !menu) return;
 
     const headerShell = document.querySelector("[data-header-shell]");
@@ -70,6 +71,10 @@
       if (!(menu instanceof HTMLElement)) return;
       const navRect = headerNav instanceof HTMLElement ? headerNav.getBoundingClientRect() : null;
       menu.style.top = navRect ? `${navRect.bottom}px` : "0px";
+      if (backdrop) {
+        backdrop.style.top = menu.style.top;
+        backdrop.style.height = `calc(100dvh - ${menu.style.top})`;
+      }
     };
 
     const onKey = (e: KeyboardEvent) => {
@@ -79,6 +84,7 @@
     function setOpen(open: boolean) {
       (menu as HTMLElement).setAttribute("data-open", String(open));
       (menu as HTMLElement).setAttribute("aria-hidden", String(!open));
+      if (backdrop) backdrop.dataset.open = String(open);
       (toggleBtn as HTMLElement).setAttribute("aria-expanded", String(open));
       if (headerShell instanceof HTMLElement) headerShell.dataset.menuOpen = String(open);
       if (headerNav instanceof HTMLElement) headerNav.dataset.menuOpen = String(open);
@@ -100,6 +106,7 @@
     window.addEventListener("resize", syncPanelPosition, { passive: true });
 
     toggleBtn.addEventListener("click", () => setOpen(menu.getAttribute("data-open") !== "true"));
+    backdrop?.addEventListener("click", () => setOpen(false));
     menu.addEventListener("click", (e) => {
       const target = e.target;
       if (!(target instanceof Element)) return;
