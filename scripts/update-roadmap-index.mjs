@@ -18,7 +18,7 @@ const heading = (name) => name.replaceAll("-", " ").replace(/^./, (letter) => le
 const lines = [
   "# Roadmap segment index",
   "",
-  "Segments are grouped by domain and strand in dependency order, including drafts. Indented names are direct prerequisites, which may belong to other domains or strands.",
+  "Segments are grouped by domain and strand in study order, respecting prerequisites and explicit follow-up steps, including drafts. Indented names are direct prerequisites, which may belong to other domains or strands.",
   "",
   "Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.",
   "",

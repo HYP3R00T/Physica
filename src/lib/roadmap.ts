@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content"
 import { getCollection } from "astro:content"
 import { mapRoadmapModules } from "./content"
 import { getRoadmapStrands } from "./roadmap-strands"
-import { validateRoadmap } from "./roadmap-validation"
+import { getPublishedRoadmap, validateRoadmap } from "./roadmap-validation"
 
 export type { RoadmapStrand } from "./roadmap-strands"
 
@@ -15,7 +15,7 @@ export type RoadmapSegment = Omit<RoadmapEntry["data"], "draft" | "subject"> & {
 export async function getRoadmap() {
   const [all, learning] = await Promise.all([getCollection("roadmap"), getCollection("learning")])
   const modulesBySegment = mapRoadmapModules(learning, all)
-  const entries = validateRoadmap(all).filter((entry) => !entry.data.draft)
+  const entries = getPublishedRoadmap(validateRoadmap(all))
   const segments: RoadmapSegment[] = entries.map(({ id, data }) => {
     const { draft: _draft, ...metadata } = data
     return {

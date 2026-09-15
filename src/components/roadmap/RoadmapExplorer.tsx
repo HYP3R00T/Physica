@@ -59,6 +59,10 @@ export default function RoadmapExplorer({
   const current = segments.find((segment) => segment.id === selected) ?? segments[0]
   const children = segments.filter((segment) => segment.dependencies.includes(current.id))
   const connected = new Set([current.id, ...current.dependencies, ...children.map((segment) => segment.id)])
+  for (const edge of edges) {
+    if (edge.source === current.id) connected.add(edge.target)
+    if (edge.target === current.id) connected.add(edge.source)
+  }
   const byId = new Map(segments.map((segment) => [segment.id, segment]))
   const color = (id: string) => strandById.get(byId.get(id)?.strand ?? "")?.color ?? "var(--foreground-2)"
   const x = (id: string) => nodeX.get(id) ?? 12
