@@ -17,12 +17,26 @@ function requireValue<T>(value: T | undefined): T {
 export function getRoadmapLayout(segments: RoadmapSegment[], strands: RoadmapStrand[]) {
   const positions = new Map(segments.map((segment, index) => [segment.id, { segment, index }]))
   const strandIds = new Set(strands.map(({ id }) => id))
+  // A curated reading step replaces same-strand prerequisite strokes, not the prerequisites themselves.
+  const graphParents = new Map(
+    segments.map((segment) => [
+      segment.id,
+      segment.follows
+        ? [
+            ...new Set([
+              segment.follows,
+              ...segment.dependencies.filter((id) => positions.get(id)?.segment.strand !== segment.strand),
+            ]),
+          ]
+        : segment.dependencies,
+    ]),
+  )
   const tracks: { strand: string; tail: string; start: number; end: number; lane: number }[] = []
   const trackById = new Map<string, number>()
 
   for (const [index, segment] of segments.entries()) {
     if (!strandIds.has(segment.strand)) throw new Error("Unknown roadmap strand")
-    const parents = segment.dependencies.map((id) => {
+    const parents = requireValue(graphParents.get(segment.id)).map((id) => {
       const parent = positions.get(id)
       if (!parent) throw new Error(`Unknown roadmap dependency: ${id}`)
       if (parent.index >= index) throw new Error("Roadmap dependencies must precede their dependents")
@@ -74,7 +88,7 @@ export function getRoadmapLayout(segments: RoadmapSegment[], strands: RoadmapStr
     ]),
   )
   const edges = segments.flatMap((target, index) =>
-    target.dependencies.map((source) => {
+    requireValue(graphParents.get(target.id)).map((source) => {
       const origin = requireValue(positions.get(source))
       const x1 = requireValue(nodeX.get(source))
       const x2 = requireValue(nodeX.get(target.id))

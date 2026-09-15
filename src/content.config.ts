@@ -64,6 +64,10 @@ const roadmap = defineCollection({
     strand: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     scope: z.enum(["Core", "Breadth", "Bridge", "Integration"]),
     dependencies: z.array(z.string()).default([]),
+    follows: z
+      .string()
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      .optional(),
     draft: z.boolean().default(false),
   }),
 })

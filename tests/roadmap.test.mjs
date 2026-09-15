@@ -6,7 +6,7 @@ import { filterRoadmap, roadmapFileIdentity } from "../src/lib/roadmap-domain.ts
 import { getRoadmapEdges } from "../src/lib/roadmap-geometry.ts"
 import { readRoadmapProgress, resolveRoadmapHash } from "../src/lib/roadmap-identity.ts"
 import { getRoadmapStrands } from "../src/lib/roadmap-strands.ts"
-import { validateRoadmap } from "../src/lib/roadmap-validation.ts"
+import { getPublishedRoadmap, validateRoadmap } from "../src/lib/roadmap-validation.ts"
 
 const entry = (id, dependencies = [], strand = "physics", draft = false) => ({
   id,
@@ -198,4 +198,50 @@ test("domain filtering removes hidden edges without bridging or mutating prerequ
   )
   assert.deepEqual(filterRoadmap(segments, "all"), segments)
   assert.deepEqual(filterRoadmap(segments.slice(0, 1), "physics"), [])
+})
+
+test("reading succession orders independent topics without adding prerequisites", () => {
+  const a = entry("root")
+  const b = entry("z-first", ["root"])
+  const c = entry("a-next", ["root"])
+  c.data.follows = "z-first"
+  assert.deepEqual(sort([c, b, a]), ["root", "z-first", "a-next"])
+  assert.deepEqual(c.data.dependencies, ["root"])
+  b.data.follows = "root"
+  assert.deepEqual(sort([c, b, a]), ["root", "z-first", "a-next"])
+})
+
+test("reading succession rejects unknown, cross-strand and conflicting links", () => {
+  const a = entry("a")
+  a.data.follows = "missing"
+  assert.throws(() => sort([a]), /follows unknown/)
+  a.data.follows = "b"
+  assert.throws(() => sort([a, entry("b", [], "different")]), /same domain and strand/)
+  const otherDomain = entry("b")
+  otherDomain.data.domain = "mathematics"
+  assert.throws(() => sort([a, otherDomain]), /same domain and strand/)
+  assert.throws(() => sort([a, entry("b", ["a"])]), /Circular/)
+  a.data.follows = "a"
+  assert.throws(() => sort([a]), /Circular/)
+})
+
+test("hidden reading steps are skipped without hiding independent published topics", () => {
+  const a = entry("a")
+  const b = entry("b", [], "physics", true)
+  b.data.follows = "a"
+  const c = entry("c", [], "physics", true)
+  c.data.follows = "b"
+  const d = entry("d", ["a"])
+  d.data.follows = "c"
+  const visible = getPublishedRoadmap(validateRoadmap([d, c, b, a]))
+  assert.deepEqual(
+    visible.map(({ id }) => id),
+    ["a", "d"],
+  )
+  assert.equal(visible[1].data.follows, "a")
+  assert.deepEqual(visible[1].data.dependencies, ["a"])
+  assert.equal(d.data.follows, "c")
+  a.data.draft = true
+  d.data.dependencies = []
+  assert.equal(getPublishedRoadmap(validateRoadmap([a, b, c, d]))[0].data.follows, undefined)
 })

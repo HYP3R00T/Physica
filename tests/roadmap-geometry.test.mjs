@@ -1,5 +1,6 @@
 import assert from "node:assert/strict"
 import test from "node:test"
+import { filterRoadmap } from "../src/lib/roadmap-domain.ts"
 import { getRoadmapEdges, getRoadmapLayout } from "../src/lib/roadmap-geometry.ts"
 
 test("curves retain source lanes through branching and merging", () => {
@@ -64,4 +65,37 @@ test("filtered linear paths need only one lane and empty maps need none", () => 
   )
   assert.equal(layout.laneCount, 1)
   assert.equal(getRoadmapLayout([], []).laneCount, 0)
+})
+
+test("a curated sequence stays in one lane while cross-strand prerequisites remain visible", () => {
+  const segments = [
+    { id: "math", domain: "mathematics", strand: "calculus", dependencies: [] },
+    { id: "rotation", domain: "physics", strand: "mechanics", dependencies: [] },
+    {
+      id: "oscillations",
+      domain: "physics",
+      strand: "mechanics",
+      follows: "rotation",
+      dependencies: ["rotation", "math"],
+    },
+    { id: "gravity", domain: "physics", strand: "mechanics", follows: "oscillations", dependencies: ["rotation"] },
+    { id: "lagrange", domain: "physics", strand: "mechanics", follows: "gravity", dependencies: ["rotation", "math"] },
+    {
+      id: "modes",
+      domain: "physics",
+      strand: "mechanics",
+      follows: "lagrange",
+      dependencies: ["oscillations", "lagrange"],
+    },
+  ]
+  const strands = [{ id: "calculus" }, { id: "mechanics" }]
+  const { nodeX, laneCount, edges } = getRoadmapLayout(segments, strands)
+  assert.equal(laneCount, 2)
+  assert.equal(new Set(segments.slice(1).map(({ id }) => nodeX.get(id))).size, 1)
+  assert.ok(edges.some(({ source, target }) => source === "oscillations" && target === "gravity"))
+  assert.ok(edges.some(({ source, target }) => source === "math" && target === "lagrange"))
+  assert.ok(!edges.some(({ source, target }) => source === "rotation" && target === "gravity"))
+  assert.deepEqual(segments[3].dependencies, ["rotation"])
+  const physics = filterRoadmap(segments, "physics")
+  assert.equal(getRoadmapLayout(physics, [{ id: "mechanics" }]).laneCount, 1)
 })
