@@ -331,6 +331,15 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Remaining gaps: Connect mathematics, thermal physics and continuum mechanics at their first use. Review the advanced scope before treating the strand as an independently followable curriculum.
 - Next step: Author review of the differences from `61f67e0`. Audit corrections remain uncommitted; no changes to Classical mechanics or the archive.
 
+### R036: Draft Thermal and statistical physics
+
+- Status: Open
+- Request: Create the full proposed strand for review together.
+- Implemented: Ten visible segments, from thermal equilibrium through nonequilibrium statistical physics. See [Thermal and statistical physics curriculum](thermal-and-statistical-physics-curriculum.md) for the sequence, level and initial source comparison.
+- Dependencies: The strand begins at Work and energy. Kinetic theory adds collisions; statistical foundations adds Hamiltonian mechanics. Later segments inherit these requirements through the thermal sequence.
+- Deferred foundations: Multivariable calculus, probability, quantum mechanics, continuum descriptions and stochastic methods need their own coverage and links. Acoustic prerequisites will be connected after author review.
+- Next step: Review grouping and topic coverage, then perform the detailed textbook and institutional audit. No commits made; existing mechanics, acoustics and archive files preserved.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions

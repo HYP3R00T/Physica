@@ -62,6 +62,31 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Nonlinear dynamics and approximation methods
   - Hamiltonian mechanics
 
+### Thermal and statistical physics
+
+- Thermal equilibrium and equations of state
+  - Work and energy
+- Heat, work and the first law
+  - Thermal equilibrium and equations of state
+- Entropy and the second law
+  - Heat, work and the first law
+- Thermodynamic potentials and equilibrium
+  - Entropy and the second law
+- Kinetic theory and transport
+  - Thermodynamic potentials and equilibrium
+  - Impulse, momentum and collisions
+- Statistical description and microcanonical equilibrium
+  - Kinetic theory and transport
+  - Hamiltonian mechanics
+- Ensembles and classical statistical mechanics
+  - Statistical description and microcanonical equilibrium
+- Quantum statistics and quantum gases
+  - Ensembles and classical statistical mechanics
+- Phase transitions and critical phenomena
+  - Quantum statistics and quantum gases
+- Nonequilibrium statistical physics
+  - Phase transitions and critical phenomena
+
 ### Waves and acoustics
 
 - Wave motion and propagation
