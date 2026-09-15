@@ -61,3 +61,24 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Three-dimensional rigid-body dynamics
 - Nonlinear dynamics and approximation methods
   - Hamiltonian mechanics
+
+### Waves and acoustics
+
+- Wave motion and propagation
+  - Coupled oscillations and normal modes
+- Wave boundaries, interference and standing waves
+  - Wave motion and propagation
+- Wave packets, dispersion and periodic media
+  - Wave boundaries, interference and standing waves
+- Sound and linear acoustics
+  - Wave packets, dispersion and periodic media
+- Spatial waves, refraction and diffraction
+  - Sound and linear acoustics
+- Acoustic radiation and scattering
+  - Spatial waves, refraction and diffraction
+- Elastic and surface waves
+  - Acoustic radiation and scattering
+- Waveguides, resonators and acoustic spaces
+  - Elastic and surface waves
+- Dissipation and nonlinear acoustics
+  - Waveguides, resonators and acoustic spaces

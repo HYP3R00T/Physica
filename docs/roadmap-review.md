@@ -301,6 +301,28 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Scope: The shared nonrelativistic curriculum is supported by the comparison. Full mathematics prerequisites, specialist branches and proficiency assessment remain unfinished. Source coverage is not a claim of exhaustive mastery.
 - Next step: Author review of the changes against the committed baseline, followed by the planned mathematics review. Audit changes remain uncommitted.
 
+### R033: Begin Waves and acoustics
+
+- Status: Open
+- Segment: Wave motion and propagation, in the new `waves-and-acoustics` strand. Visible for author review and uncommitted.
+- Dependency: Coupled oscillations and normal modes supplies the existing connection from discrete oscillators to continuous systems. The new strand branches there; it does not require the later spatial rigid-body, Hamiltonian or nonlinear-mechanics segments. Earlier mathematics requirements are inherited, with the unresolved gaps below still explicit.
+- Scope: Wave descriptions, travelling profiles, harmonic waves, the ideal string equation, initial data, linear superposition, energy transport, intensity, and introductory packets and dispersion. The string supplies a concrete model; its assumptions are stated rather than extended to every medium.
+- Continuity: The coupled-oscillator segment introduces the continuum connection. This segment develops propagation as its own subject, including the distinction between material motion, phase motion and energy transport. Standing waves are identified here; their detailed boundary-value treatment remains for the continuation.
+- Deferred: Reflection and transmission, impedance and boundary matching, interference, standing-wave spectra and resonance, diffraction and refraction, detailed sound generation and propagation, Doppler effects, and quantitative attenuation. Later segment boundaries remain to be agreed. Electromagnetic wave dynamics requires electromagnetism; it is not silently included in a mechanical-wave prerequisite.
+- Mathematics: Partial derivatives, the elementary wave initial-value problem, Fourier superposition and dispersion derivatives are needed. These extend the existing gaps recorded in R031 and the mechanics audit. Create and link the relevant mathematics during the planned mathematics review; the current graph is not a complete mathematics prerequisite map.
+- References: Halliday, Resnick and Walker, Fundamentals of Physics (10th edition), chapter 16 contents, especially sections 16-1 through 16-4, for the introductory progression. [OpenStax University Physics, travelling waves](https://openstax.org/books/university-physics-volume-1/pages/16-1-traveling-waves), [wave descriptions and equations](https://openstax.org/books/university-physics-volume-1/pages/16-2-mathematics-of-waves), [string wave speed](https://openstax.org/books/university-physics-volume-1/pages/16-3-wave-speed-on-a-stretched-string), and [wave energy](https://openstax.org/books/university-physics-volume-1/pages/16-4-energy-and-power-of-a-wave) support the initial scope. [MIT 8.03SC](https://ocw.mit.edu/courses/8-03sc-physics-iii-vibrations-and-waves-fall-2016/pages/syllabus/) supports the broader oscillator-to-wave progression and subsequent dispersion treatment. Its full course also assumes electromagnetism, so it is not copied as this segment's prerequisite list.
+- Next step: Author review of this segment's scope and terminology before developing the continuation. No changes to the approved classical-mechanics files.
+
+### R034: Draft the complete Waves and acoustics continuation
+
+- Status: Open
+- Request: Create the strand's proposed continuation together so the author can evaluate its overall direction.
+- Implemented: Eight additional segments, making nine in Waves and acoustics. All have topic checklists, nested subtopics and `draft: false` for inspection. No commits made.
+- Sequence and evidence: See [Waves and acoustics curriculum](waves-and-acoustics-curriculum.md) for the ordered scope, institutional references and boundaries.
+- Dependencies: The first segment branches from Coupled oscillations and normal modes; each subsequent wave segment requires its preceding reading step. Missing mathematics, thermal and continuum foundations are explicitly recorded in the curriculum document for future links.
+- Supersedes: R033's postponement of the whole continuation. Its initial-segment references and outstanding mathematics concerns remain relevant. The new files are proposed coverage, not completed author approval.
+- Next step: Review the nine-segment grouping and individual checklists, then connect the missing foundations as their strands are developed. Keep the archive and approved Classical mechanics content unchanged.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions
