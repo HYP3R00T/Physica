@@ -317,11 +317,19 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 
 - Status: Open
 - Request: Create the strand's proposed continuation together so the author can evaluate its overall direction.
-- Implemented: Eight additional segments, making nine in Waves and acoustics. All have topic checklists, nested subtopics and `draft: false` for inspection. No commits made.
+- Implemented: Eight additional segments, making nine in Waves and acoustics. All have topic checklists, nested subtopics and `draft: false` for inspection. The baseline was committed as `61f67e0` on 15 September 2026 before the source audit in R035.
 - Sequence and evidence: See [Waves and acoustics curriculum](waves-and-acoustics-curriculum.md) for the ordered scope, institutional references and boundaries.
 - Dependencies: The first segment branches from Coupled oscillations and normal modes; each subsequent wave segment requires its preceding reading step. Missing mathematics, thermal and continuum foundations are explicitly recorded in the curriculum document for future links.
 - Supersedes: R033's postponement of the whole continuation. Its initial-segment references and outstanding mathematics concerns remain relevant. The new files are proposed coverage, not completed author approval.
 - Next step: Review the nine-segment grouping and individual checklists, then connect the missing foundations as their strands are developed. Keep the archive and approved Classical mechanics content unchanged.
+
+### R035: Cross-check Waves and acoustics
+
+- Status: Open
+- Request: Preserve the baseline, then compare all nine segments with IIT course outlines and local physics books.
+- Evidence and changes: See [Waves and acoustics audit](waves-and-acoustics-audit.md). The audit retains the grouping and adds selected missing topics and clearer terminology.
+- Remaining gaps: Connect mathematics, thermal physics and continuum mechanics at their first use. Review the advanced scope before treating the strand as an independently followable curriculum.
+- Next step: Author review of the differences from `61f67e0`. Audit corrections remain uncommitted; no changes to Classical mechanics or the archive.
 
 ## Resolved items
 
