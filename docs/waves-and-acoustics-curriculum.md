@@ -1,6 +1,6 @@
 # Waves and acoustics curriculum
 
-Proposed on 15 September 2026 for author review. Nine segments are visible on the roadmap. None of this strand has been committed yet.
+Proposed on 15 September 2026 for author review. The nine-segment baseline was committed as `61f67e0` before the source audit. See [Waves and acoustics audit](waves-and-acoustics-audit.md) for the comparisons, subsequent corrections and remaining gaps. All nine segments remain visible for inspection.
 
 ## Scope and sequence
 
