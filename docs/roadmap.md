@@ -41,8 +41,11 @@ dependencies:
 - `strand` names the graph lane within a domain. Use lowercase words separated by hyphens; no separate definition file is needed.
 - `subject` is an optional, more specific subject label. It defaults to the strand name with spaces in place of hyphens.
 - `scope` is `Core`, `Breadth`, `Bridge` or `Integration`.
-- `dependencies` lists prerequisite slugs. It defaults to an empty list; outgoing connections are calculated automatically.
+- `dependencies` lists required prior-study slugs. It defaults to an empty list; outgoing connections are calculated automatically. A cumulative curriculum can require completion of its preceding segment. List only the direct steps: their requirements are inherited. Classical mechanics currently uses this cumulative structure.
+- `follows` optionally names the preceding reading step in the same domain and strand. It controls study order and the connecting line within that strand; it does not add a prerequisite to the detail panel. Cross-strand prerequisite connections remain visible. Without it, the graph follows dependencies as before.
 - `draft: true` hides a segment. Published segments cannot depend on drafts.
+
+Reading order must respect prerequisites. Both kinds of links are checked together for cycles. A published segment may follow a draft: the graph skips hidden reading steps, while genuine prerequisites must still be published.
 
 There are no numbered segment codes or manually assigned positions. Adding a valid file adds its node, connections and searchable content.
 
@@ -53,13 +56,13 @@ Suppose `lasers-and-controlled-atoms` depends on `atoms-and-molecules`. To put `
 1. Create `atomic-spectra.mdx` with `atoms-and-molecules` in its dependencies.
 2. Change the relevant dependency of `lasers-and-controlled-atoms` to `atomic-spectra`. Keep any other prerequisites it still needs.
 
-The graph then places atoms before spectra, and spectra before lasers. No existing file needs renumbering. Adding a related topic alone does not make it a prerequisite; add that relationship only when it is needed.
+The graph then places atoms before spectra, and spectra before lasers. No existing file needs renumbering. Adding a related topic alone does not make it a prerequisite; add that relationship only when it is needed. For a suggested reading step instead, use `follows` on the new segment and update the next segment’s `follows` link. Keep their actual dependencies unchanged.
 
 ## Add a strand
 
 Set a new strand name in a segment's frontmatter, such as `strand: biophysics` in the physics folder. It appears automatically once that segment is published.
 
-Strand groups and colors follow each strand's first appearance in the calculated learning order. A strand can occupy multiple graph lanes: independent paths fork into separate lanes and merge where their prerequisites converge. Lanes can be reused after a path ends. Colors use the site's theme variables in this order: red, orange, yellow, green, teal, cyan, blue, purple, pink. Further strands cycle back to red, then orange, and so on. All segments in a strand share its color. Identically named strands in different domains remain separate lanes. Filtering preserves strand colors and recalculates the lanes for visible paths.
+Strand groups and colors follow each strand's first appearance in the calculated learning order. An explicit `follows` sequence keeps a strand continuous. Otherwise, a strand can occupy multiple graph lanes: independent paths fork into separate lanes and merge where their prerequisites converge. Lanes can be reused after a path ends. Colors use the site's theme variables in this order: red, orange, yellow, green, teal, cyan, blue, purple, pink. Further strands cycle back to red, then orange, and so on. All segments in a strand share its color. Identically named strands in different domains remain separate lanes. Filtering preserves strand colors and recalculates the lanes for visible paths.
 
 The graph scrolls horizontally within its own area while the text stays beside it. On desktop the graph takes at most half the learning-path width; on mobile the split is always 50–50. Nodes and text share the same vertical progression.
 
@@ -136,5 +139,7 @@ The graph follows the normal page scroll. On desktop, the selected explanation s
 On small screens, the path and segment details have separate views. Tapping a different segment highlights it; tapping the selected segment opens its details. The Segment details tab also opens the current selection; “Learning path” returns to the selected row. Search, direct links and browser back work with segment selection.
 
 ## Curriculum provenance
+
+The fourteen-segment Classical mechanics curriculum has a separate [coverage audit](classical-mechanics-audit.md), checked against textbooks and institutional syllabuses on 15 September 2026. It records the baseline commit, corrections, deliberate boundaries and outstanding mathematics prerequisites.
 
 The initial 60 segments came from the segmented roadmap drafted on 12 September 2026, informed by the SVNIT, IIT Kanpur, IISER Pune, MIT, Cambridge and Caltech source review. The boundaries and dependencies are editorial choices, not an institutional consensus or a complete source audit. Supporting mathematics stays within the physics curriculum, beginning from a Class 10 baseline.

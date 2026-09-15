@@ -39,6 +39,8 @@ Prerequisites must come before the segments that use them. Otherwise, independen
 
 A learning route should avoid circular prerequisites. When two treatments appear to require each other, we should distinguish an introductory treatment from a later, deeper treatment. The broader web of conceptual relationships can contain mutual connections; the required study sequence must still be followable.
 
+A recommended reading sequence is another relationship. Two segments can follow one another within a strand without the second requiring the first. An explicit succession can give readers a continuous route through related material while the prerequisite list records the knowledge each segment needs. The map can draw that succession within a strand and preserve prerequisite connections between strands. Study order must respect prerequisites, but independent topics do not automatically need separate visual paths. The current authoring format records this optional succession with `follows`. A curriculum may instead require the previous step to be completed, making its succession cumulative. In that case, record the previous step as a dependency and inherit its requirements. This is an educational entry requirement; it does not imply that every earlier model is necessary for every later derivation. Classical mechanics currently uses this cumulative interpretation.
+
 ## What qualifies as a strand
 
 A strand should have a recognisable subject identity, a coherent direction for further study and a useful reason for readers to follow it separately. Its name should remain meaningful as introductory and advanced segments are added. A new topic, a difficult technique or a change in academic level does not automatically justify a new strand.

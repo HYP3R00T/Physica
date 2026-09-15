@@ -1,6 +1,6 @@
 # Roadmap segment index
 
-Segments are grouped by domain and strand in dependency order, including drafts. Indented names are direct prerequisites, which may belong to other domains or strands.
+Segments are grouped by domain and strand in study order, respecting prerequisites and explicit follow-up steps, including drafts. Indented names are direct prerequisites, which may belong to other domains or strands.
 
 Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 
@@ -22,6 +22,11 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Vectors and vector operations
   - Trigonometric functions and identities
 
+### Differential equations
+
+- Linear ordinary differential equations
+  - Antiderivatives and integrals
+
 ## Physics
 
 ### Classical mechanics
@@ -39,3 +44,20 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Work and energy
 - Circular and rotational motion
   - Impulse, momentum and collisions
+- Oscillations
+  - Circular and rotational motion
+  - Linear ordinary differential equations
+- Non-inertial reference frames
+  - Oscillations
+- Gravitation and central-force motion
+  - Non-inertial reference frames
+- Lagrangian mechanics
+  - Gravitation and central-force motion
+- Coupled oscillations and normal modes
+  - Lagrangian mechanics
+- Three-dimensional rigid-body dynamics
+  - Coupled oscillations and normal modes
+- Hamiltonian mechanics
+  - Three-dimensional rigid-body dynamics
+- Nonlinear dynamics and approximation methods
+  - Hamiltonian mechanics
