@@ -340,6 +340,25 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Deferred foundations: Multivariable calculus, probability, quantum mechanics, continuum descriptions and stochastic methods need their own coverage and links. Acoustic prerequisites will be connected after author review.
 - Next step: Review grouping and topic coverage, then perform the detailed textbook and institutional audit. No commits made; existing mechanics, acoustics and archive files preserved.
 
+### R038: Draft Electromagnetism
+
+- Status: Open
+- Request: Create the full proposed strand so the author can inspect its segments together.
+- Implemented: Twelve visible segments from electric charge and potential through radiation and scattering. See [Electromagnetism curriculum](electromagnetism-curriculum.md) for the sequence, scope and initial source comparison.
+- Dependencies: Begins at Work and energy, with independent links to linear ordinary differential equations, wave propagation and Lagrangian mechanics where used.
+- Remaining foundations: Vector calculus, boundary-value mathematics, complex methods, special relativity and microscopic material theories need appropriate coverage and links.
+- Baseline: Twelve segments committed as `221ba25` before the detailed audit. See R039 for findings; the author approved committing the audit refinements on 16 September 2026.
+
+### R039: Electromagnetism audit and missing foundations
+
+- Status: Open
+- Request: Preserve the first draft, then compare its coverage and sequence with books and academic courses.
+- Review: Griffiths fourth edition, Jackson third-edition contents, Wegner, IIT Kanpur, SVNIT and MIT. See [Electromagnetism audit](electromagnetism-audit.md) for evidence and limits.
+- Changes: Explicit interface and equilibrium conditions, inductive energy constraints, magnetic diffusion, causal fields, dispersive signals, relativistic wave transformations and unit conventions. Twelve segments retained.
+- Remaining work: Author and link vector calculus, boundary-value mathematics, complex methods and special relativity. Review how study modules distinguish introductory coverage from advanced methods.
+- Boundary decisions: Detailed diffraction, plasma dynamics, microscopic material theories and particle stopping remain later continuations.
+- Decision: Audit refinements approved for commit on 16 September 2026. Keep this item open until the missing foundations are authored and linked.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions
