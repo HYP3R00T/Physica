@@ -398,6 +398,16 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Remaining work: Mathematical foundations, special relativity and a relativistic quantum continuation; review links from existing optics and thermal physics. Specialist quantum optics and many-body theory remain separate continuations.
 - Decision: Audit corrections and documentation approved for commit on 16 September 2026. Keep this item open until the missing foundations and cross-strand links are addressed.
 
+### R044: Draft Relativity and gravitation
+
+- Status: Open
+- Request: Create the full proposed strand after the quantum-mechanics audit.
+- Implemented: Ten visible segments, from special relativity to gravitational evolution and global spacetime structure. See [Relativity and gravitation curriculum](relativity-and-gravitation-curriculum.md) for the proposed sequence and scope.
+- Dependencies: Cumulative reading order with existing mechanics, electromagnetic conservation and thermal foundations at their first use. Existing strands were not rewritten or linked back during this draft.
+- Remaining foundations: Tensor algebra, multivariable calculus, differential geometry, partial differential equations and stellar material models need coverage and appropriate links.
+- Boundaries: Full cosmology, numerical relativity, relativistic quantum theory and quantum gravity remain continuations. Review the depth of the final segment and overlap with Relativistic electrodynamics.
+- Decision: Baseline approved for commit on 16 September 2026. Detailed source audit, mathematical foundations and cross-strand links remain pending.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions
