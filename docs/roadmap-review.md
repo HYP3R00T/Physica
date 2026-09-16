@@ -359,6 +359,26 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Boundary decisions: Detailed diffraction, plasma dynamics, microscopic material theories and particle stopping remain later continuations.
 - Decision: Audit refinements approved for commit on 16 September 2026. Keep this item open until the missing foundations are authored and linked.
 
+### R040: Draft Optics
+
+- Status: Open
+- Request: Create the full optics strand for author review after electromagnetism.
+- Implemented: Ten visible segments from geometrical optics to nonlinear and ultrafast optics. See [Optics curriculum](optics-curriculum.md) for scope, sequence and initial course references.
+- Dependencies: Starts at Wave motion and propagation; optical interference adds electromagnetic waves, and optical beams adds electromagnetic waveguides and resonators. Later steps inherit those requirements.
+- Missing foundations: Matrix methods, Fourier analysis, random processes, tensors, quantum and atomic physics, and microscopic material models need authored coverage and links.
+- Boundaries: Detailed quantum optics, strong-field physics, nanophotonics and communication engineering remain later continuations.
+- Baseline: Ten optics segments committed as `a35fc1d` before the detailed audit. See R041 for findings; audit refinements were approved for commit on 16 September 2026.
+
+### R041: Optics audit and supporting foundations
+
+- Status: Open
+- Request: Commit the optics baseline, then compare books and academic courses for missing coverage.
+- Evidence: Ghatak, Born and Wolf, Boyd, SVNIT PH205 and PH208, IIT Kanpur photonics courses, and MIT optics courses. See [Optics audit](optics-audit.md) for inspected material and limitations.
+- Refinements: Radiance qualification, aplanatic imaging, illumination coherence, acousto-optic modulation, fibre propagation, representative lasers, phase conjugation and short-pulse amplification.
+- Dependencies: Added Elastic and surface waves for acousto-optic coupling. Ten segments and the cumulative optical sequence retained.
+- Remaining work: Missing mathematical and quantum foundations, and the breadth of inherited prerequisites, still need review. Specialist quantum and strong-field optics remain later continuations.
+- Decision: Audit refinements approved for commit on 16 September 2026. Keep this item open until the missing foundations and prerequisite questions are addressed.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions
