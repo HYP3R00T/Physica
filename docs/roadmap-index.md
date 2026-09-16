@@ -137,3 +137,29 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Elastic and surface waves
 - Dissipation and nonlinear acoustics
   - Waveguides, resonators and acoustic spaces
+
+### Optics
+
+- Geometrical optics
+  - Wave motion and propagation
+- Optical systems and aberrations
+  - Geometrical optics
+- Optical interference and coherence
+  - Optical systems and aberrations
+  - Electromagnetic waves and material response
+- Optical diffraction
+  - Optical interference and coherence
+- Fourier optics and image formation
+  - Optical diffraction
+- Polarisation and crystal optics
+  - Fourier optics and image formation
+  - Elastic and surface waves
+- Optical beams and resonators
+  - Polarisation and crystal optics
+  - Electromagnetic waveguides and resonators
+- Laser physics
+  - Optical beams and resonators
+- Optical detection and spectroscopy
+  - Laser physics
+- Nonlinear and ultrafast optics
+  - Optical detection and spectroscopy
