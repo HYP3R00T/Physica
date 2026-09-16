@@ -379,6 +379,25 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Remaining work: Missing mathematical and quantum foundations, and the breadth of inherited prerequisites, still need review. Specialist quantum and strong-field optics remain later continuations.
 - Decision: Audit refinements approved for commit on 16 September 2026. Keep this item open until the missing foundations and prerequisite questions are addressed.
 
+### R042: Draft Quantum mechanics
+
+- Status: Open
+- Request: Create the proposed quantum strand for inspection after optics.
+- Implemented: Twelve visible segments from quantum phenomena to measurement and open systems. See [Quantum mechanics curriculum](quantum-mechanics-curriculum.md) for the sequence, scope and initial source comparison.
+- Dependencies: A cumulative quantum sequence, with existing wave, mechanics, differential-equation and electromagnetic foundations at their first use.
+- Remaining foundations: Complex numbers, probability, linear algebra, tensor products, multivariable and spectral methods, and special relativity need authored coverage and links.
+- Boundaries: Detailed relativistic quantum theory, quantum field theory, many-body theory and quantum optics remain later continuations. Review the depth of the advanced endpoint.
+- Baseline: Twelve segments committed as `748fa21` before the R043 audit. Review links from optics and thermal physics for inherited scope and cycles.
+
+### R043: Quantum mechanics audit and remaining foundations
+
+- Status: Open
+- Request: Commit the quantum baseline, then compare local textbooks and academic courses.
+- Evidence: Griffiths and Schroeter, Zettili, scanned Shankar contents, SVNIT, IIT Kanpur, IIT Bombay and MIT. See [Quantum mechanics audit](quantum-mechanics-audit.md) for inspected sections and retrieval limits.
+- Refinements: Uncertainty and continuum conventions, multidimensional models, rotation matrices, radiation quantisation, molecular models and reduced-dynamics assumptions. Twelve segments retained; two transitively inherited prerequisite links removed.
+- Remaining work: Mathematical foundations, special relativity and a relativistic quantum continuation; review links from existing optics and thermal physics. Specialist quantum optics and many-body theory remain separate continuations.
+- Decision: Audit corrections and documentation approved for commit on 16 September 2026. Keep this item open until the missing foundations and cross-strand links are addressed.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions

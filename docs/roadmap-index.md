@@ -163,3 +163,33 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Laser physics
 - Nonlinear and ultrafast optics
   - Optical detection and spectroscopy
+
+### Quantum mechanics
+
+- Quantum phenomena and matter waves
+  - Wave packets, dispersion and periodic media
+- Wavefunctions and Schrödinger dynamics
+  - Quantum phenomena and matter waves
+- Quantum states, observables and measurement
+  - Wavefunctions and Schrödinger dynamics
+- Quantum angular momentum and spin
+  - Quantum states, observables and measurement
+  - Magnetic fields and magnetostatics
+- Central potentials and the hydrogen atom
+  - Quantum angular momentum and spin
+- Quantum symmetries and charged-particle motion
+  - Central potentials and the hydrogen atom
+- Stationary quantum approximation methods
+  - Quantum symmetries and charged-particle motion
+- Quantum transitions and time-dependent methods
+  - Stationary quantum approximation methods
+  - Electromagnetic waves and material response
+- Composite quantum systems and identical particles
+  - Quantum transitions and time-dependent methods
+- Quantum scattering theory
+  - Composite quantum systems and identical particles
+- Quantum propagators and path integrals
+  - Quantum scattering theory
+  - Hamiltonian mechanics
+- Quantum measurement and open systems
+  - Quantum propagators and path integrals
