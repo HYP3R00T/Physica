@@ -62,6 +62,35 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Nonlinear dynamics and approximation methods
   - Hamiltonian mechanics
 
+### Relativity and gravitation
+
+- Special relativity and spacetime
+  - Kinematics
+- Relativistic particle dynamics
+  - Special relativity and spacetime
+  - Impulse, momentum and collisions
+- Relativistic fields and stress-energy
+  - Relativistic particle dynamics
+  - Maxwell's equations and field conservation
+- Equivalence principle and curved spacetime
+  - Relativistic fields and stress-energy
+  - Gravitation and central-force motion
+- Einstein field equations and gravitational dynamics
+  - Equivalence principle and curved spacetime
+  - Lagrangian mechanics
+- Spherical gravity and relativistic stars
+  - Einstein field equations and gravitational dynamics
+  - Thermal equilibrium and equations of state
+- Black holes and horizons
+  - Spherical gravity and relativistic stars
+- Weak gravity and gravitational radiation
+  - Black holes and horizons
+- Relativistic cosmology
+  - Weak gravity and gravitational radiation
+- Gravitational evolution and global spacetime structure
+  - Relativistic cosmology
+  - Hamiltonian mechanics
+
 ### Electromagnetism
 
 - Electric charge, fields and potential
