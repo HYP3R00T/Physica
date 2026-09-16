@@ -62,6 +62,36 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Nonlinear dynamics and approximation methods
   - Hamiltonian mechanics
 
+### Electromagnetism
+
+- Electric charge, fields and potential
+  - Work and energy
+- Electrostatic boundary-value problems
+  - Electric charge, fields and potential
+- Polarisation and electric fields in matter
+  - Electrostatic boundary-value problems
+- Electric current and conduction
+  - Polarisation and electric fields in matter
+- Magnetic fields and magnetostatics
+  - Electric current and conduction
+- Magnetisation and magnetic materials
+  - Magnetic fields and magnetostatics
+- Electromagnetic induction and circuit dynamics
+  - Magnetisation and magnetic materials
+  - Linear ordinary differential equations
+- Maxwell's equations and field conservation
+  - Electromagnetic induction and circuit dynamics
+- Electromagnetic waves and material response
+  - Maxwell's equations and field conservation
+  - Wave motion and propagation
+- Electromagnetic waveguides and resonators
+  - Electromagnetic waves and material response
+- Relativistic electrodynamics
+  - Electromagnetic waveguides and resonators
+  - Lagrangian mechanics
+- Electromagnetic radiation and scattering
+  - Relativistic electrodynamics
+
 ### Thermal and statistical physics
 
 - Thermal equilibrium and equations of state
