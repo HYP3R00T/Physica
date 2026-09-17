@@ -38,13 +38,22 @@ export default function RoadmapExplorer({
 }) {
   const [selected, setSelected] = useState(segments[0].id)
   const [domain, setDomain] = useState<RoadmapFilter>("all")
+  const [focusedStrand, setFocusedStrand] = useState("")
   const [mobileView, setMobileView] = useState("path")
   const panels = useRef<HTMLDivElement>(null)
   const body = useRef<HTMLDivElement>(null)
   const columns = useRef<HTMLDivElement>(null)
   const graphScroller = useRef<HTMLElement>(null)
   const graphDrag = useRef<{ startX: number; scrollLeft: number } | null>(null)
-  const visibleSegments = useMemo(() => filterRoadmap(segments, domain), [segments, domain])
+  const visibleSegments = useMemo(
+    () => filterRoadmap(segments, domain, focusedStrand),
+    [segments, domain, focusedStrand],
+  )
+  const strandOptions = strands.filter((strand) => domain === "all" || strand.id.startsWith(`${domain}/`))
+  const strandLabel = (id: string) => {
+    const name = id.split("/").at(-1)?.replaceAll("-", " ") ?? id
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
   const visibleStrands = useMemo(
     () => strands.filter((strand) => visibleSegments.some((segment) => segment.strand === strand.id)),
     [strands, visibleSegments],
@@ -124,9 +133,27 @@ export default function RoadmapExplorer({
     })
   }
 
+  function changeStrand(value: string) {
+    setFocusedStrand(value)
+    const visible = filterRoadmap(segments, domain, value)
+    const target =
+      visible.find((segment) => segment.id === selected) ??
+      visible.find((segment) => segment.strand === value) ??
+      visible[0]
+    if (target) {
+      setSelected(target.id)
+      const hash = `#${anchor(target.id)}`
+      if (location.hash !== hash) history.pushState(null, "", hash)
+      requestAnimationFrame(() => reveal(target.id))
+    } else window.scrollTo({ top: 0, behavior: "instant" })
+  }
+
   function choose(id: string, hash = `#${anchor(id)}`, openDetails = true) {
     if (!byId.has(id)) return
-    if (domain !== "all" && byId.get(id)?.domain !== domain) setDomain("all")
+    if (!visibleSegments.some((segment) => segment.id === id)) {
+      setFocusedStrand("")
+      if (domain !== "all" && byId.get(id)?.domain !== domain) setDomain("all")
+    }
     setSelected(id)
     if (location.hash !== hash) history.pushState(null, "", hash)
     const mobile = window.matchMedia("(width < 850px)").matches
@@ -177,6 +204,11 @@ export default function RoadmapExplorer({
       if (target && location.hash !== target.hash) history.replaceState(null, "", target.hash)
       const selectedSegment = match ?? segments[0]
       setDomain((active) => (active === "all" || active === selectedSegment.domain ? active : "all"))
+      setFocusedStrand((active) =>
+        active && filterRoadmap(segments, "all", active).some((segment) => segment.id === selectedSegment.id)
+          ? active
+          : "",
+      )
       setSelected(selectedSegment.id)
       if (match) {
         const mobile = window.matchMedia("(width < 850px)").matches
@@ -329,11 +361,45 @@ export default function RoadmapExplorer({
                 <UpArrow />
               </Button>
             </div>
+            <div className="flex w-full min-w-0 basis-full flex-col gap-2 border-t border-border px-4 py-2 max-[850px]:col-span-2">
+              <div className="flex min-w-0 items-center gap-3">
+                <label htmlFor="roadmap-strand" className="shrink-0">
+                  Strand
+                </label>
+                <select
+                  id="roadmap-strand"
+                  value={focusedStrand}
+                  aria-controls="roadmap-map"
+                  aria-describedby={focusedStrand ? "roadmap-strand-hint" : undefined}
+                  onChange={(event) => changeStrand(event.target.value)}
+                  className="min-w-0 flex-1 rounded border border-border bg-background-0 px-2 py-1.5 text-foreground-0 focus-visible:outline-2 focus-visible:outline-ring"
+                >
+                  <option value="">All strands</option>
+                  {focusedStrand && !strandOptions.some((strand) => strand.id === focusedStrand) && (
+                    <option value={focusedStrand} hidden>
+                      {strandLabel(focusedStrand)}
+                    </option>
+                  )}
+                  {strandOptions.map((strand) => (
+                    <option key={strand.id} value={strand.id}>
+                      {strandLabel(strand.id)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {focusedStrand && (
+                <p id="roadmap-strand-hint" className="text-foreground-2">
+                  Includes direct prerequisites only.
+                </p>
+              )}
+            </div>
           </div>
           <div id="roadmap-map">
             {visibleSegments.length === 0 && (
               <p role="status" className="p-6 text-sm text-foreground-2">
-                No {domain === "mathematics" ? "mathematics" : "physics"} segments published yet.
+                {focusedStrand
+                  ? "No segments match this strand and subject."
+                  : `No ${domain === "mathematics" ? "mathematics" : "physics"} segments published yet.`}
               </p>
             )}
             <div

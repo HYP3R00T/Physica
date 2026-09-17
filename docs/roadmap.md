@@ -126,9 +126,11 @@ Headings and equations receive segment-specific IDs to prevent collisions. Local
 
 When renaming a file, update dependencies, module references and links that use its slug.
 
-## Domain filtering
+## Domain and strand filtering
 
 The learning-path header has All, Physics and Mathematics buttons. All is the initial view. The filter affects only the left-hand graph and its segment count; the selected detail panel, checklist and full prerequisites remain unchanged. A domain with no published segments shows an empty-state message.
+
+The Strand selector focuses the map on every published segment in that strand and its direct prerequisites. Prerequisites of those external segments stay hidden unless a segment in the selected strand also requires them directly. The domain buttons then restrict this selection to All, Physics or Mathematics. For example, Classical mechanics with Mathematics shows only its direct mathematical prerequisites. Switching domains preserves the selected strand. The dropdown offers only strands from the active domain, or every strand under All. A previously selected strand from the other domain remains displayed as the current filter but is not offered in the dropdown. All strands clears only the strand filter. Choosing a strand retains the selected segment when it remains visible, otherwise it selects the first visible segment of that strand or its prerequisites.
 
 Only edges with both endpoints visible are drawn. Hidden nodes are not replaced by invented connections. Choosing a prerequisite outside the active domain switches to All and reveals that segment. Hash navigation, including global-search links and browser back/forward, also reveals the target when necessary. Filter choices are not saved between page visits.
 
