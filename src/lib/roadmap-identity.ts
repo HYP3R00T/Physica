@@ -30,3 +30,17 @@ export function readRoadmapProgress(stored: unknown): Set<string> {
   }
   return result
 }
+
+// Keep the domain tab local; only the subject and selected segment are shared.
+export function roadmapUrl(href: string, subject: string, hash: string): string {
+  const url = new URL(href)
+  if (subject) url.searchParams.set("subject", subject.split("/").at(-1) ?? subject)
+  else url.searchParams.delete("subject")
+  url.hash = hash
+  return url.pathname + url.search + url.hash
+}
+
+export function readRoadmapSubject(search: string, strands: { id: string }[]): string {
+  const subject = new URLSearchParams(search).get("subject")
+  return strands.find(({ id }) => id.split("/").at(-1) === subject)?.id ?? ""
+}

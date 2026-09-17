@@ -22,7 +22,7 @@ After author review, retain the boundary unless a specific conceptual gap, an ac
 
 ## Add a segment
 
-Use a descriptive filename, such as `content/roadmap/physics/atomic-spectra.mdx`:
+Use a descriptive filename, such as `content/roadmap/physics/atomic-and-molecular-physics/atomic-spectra.mdx`:
 
 ```yaml
 ---
@@ -35,7 +35,7 @@ dependencies:
 ---
 ```
 
-- The filename, without its extension, is the segment's slug. Use lowercase words separated by single hyphens. Keep files directly in either domain folder. Slugs must be unique across both folders. Moving a file between domains does not change its slug, links or saved checklist keys.
+- The filename, without its extension, is the segment's slug. Use lowercase words separated by single hyphens. Group files into strand-named folders under either domain. Further nesting is supported; intermediate folder names do not define the strand or reading order. Slugs must be unique across all roadmap segment files. Moving a file between domains does not change its slug, links or saved checklist keys.
 - `title` is the name readers see. Changing it does not change the slug or links.
 - `domain` is derived from the folder by the loader; do not write it in frontmatter.
 - `strand` names the graph lane within a domain. Use lowercase words separated by hyphens; no separate definition file is needed.
@@ -130,9 +130,9 @@ When renaming a file, update dependencies, module references and links that use 
 
 The learning-path header has All, Physics and Mathematics buttons. All is the initial view. The filter affects only the left-hand graph and its segment count; the selected detail panel, checklist and full prerequisites remain unchanged. A domain with no published segments shows an empty-state message.
 
-The Subject selector focuses the map on every published segment in that strand and its direct prerequisites. Prerequisites of those external segments stay hidden unless a segment in the selected strand also requires them directly. The domain buttons then restrict this selection to All, Physics or Mathematics. For example, Classical mechanics with Mathematics shows only its direct mathematical prerequisites. Switching domains preserves the selected strand. The dropdown offers only strands from the active domain, or every strand under All. A previously selected strand from the other domain remains displayed as the current filter but is not offered in the dropdown. All subjects clears only the strand filter. Choosing a strand retains the selected segment when it remains visible, otherwise it selects the first visible segment of that strand or its prerequisites.
+The Subject selector focuses the map on every published segment in that strand and its direct prerequisites. Prerequisites of those external segments stay hidden unless a segment in the selected strand also requires them directly. The domain buttons then restrict this selection to All, Physics or Mathematics. For example, Classical mechanics with Mathematics shows only its direct mathematical prerequisites. Switching domains preserves the selected strand. The dropdown offers only strands from the active domain, or every strand under All. A previously selected strand from the other domain remains displayed as the current filter but is not offered in the dropdown. All subjects clears only the strand filter. Choosing a subject clears the selected segment and shows an overview until the reader chooses a segment.
 
-Only edges with both endpoints visible are drawn. Hidden nodes are not replaced by invented connections. Choosing a prerequisite outside the active domain switches to All and reveals that segment. Hash navigation, including global-search links and browser back/forward, also reveals the target when necessary. Filter choices are not saved between page visits.
+Only edges with both endpoints visible are drawn. Hidden nodes are not replaced by invented connections. Choosing a prerequisite outside the active domain switches to All and reveals that segment. Hash navigation, including global-search links and browser back/forward, also reveals the target when necessary. The selected subject is stored in the subject query parameter (for example, `?subject=electromagnetism`), alongside the selected segment hash. Shared links and browser back/forward restore that subject under All. Choosing All subjects removes the parameter. Unknown subjects fall back to the full map. A subject link without a valid visible segment shows the subject overview without adding a hash. Domain tabs are not stored in the URL.
 
 ## Scrolling and navigation
 
@@ -145,3 +145,24 @@ On small screens, the path and segment details have separate views. Tapping a di
 The fourteen-segment Classical mechanics curriculum has a separate [coverage audit](classical-mechanics-audit.md), checked against textbooks and institutional syllabuses on 15 September 2026. It records the baseline commit, corrections, deliberate boundaries and outstanding mathematics prerequisites.
 
 The initial 60 segments came from the segmented roadmap drafted on 12 September 2026, informed by the SVNIT, IIT Kanpur, IISER Pune, MIT, Cambridge and Caltech source review. The boundaries and dependencies are editorial choices, not an institutional consensus or a complete source audit. Supporting mathematics stays within the physics curriculum, beginning from a Class 10 baseline.
+
+## Subject overview pages
+
+Subject overviews are optional `index.mdx` files alongside their segments, for example `content/roadmap/physics/classical-mechanics/index.mdx`. The loader derives the domain from the first folder and recognises the index filename as an overview. The required `strand` field connects the overview to its subject, independently of the folder name. No overview boolean is needed in frontmatter. Overviews share the roadmap collection but add no graph nodes or prerequisites and need no stage. Duplicate overviews for the same domain and strand, or overviews with an unknown strand, fail validation.
+
+Use this frontmatter:
+
+```yaml
+---
+title: Classical mechanics
+strand: classical-mechanics
+description: An optional introduction.
+draft: false
+---
+```
+
+Write the body as normal MDX. It supports paragraphs, headings, lists, links, equations, images and imported components. For an image, import Astro's `Image` component and a local asset, then use `<Image src={image} alt="A description of the image" />`. The overview title is rendered automatically, so start the body with prose or a second-level heading.
+
+The subject URL is `/roadmap?subject=classical-mechanics`. Link to a segment with `#segment-physical-quantities-and-measurement`. Readers can return using the subject overview link above the segment detail. Browser history records both views. On mobile, the overview appears in the detail tab.
+
+Only overviews matching a published strand are rendered. Missing or draft overviews use the generic introduction. The unfiltered overview lists the available subjects. Subject content is rendered at build time with the same MDX pipeline as segments.

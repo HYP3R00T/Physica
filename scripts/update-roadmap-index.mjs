@@ -4,7 +4,9 @@ import { roadmapDomains, roadmapFileIdentity } from "../src/lib/roadmap-domain.t
 import { validateRoadmap } from "../src/lib/roadmap-validation.ts"
 
 const directory = new URL("../content/roadmap/", import.meta.url)
-const files = (await readdir(directory, { recursive: true })).filter((file) => /\.mdx?$/.test(file))
+const files = (await readdir(directory, { recursive: true })).filter(
+  (file) => /\.mdx?$/.test(file) && !/(^|[/\\])index\.mdx?$/.test(file),
+)
 const entries = await Promise.all(
   files.map(async (file) => {
     const { frontmatter } = parseFrontmatter(await readFile(new URL(file, directory), "utf8"))

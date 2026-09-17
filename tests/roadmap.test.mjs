@@ -4,7 +4,7 @@ import { mapRoadmapModules } from "../src/lib/content.ts"
 import rehypeRoadmapContent from "../src/lib/rehype-roadmap-content.mjs"
 import { filterRoadmap, roadmapFileIdentity } from "../src/lib/roadmap-domain.ts"
 import { getRoadmapEdges } from "../src/lib/roadmap-geometry.ts"
-import { readRoadmapProgress, resolveRoadmapHash } from "../src/lib/roadmap-identity.ts"
+import { readRoadmapProgress, readRoadmapSubject, resolveRoadmapHash, roadmapUrl } from "../src/lib/roadmap-identity.ts"
 import { getRoadmapStrands } from "../src/lib/roadmap-strands.ts"
 import { getPublishedRoadmap, validateRoadmap } from "../src/lib/roadmap-validation.ts"
 
@@ -94,7 +94,7 @@ test("MDX headings, equation IDs and local links are scoped to their segment", (
       },
     ],
   }
-  const path = "/project/content/roadmap/mathematics/functions-and-vectors.mdx"
+  const path = "/project/content/roadmap/mathematics/algebra/nested/functions-and-vectors.mdx"
   rehypeRoadmapContent()(tree, { path, history: [path], data: {} })
   assert.equal(tree.children[0].properties.id, "segment-functions-and-vectors--what-to-study")
   assert.equal(tree.children[0].tagName, "h2")
@@ -161,7 +161,12 @@ test("derives domains from folders while keeping slugs stable", () => {
   assert.deepEqual(roadmapFileIdentity("mathematics/vectors.mdx"), { id: "vectors", domain: "mathematics" })
   assert.deepEqual(roadmapFileIdentity("physics/vectors.md"), { id: "vectors", domain: "physics" })
   assert.equal(roadmapFileIdentity("mathematics\\vectors.mdx").id, "vectors")
-  for (const path of ["vectors.mdx", "chemistry/vectors.mdx", "physics/nested/vectors.mdx", "physics/Bad Name.mdx"])
+  assert.deepEqual(roadmapFileIdentity("physics/arbitrary/deep/folder/vectors.mdx"), {
+    id: "vectors",
+    domain: "physics",
+  })
+  assert.deepEqual(roadmapFileIdentity("physics/arbitrary/index.mdx"), { id: "index", domain: "physics" })
+  for (const path of ["vectors.mdx", "chemistry/vectors.mdx", "physics/Bad Name.mdx"])
     assert.throws(() => roadmapFileIdentity(path), /Invalid roadmap path/)
   assert.throws(
     () => validateRoadmap([{ ...entry("bad"), data: { ...entry("bad").data, domain: "chemistry" } }]),
@@ -303,4 +308,37 @@ test("domain and strand filters intersect independently, including mathematics f
   assert.deepEqual(ids("mathematics", "physics/optics"), [])
   assert.deepEqual(filterRoadmap(segments, "physics", "physics/mechanics")[0].dependencies, [])
   assert.deepEqual(segments, original)
+})
+
+test("subject URLs round-trip independently of segment hashes and preserve unrelated parameters", () => {
+  const strands = [{ id: "physics/electromagnetism" }, { id: "mathematics/calculus" }]
+  const path = roadmapUrl("https://example.com/roadmap?ref=friend#segment-old", strands[0].id, "#segment-maxwell")
+  const url = new URL(path, "https://example.com")
+  assert.equal(readRoadmapSubject(url.search, strands), strands[0].id)
+  assert.equal(url.hash, "#segment-maxwell")
+  assert.equal(url.searchParams.get("subject"), "electromagnetism")
+  assert.equal(roadmapUrl(url.href, strands[0].id, ""), "/roadmap?ref=friend&subject=electromagnetism")
+  assert.equal(url.searchParams.get("ref"), "friend")
+  assert.equal(roadmapUrl(url.href, "", url.hash), "/roadmap?ref=friend#segment-maxwell")
+  const next = new URL(roadmapUrl(url.href, strands[1].id, "#segment-integrals"), url)
+  assert.equal(readRoadmapSubject(next.search, strands), strands[1].id)
+  assert.equal(readRoadmapSubject(url.search, strands), strands[0].id)
+  assert.equal(readRoadmapSubject("?subject=unknown", strands), "")
+  assert.equal(readRoadmapSubject("", strands), "")
+})
+
+test("subject overview headings and local links are scoped without changing segment links", () => {
+  const tree = {
+    type: "root",
+    children: [
+      { type: "element", tagName: "h2", properties: { id: "intro" }, children: [] },
+      { type: "element", tagName: "a", properties: { href: "#intro" }, children: [] },
+      { type: "element", tagName: "a", properties: { href: "#segment-kinematics" }, children: [] },
+    ],
+  }
+  const path = "/project/content/roadmap/physics/arbitrary/folder/index.mdx"
+  rehypeRoadmapContent()(tree, { path, history: [path], data: {} })
+  assert.equal(tree.children[0].properties.id, "overview-physics-arbitrary-folder-index--intro")
+  assert.equal(tree.children[1].properties.href, "#overview-physics-arbitrary-folder-index--intro")
+  assert.equal(tree.children[2].properties.href, "#segment-kinematics")
 })
