@@ -15,7 +15,7 @@ Proposed on 16 September 2026. Ten segments are visible with `draft: false` for 
 - Cooling, trapping and ultracold matter
 - Precision atomic and molecular measurements
 
-The route develops atomic states and spectra, molecular structure and motion, then interactions and experimental control. It uses the methods introduced in Quantum mechanics to describe particular physical systems. `Core` means the shared route through the strand, not that every topic is introductory.
+The route develops atomic states and spectra, molecular structure and motion, then interactions and experimental control. It uses the methods introduced in Quantum mechanics to describe particular physical systems. Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md).
 
 ## Dependencies and overlap
 

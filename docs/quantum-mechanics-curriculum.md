@@ -17,7 +17,7 @@ Proposed on 16 September 2026. Twelve segments are visible for author review, wi
 - Quantum propagators and path integrals
 - Quantum measurement and open systems
 
-The sequence develops experimental evidence, wave mechanics, the state-space formulation, angular structure and practical methods before reaching composite systems and advanced formulations. The final segments introduce tools used across graduate quantum mechanics. `Core` means a shared route through the subject, not an elementary difficulty level.
+The sequence develops experimental evidence, wave mechanics, the state-space formulation, angular structure and practical methods before reaching composite systems and advanced formulations. The final segments introduce tools used across graduate quantum mechanics. Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md).
 
 ## Grouping and boundaries
 

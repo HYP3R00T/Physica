@@ -13,7 +13,7 @@ The aim is broad, traceable coverage of physics. A named home does not prove tha
 - Use cumulative reading sequences within these initial drafts, consistent with the existing curricula. Completing the previous segment is an educational entry requirement, not a claim that every earlier application is necessary for every later derivation.
 - List only direct prerequisites. Inherited requirements remain available through the graph.
 - Add mathematical prerequisites when their segments exist. Record missing foundations explicitly rather than inventing links or claiming that the current mathematics is sufficient.
-- Treat `Core` as the shared route within a strand. It does not mean elementary, compulsory for every physicist, or fully audited.
+- Use `stage: Foundations` or `stage: Advanced` to indicate progression within each strand. Neither label means compulsory for every physicist or fully audited. See [Segment stages](roadmap-stages.md).
 - Preserve the five foundations while adding specialist routes. The site's flat strand metadata has not been replaced with a new hierarchy or category filter.
 
 ## Existing strands

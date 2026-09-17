@@ -428,6 +428,14 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Remaining work: Audit each new curriculum against textbooks and university courses; build missing mathematics; review the advanced entry to electronics and specialist overlaps. The coverage document records omitted or partial experimental, computational, biological, environmental, medical and other fields.
 - Decision: No claim of complete physics coverage. Expansion approved for commit on 17 September 2026. Existing content and unrelated pending changes remain preserved.
 
+### R047: Foundations and Advanced stages
+
+- Status: Open
+- Request: Replace the former scope labels with Foundations and Advanced across all strands.
+- Implemented: Required `stage` frontmatter, content schema and both roadmap labels updated. All 161 active segments classified: 97 Foundations and 64 Advanced, including the five foundational mathematics segments.
+- Criteria: Relative to each strand and based on the dominant treatment. Branching, prerequisites, subject importance and audit status are separate. See [Segment stages](roadmap-stages.md) for definitions, boundary decisions and every assignment.
+- Next step: Author review of classifications, especially mixed-depth segments. Segment mergers and graph lane reuse remain separate work. Stage changes approved for commit on 17 September 2026.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions

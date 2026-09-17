@@ -46,7 +46,7 @@ The graph still needs foundations that have not yet been authored:
 
 Existing acoustic segments retain their approved dependencies. Their thermal links should be added after this strand is reviewed, at the relevant first use of compressibility, constitutive response or thermal transport. Do not treat an absent link as evidence that the foundation is unnecessary.
 
-All segments use the existing `Core` scope for the proposed shared route. They do not have equal difficulty: the final sections include introductory graduate material. Full quantum criticality, interacting quantum fluids, specialised condensed-matter models, chemical engineering, turbulence and far-from-equilibrium field theories remain possible continuations.
+Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md). They do not have equal difficulty: the final sections include introductory graduate material. Full quantum criticality, interacting quantum fluids, specialised condensed-matter models, chemical engineering, turbulence and far-from-equilibrium field theories remain possible continuations.
 
 ## Initial scope reference
 
