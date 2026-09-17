@@ -1,0 +1,13 @@
+/* Typography Utility Classes */
+@layer utilities {
+  .text-section-heading {
+    color: var(--foreground-0);
+    margin-bottom: 2rem;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 0.9;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+}

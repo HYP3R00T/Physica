@@ -1,0 +1,216 @@
+/* Prose rules exclude KaTeX wrappers and descendants; KaTeX owns math formatting. */
+@layer base {
+  .prose:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-foreground-2 w-full max-w-none font-sans text-base leading-7;
+  }
+
+  .prose a:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-accent-1 decoration-accent-1 relative font-medium underline underline-offset-4 transition-colors;
+  }
+
+  .prose a:hover:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-accent-2 decoration-accent-2;
+  }
+
+  .prose h1:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-foreground-0 font-display mt-0 mb-6 text-4xl leading-tight font-semibold tracking-tight md:text-5xl;
+  }
+
+  .prose h2:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-foreground-0 font-display mt-18 mb-6 border-l-4 border-accent-1 pl-4 scroll-mt-28 text-3xl leading-tight font-semibold tracking-tight;
+  }
+
+  .prose h3:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-foreground-1 font-display mt-12 mb-4 scroll-mt-28 text-2xl leading-tight font-semibold;
+  }
+
+  .prose h4:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-accent-2 font-display mt-8 mb-3 text-xl leading-snug font-semibold;
+  }
+
+  .prose h5:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-foreground-1 mt-6 mb-1 text-base font-semibold tracking-wide uppercase;
+  }
+
+  .prose h6:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply text-foreground-1 mt-6 mb-1 text-sm font-semibold tracking-wide uppercase;
+  }
+
+  .prose :is(h2, h3, h4):not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply relative;
+  }
+
+  .prose .heading-permalink:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply ml-2 inline-flex text-foreground-3 no-underline opacity-0 transition-opacity hover:text-accent-1 focus-visible:opacity-100;
+  }
+
+  .prose .heading-permalink:not(:where(.katex, .katex *, .katex-display, .katex-display *))::before {
+    content: "#";
+  }
+
+  .prose :is(h2, h3, h4):hover .heading-permalink:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply opacity-100;
+  }
+
+  .prose p:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-5 font-sans text-foreground-2;
+  }
+
+  .prose p:first-child:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-0;
+  }
+
+  .prose p+p:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-5;
+  }
+
+  .prose p+ :is(ul, ol, blockquote, pre, table, hr, div, a):not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose :is(ul, ol, blockquote, pre, table, hr, div, a)+p:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose :is(ul, ol, blockquote, pre, table, hr, div, a)+ :is(ul, ol, blockquote, pre, table, hr, div, a):not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-7;
+  }
+
+  .prose strong:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply font-semibold text-foreground-0;
+  }
+
+  .prose ul:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose ol:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 space-y-2;
+  }
+
+  .prose ul:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply list-disc pl-6;
+  }
+
+  .prose ol:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply list-decimal pl-6;
+  }
+
+  .prose li:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply font-sans leading-7 text-foreground-2;
+  }
+
+  .prose li:not(:where(.katex, .katex *, .katex-display, .katex-display *))::marker {
+    @apply text-foreground-3;
+  }
+
+  .prose li+li:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-1;
+  }
+
+  .prose li ul:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose li ol:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-2 mb-0;
+  }
+
+  .prose blockquote:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 rounded-lg border border-border/80 bg-background-1 px-6 py-5 text-foreground-1;
+  }
+
+  .prose blockquote p:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 text-foreground-1;
+  }
+
+  .prose blockquote h2:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose blockquote h3:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose blockquote h4:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
+  .prose blockquote h5:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-0;
+  }
+
+  .prose .callout:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-7 grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-lg border bg-background-1 px-5 py-4;
+  }
+
+  .prose .callout-title:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply m-0 font-mono text-sm font-semibold tracking-normal;
+  }
+
+  .prose .callout-icon:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-0.5 size-5 shrink-0;
+  }
+
+  .prose .callout-content:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply min-w-0;
+  }
+
+  .prose .callout-body:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-2 text-foreground-1;
+  }
+
+  .prose .callout-body> :first-child:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mt-0;
+  }
+
+  .prose .callout-body> :last-child:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply mb-0;
+  }
+
+  .prose code:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply rounded-sm bg-background-2 px-2 py-0.5 font-mono text-[0.92rem] font-medium text-foreground-0;
+  }
+
+  .prose :is(h1, h2, h3, h4, h5, h6) code:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    font-size: 0.78em;
+    line-height: 1;
+    padding: 0.08em 0.3em;
+    vertical-align: 0.08em;
+  }
+
+  .prose pre code:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply bg-transparent p-0 text-inherit;
+  }
+
+  .prose pre:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 overflow-x-auto rounded-lg border border-border/80 bg-background-2/70 px-6 py-5 text-[0.98rem] leading-7 text-foreground-0;
+  }
+
+  /* .astro-code {
+      @apply bg-background-0 my-8 px-6 py-5 font-mono text-base;
+    } */
+
+  .prose table:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 w-full overflow-hidden rounded-lg border border-border/80 bg-background-1 font-sans text-base;
+  }
+
+  .prose th:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply border-border/80 border-b bg-background-2 px-4 py-3 text-left font-semibold text-foreground-0;
+  }
+
+  .prose td:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply border-border/80 border-b px-4 py-3 align-top text-foreground-2;
+  }
+
+  .prose tr:last-child td:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply border-b-0;
+  }
+
+  .prose img:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 rounded-lg border border-border/80;
+  }
+
+  .prose iframe:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 aspect-video w-full rounded-lg border border-border/80;
+  }
+
+  .prose hr:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply my-0 border-border/80;
+  }
+
+  .prose .equation:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply relative my-8 w-full scroll-mt-28 pr-10;
+  }
+
+  .prose .equation-number:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply absolute top-1/2 right-0 m-0 -translate-y-1/2 font-mono text-sm text-foreground-3;
+  }
+
+  .prose .equation-number a:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply font-normal text-foreground-3 no-underline hover:text-accent-1;
+  }
+
+  .prose .equation-reference:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    @apply font-mono font-normal whitespace-nowrap no-underline hover:no-underline;
+  }
+}

@@ -1,0 +1,40 @@
+.mobile-menu-icon {
+  position: relative;
+  display: block;
+  width: 1.125rem;
+  height: 0.875rem;
+}
+
+.mobile-menu-icon span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: center;
+  transition: top 150ms ease, transform 150ms ease;
+}
+
+.mobile-menu-icon span:first-child {
+  top: 0.1875rem;
+}
+
+.mobile-menu-icon span:last-child {
+  top: 0.625rem;
+}
+
+[data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon span:first-child {
+  top: 0.4375rem;
+  transform: rotate(45deg);
+}
+
+[data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon span:last-child {
+  top: 0.4375rem;
+  transform: rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-icon span {
+    transition: none;
+  }
+}
