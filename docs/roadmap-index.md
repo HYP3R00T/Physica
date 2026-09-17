@@ -222,3 +222,28 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Hamiltonian mechanics
 - Quantum measurement and open systems
   - Quantum propagators and path integrals
+
+### Atomic and molecular physics
+
+- Atomic structure and electron configurations
+  - Composite quantum systems and identical particles
+- Atomic spectra and level structure
+  - Atomic structure and electron configurations
+- Atoms and molecules in external fields
+  - Atomic spectra and level structure
+- Molecular bonding and electronic structure
+  - Atoms and molecules in external fields
+- Molecular rotation, vibration and spectra
+  - Molecular bonding and electronic structure
+- Molecular electronic transitions and dynamics
+  - Molecular rotation, vibration and spectra
+- Coherent light-matter interactions
+  - Molecular electronic transitions and dynamics
+  - Quantum measurement and open systems
+- Atomic and molecular collisions
+  - Coherent light-matter interactions
+- Cooling, trapping and ultracold matter
+  - Atomic and molecular collisions
+  - Kinetic theory and transport
+- Precision atomic and molecular measurements
+  - Cooling, trapping and ultracold matter

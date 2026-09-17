@@ -408,6 +408,16 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Boundaries: Full cosmology, numerical relativity, relativistic quantum theory and quantum gravity remain continuations. Review the depth of the final segment and overlap with Relativistic electrodynamics.
 - Decision: Baseline approved for commit on 16 September 2026. Detailed source audit, mathematical foundations and cross-strand links remain pending.
 
+### R045: Draft Atomic and molecular physics
+
+- Status: Open
+- Request: Create the next strand after Relativity and gravitation.
+- Implemented: Ten visible segments from electronic structure through molecular dynamics, collisions, cooling and precision measurements. See [Atomic and molecular physics curriculum](atomic-and-molecular-physics-curriculum.md).
+- Dependencies: Starts from composite quantum systems, adds open-system methods before coherent interactions and kinetic theory before cooling. The cumulative quantum path already supplies scattering.
+- Remaining foundations: Mathematical symmetry methods, molecular geometry, statistics, supporting optical methods, relativistic quantum theory and nuclear inputs need review and appropriate links.
+- Boundaries: Full quantum chemistry, quantum optics, quantum gases and many-body phases remain continuations. Review the proposed advanced endpoint during the source audit.
+- Decision: Baseline approved for commit on 17 September 2026. Detailed source audit, mathematical foundations and cross-strand links remain pending.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions
