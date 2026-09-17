@@ -37,7 +37,6 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "rehype-katex": "^7.0.1",
-    "rehype-mathjax": "^7.1.0",
     "rehype-pretty-code": "^0.14.5",
     "remark-math": "^6.0.0",
     "shadcn": "^4.21.0",
