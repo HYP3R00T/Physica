@@ -122,15 +122,18 @@
     }
 
     &:is(.callout) {
-      @apply my-7 grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-lg border bg-background-1 px-5 py-4;
+      @apply my-7 grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-lg border bg-transparent px-5 py-4;
+      border-color: var(--callout-accent, var(--foreground-2));
     }
 
     &:is(.callout-title) {
       @apply m-0 font-mono text-sm font-semibold tracking-normal;
+      color: var(--callout-accent, var(--foreground-2));
     }
 
     &:is(.callout-icon) {
       @apply mt-0.5 size-5 shrink-0;
+      color: var(--callout-accent, var(--foreground-2));
     }
 
     &:is(.callout-content) {

@@ -70,16 +70,80 @@ A short paragraph under the smallest heading. The page title supplies the first-
 >
 > > A nested quotation checks indentation.
 
-<div className="callout">
-  <span className="callout-icon" aria-hidden="true">💡</span>
-  <div className="callout-content">
-    <p className="callout-title">A note on units</p>
-    <div className="callout-body">
-      <p>Use consistent units before substituting values. This callout uses our existing CSS classes through MDX markup.</p>
-      <p>A second paragraph checks the spacing inside the callout.</p>
-    </div>
-  </div>
-</div>
+<Callout title="A note on units">
+
+Use consistent units before substituting values. This callout uses the shared MDX component.
+
+A second paragraph checks the spacing inside the callout.
+
+</Callout>
+
+### Callout colours and icons
+
+Use `color` to choose a palette colour and `icon` to choose an SVG from `src/assets/icons`, without its `.svg` extension. Omitting them gives a neutral callout with the information icon.
+
+```mdx
+<Callout title="Explore further" color="purple" icon="arrow-up-right">
+
+Follow this connection when you are ready.
+
+</Callout>
+```
+
+<Callout title="Red callout" color="red" icon="arrow-left">
+
+Revisit an earlier assumption.
+
+</Callout>
+
+<Callout title="Orange callout" color="orange" icon="arrow-right">
+
+Check the conditions before continuing.
+
+</Callout>
+
+<Callout title="Yellow callout" color="yellow" icon="arrow-right">
+
+Keep this detail in mind.
+
+</Callout>
+
+<Callout title="Green callout" color="green" icon="arrow-right">
+
+Continue when you have covered these topics.
+
+</Callout>
+
+<Callout title="Teal callout" color="teal" icon="arrow-up-right">
+
+Connect this idea to another subject.
+
+</Callout>
+
+<Callout title="Cyan callout" color="cyan" icon="arrow-up-right">
+
+Explore a related example.
+
+</Callout>
+
+<Callout title="Blue callout" color="blue" icon="arrow-right">
+
+Read the accompanying explanation.
+
+</Callout>
+
+<Callout title="Purple callout" color="purple" icon="arrow-up-right">
+
+Follow a route into further study.
+
+</Callout>
+
+<Callout title="Pink callout" color="pink" icon="github">
+
+Discuss an improvement to the material.
+
+</Callout>
+
 
 ## Tables
 
