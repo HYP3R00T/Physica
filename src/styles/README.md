@@ -22,7 +22,11 @@ Preserve cascade layers when moving rules. Base defaults and prose currently use
 Font styles are imported by `HeadSEO.astro`. KaTeX's own stylesheet is imported by
 the layouts and pages that render mathematics.
 
-Prose selectors exclude KaTeX wrappers and their descendants. Leave math sizing
+A shared nested selector excludes KaTeX wrappers and their descendants from prose rules. Leave math sizing
 and internal layout to KaTeX. Do not add blanket resets inside math, since those
 would also reset styles that KaTeX needs. Surrounding text colour and size can
 still be inherited, as intended by KaTeX.
+
+Display equations receive an outer figure and a keyboard-focusable scroll region
+from the equation-reference plugin. Numbered equations keep their number outside
+the scroll region. Long expressions belong in display math instead of inline math.

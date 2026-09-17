@@ -29,28 +29,41 @@ const equationMarkup = (scope, label, number) => ({
   type: "element",
   tagName: "figure",
   properties: {
-    id: label,
+    ...(label ? { id: label, dataEquationNumber: String(number) } : {}),
     className: ["equation"],
-    dataEquationNumber: String(number),
   },
   children: [
-    scope,
     {
       type: "element",
-      tagName: "figcaption",
-      properties: { className: ["equation-number"] },
-      children: [
-        {
-          type: "element",
-          tagName: "a",
-          properties: {
-            href: `#${label}`,
-            title: `Equation ${number}`,
-          },
-          children: [{ type: "text", value: `(${number})` }],
-        },
-      ],
+      tagName: "div",
+      properties: {
+        className: ["equation-scroll"],
+        tabIndex: 0,
+        role: "region",
+        ariaLabel: label ? `Equation ${number}` : "Equation",
+      },
+      children: [scope],
     },
+    ...(label
+      ? [
+          {
+            type: "element",
+            tagName: "figcaption",
+            properties: { className: ["equation-number"] },
+            children: [
+              {
+                type: "element",
+                tagName: "a",
+                properties: {
+                  href: `#${label}`,
+                  title: `Equation ${number}`,
+                },
+                children: [{ type: "text", value: `(${number})` }],
+              },
+            ],
+          },
+        ]
+      : []),
   ],
 })
 
@@ -94,7 +107,10 @@ export default function rehypeEquationReferences() {
           const labels = [...value.matchAll(LABEL_PATTERN)]
 
           if (labels.length > 1) fail(file, "A display equation can have only one \\label", displayMath)
-          if (labels.length === 0) continue
+          if (labels.length === 0) {
+            node.children[index] = equationMarkup(child)
+            continue
+          }
 
           const label = labels[0][1].trim()
           if (!VALID_LABEL.test(label)) {

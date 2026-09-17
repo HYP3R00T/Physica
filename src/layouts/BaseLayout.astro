@@ -6,6 +6,7 @@ import HeadSEO from "@/components/core/HeadSEO.astro";
 import type { BaseLayoutProps } from "@/lib/types";
 import Footer from "@/components/core/Footer.astro";
 import CodeCopyButton from "@/components/common/CodeCopyButton.astro";
+import ContentChecklist from "@/components/common/ContentChecklist.astro";
 
 const { title, description, image, imageAlt, contentType, layout = "default", showFooterBorder = layout === "notes" } = Astro.props as BaseLayoutProps;
 const frameWidth = layout === "default" ? "84rem" : "56rem";
@@ -35,6 +36,7 @@ const frameWidth = layout === "default" ? "84rem" : "56rem";
     </div>
     <Footer showTopBorder={showFooterBorder} />
     <CodeCopyButton />
+    <ContentChecklist />
   </body>
 </html>
 

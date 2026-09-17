@@ -40,30 +40,5 @@ const { Content } = await render(entry)
     </section>
   )}
   <RoadmapPrerequisites segmentId={entry.id} prerequisites={prerequisites} />
-  <div class="prose mt-0 [&_.contains-task-list]:list-none [&_.contains-task-list]:p-0 [&_.task-list-item]:relative [&_.task-list-item]:mb-[.85rem] [&_.task-list-item]:pl-[1.6rem] [&_.task-list-item_input]:absolute [&_.task-list-item_input]:top-[calc((1lh-0.875rem)/2+1px)] [&_.task-list-item_input]:left-0 [&_.task-list-item_input]:size-3.5 [&_.task-list-item_input]:cursor-pointer [&_.task-list-item_input]:p-0 [&_.task-list-item_input]:appearance-none
-    [&_.task-list-item_input]:rounded-sm
-    [&_.task-list-item_input]:border
-    [&_.task-list-item_input]:border-input
-    [&_.task-list-item_input]:bg-background
-    [&_.task-list-item_input]:shadow-xs
-    [&_.task-list-item_input]:transition-colors
-    [&_.task-list-item_input:hover]:border-primary
-    [&_.task-list-item_input:checked]:border-primary
-    [&_.task-list-item_input:checked]:bg-primary
-    [&_.task-list-item_input:focus-visible]:ring-3
-    [&_.task-list-item_input:focus-visible]:ring-ring/50
-    [&_.task-list-item_input]:after:absolute
-    [&_.task-list-item_input]:after:top-px
-    [&_.task-list-item_input]:after:left-0.75
-    [&_.task-list-item_input]:after:h-2
-    [&_.task-list-item_input]:after:w-1.25
-    [&_.task-list-item_input]:after:rotate-45
-    [&_.task-list-item_input]:after:border-r-2
-    [&_.task-list-item_input]:after:border-b-2
-    [&_.task-list-item_input]:after:border-primary-foreground
-    [&_.task-list-item_input]:after:content-['']
-    [&_.task-list-item_input]:after:opacity-0
-    [&_.task-list-item_input:checked]:after:opacity-100
-    forced-colors:[&_.task-list-item_input]:appearance-auto
-    forced-colors:[&_.task-list-item_input]:after:hidden [&_.task-list-item:has(>input:checked)]:text-foreground-3/75 [&_:is(pre,table,.katex-display)]:max-w-full [&_:is(pre,table,.katex-display)]:overflow-x-auto [&_a]:wrap-anywhere"><Content /></div>
+  <div class="prose mt-0 [&_:is(pre,table)]:max-w-full [&_:is(pre,table)]:overflow-x-auto [&_a]:wrap-anywhere"><Content /></div>
 </article>

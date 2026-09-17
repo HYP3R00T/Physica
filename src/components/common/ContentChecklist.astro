@@ -1,0 +1,47 @@
+<script>
+  function initializeChecklists() {
+    const storageKey = `physica:content-checklist:${window.location.pathname}`;
+    let saved: Record<string, boolean> = {};
+    try {
+      const value: unknown = JSON.parse(localStorage.getItem(storageKey) ?? "{}");
+      if (value && typeof value === "object" && !Array.isArray(value)) {
+        saved = Object.fromEntries(Object.entries(value).filter(([, checked]) => typeof checked === "boolean"));
+      }
+    } catch {
+      // Checklists remain usable when browser storage is unavailable.
+    }
+
+    const occurrences = new Map<string, number>();
+    for (const input of document.querySelectorAll<HTMLInputElement>('.prose .task-list-item input[type="checkbox"]')) {
+      // Roadmap segments already have their own progress storage and lifecycle.
+      if (input.closest("[data-segment-panel]")) continue;
+      const item = input.closest("li")?.cloneNode(true) as HTMLElement | undefined;
+      item?.querySelectorAll("ul, ol, input").forEach((child) => child.remove());
+      item?.querySelectorAll(".katex").forEach((math) => {
+        const text = math.querySelector("annotation")?.textContent ?? "equation";
+        math.replaceWith(document.createTextNode(text));
+      });
+      const label = item?.textContent?.replace(/\s+/g, " ").trim() || "Checklist item";
+      const occurrence = occurrences.get(label) ?? 0;
+      occurrences.set(label, occurrence + 1);
+      const key = JSON.stringify([label, occurrence]);
+      if (input.dataset.checklistReady) continue;
+
+      input.dataset.checklistReady = "true";
+      input.disabled = false;
+      input.setAttribute("aria-label", label);
+      if (Object.hasOwn(saved, key)) input.checked = saved[key];
+      input.addEventListener("change", () => {
+        saved[key] = input.checked;
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(saved));
+        } catch {
+          // Saving progress is optional; toggling still works.
+        }
+      });
+    }
+  }
+
+  initializeChecklists();
+  document.addEventListener("astro:page-load", initializeChecklists);
+</script>
