@@ -33,7 +33,7 @@ The strand begins at Coupled oscillations and normal modes. Subsequent segments 
 
 No later Classical mechanics segment is made a prerequisite of the whole strand. The early propagation material revisits the oscillator-chain continuum limit and develops it further. Other returns are deliberate: string impedance becomes acoustic impedance, a basic wave packet becomes a spectral evolution problem, and a finite string becomes a multidimensional resonator.
 
-The later sections reach undergraduate and introductory graduate material. The existing `Core` label identifies the proposed shared route, not equal difficulty. Specialist ideas labelled as overviews introduce possible continuations without promising a full research treatment.
+The later sections reach undergraduate and introductory graduate material. Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md). Specialist ideas labelled as overviews introduce possible continuations without promising a full research treatment.
 
 ## Foundations still to connect
 

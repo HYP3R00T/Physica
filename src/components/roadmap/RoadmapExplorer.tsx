@@ -416,7 +416,7 @@ export default function RoadmapExplorer({
                         className="flex justify-between gap-2 font-mono text-[.65rem] text-foreground-3 group-data-[connected=true]/segment:text-(--segment-color) max-[450px]:text-[.6rem]"
                       >
                         <span className="min-w-0 truncate">{segment.subject}</span>
-                        <span className="shrink-0">{segment.scope}</span>
+                        <span className="shrink-0">{segment.stage}</span>
                       </span>
                       <span
                         data-roadmap-row-title
@@ -445,7 +445,7 @@ export default function RoadmapExplorer({
               className="flex min-w-0 flex-1 items-center justify-between gap-3 px-6 py-3 [&>span]:text-foreground-2"
             >
               <h2>In this segment</h2>
-              <span aria-live="polite">{current.scope}</span>
+              <span aria-live="polite">{current.stage}</span>
             </div>
             <div
               data-roadmap-heading-actions

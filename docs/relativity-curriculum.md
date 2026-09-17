@@ -17,7 +17,7 @@ Proposed on 16 September 2026. Ten segments are visible for author review, with 
 
 The first three segments establish special relativity and relativistic descriptions of matter. The next two develop geometry and gravitational field equations. Spherical bodies, black holes, radiation and cosmology provide substantial physical models. The final segment introduces evolution and global questions needed for advanced general relativity.
 
-`Core` means the shared route through this strand. It does not mean the whole route is elementary. Tensor geometry, gravitational radiation and global evolution require preparation beyond introductory mechanics.
+Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md). It does not mean the whole route is elementary. Tensor geometry, gravitational radiation and global evolution require preparation beyond introductory mechanics.
 
 ## Dependencies and earlier coverage
 

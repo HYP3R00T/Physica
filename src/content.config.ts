@@ -62,7 +62,7 @@ const roadmap = defineCollection({
     domain: z.enum(["mathematics", "physics"]),
     subject: z.string().min(1).optional(),
     strand: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    scope: z.enum(["Core", "Breadth", "Bridge", "Integration"]),
+    stage: z.enum(["Foundations", "Advanced"]),
     dependencies: z.array(z.string()).default([]),
     follows: z
       .string()

@@ -27,7 +27,7 @@ Proposed on 16 September 2026. Ten segments are visible for author review, with 
 
 The first seven segments develop classical optical descriptions and instruments. The last three introduce gain, detection and nonlinear response, including models that require quantum, statistical or material foundations. They provide a route towards photonics and optical measurement, without claiming to complete quantum optics or microscopic matter theory.
 
-`Core` retains the shared-route meaning used elsewhere in this roadmap. It does not mean every item is introductory. Fourier imaging, partial coherence and nonlinear pulse propagation include advanced material.
+Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md). It does not mean every item is introductory. Fourier imaging, partial coherence and nonlinear pulse propagation include advanced material.
 
 ## Dependencies and existing coverage
 

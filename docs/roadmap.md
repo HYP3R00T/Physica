@@ -28,7 +28,7 @@ Use a descriptive filename, such as `content/roadmap/physics/atomic-spectra.mdx`
 ---
 title: Atomic spectra
 strand: matter
-scope: Breadth
+stage: Foundations
 dependencies:
   - atoms-and-molecules
   - angular-momentum-symmetry-and-composite-systems
@@ -40,7 +40,7 @@ dependencies:
 - `domain` is derived from the folder by the loader; do not write it in frontmatter.
 - `strand` names the graph lane within a domain. Use lowercase words separated by hyphens; no separate definition file is needed.
 - `subject` is an optional, more specific subject label. It defaults to the strand name with spaces in place of hyphens.
-- `scope` is `Core`, `Breadth`, `Bridge` or `Integration`.
+- `stage` is required and is either `Foundations` or `Advanced`. It describes progression within the segment's strand, not an absolute difficulty or importance ranking. See [Segment stages](roadmap-stages.md) for definitions and current assignments.
 - `dependencies` lists required prior-study slugs. It defaults to an empty list; outgoing connections are calculated automatically. A cumulative curriculum can require completion of its preceding segment. List only the direct steps: their requirements are inherited. Classical mechanics currently uses this cumulative structure.
 - `follows` optionally names the preceding reading step in the same domain and strand. It controls study order and the connecting line within that strand; it does not add a prerequisite to the detail panel. Cross-strand prerequisite connections remain visible. Without it, the graph follows dependencies as before.
 - `draft: true` hides a segment. Published segments cannot depend on drafts.

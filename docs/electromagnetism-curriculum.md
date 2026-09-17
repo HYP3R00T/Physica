@@ -54,7 +54,7 @@ The route does not require completion of thermal physics. When magnetic or diele
 - Special relativity, tensor notation and relativistic particle dynamics need an independent foundation before the covariant formulation. Listing those terms in the segment does not complete that prerequisite.
 - Numerical electrostatics needs discretisation and convergence methods. More extensive computational electromagnetics belongs to a later scope decision.
 
-`Core` retains the project's shared-route meaning, not a uniform difficulty level. The early segments develop undergraduate foundations. Covariant formulations, advanced boundary methods and radiation reaction reach graduate material. Quantum electrodynamics, full plasma physics, nonlinear optics and specialist material theories are beyond this proposed shared route.
+Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md). The early segments develop undergraduate foundations. Covariant formulations, advanced boundary methods and radiation reaction reach graduate material. Quantum electrodynamics, full plasma physics, nonlinear optics and specialist material theories are beyond this proposed shared route.
 
 No approved mechanics, waves or thermal segment has been rewritten or given new dependencies in this draft. Cross-strand links can be refined after author review.
 
