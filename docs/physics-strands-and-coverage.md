@@ -1,8 +1,12 @@
 # Physics strands and coverage
 
-Initial expansion for author review, 17 September 2026. The roadmap now has 18 physics strands: eight existing strands and ten additions. The additions contain 69 visible segments with `draft: false`. They are proposed study lists, not source-audited or complete accounts of their fields. Baseline approved for commit on 17 September 2026.
+Initial expansion for author review, 17 September 2026. The roadmap now has 18 physics strands: eight existing strands and ten additions. The initial additions contained 69 visible segments with `draft: false`. Subsequent consolidation brings the full physics roadmap to 113 segments across the same 18 strands; see [Segment consolidation](roadmap-consolidation.md). They are proposed study lists, not source-audited or complete accounts of their fields. Baseline approved for commit on 17 September 2026.
 
 The aim is broad, traceable coverage of physics. A named home does not prove that a subject has been covered. This document distinguishes existing checklists, introductory coverage, planned continuations and deliberate boundaries. It is an inventory to revise as omissions are found, not a claim to enumerate every research specialism.
+
+## Intended coverage
+
+The target is a strong undergraduate physics foundation, with selected master's-level continuations. This is a coverage goal, not a claim that the current checklists have already met it. Foundational omissions still require the audits and supporting mathematics listed below. Professional engineering standards, industrial design workflows and open-ended research specialisms remain beyond the main route. Existing advanced topics are retained during consolidation; none are removed merely to reduce the segment count.
 
 ## Design rules
 
@@ -18,14 +22,14 @@ The aim is broad, traceable coverage of physics. A named home does not prove tha
 
 ## Existing strands
 
-- Classical mechanics: 14 segments.
-- Electromagnetism: 12 segments.
-- Thermodynamics and statistical mechanics: 10 segments.
-- Quantum mechanics: 12 segments.
-- Relativity: 10 segments.
-- Waves and acoustics: 9 segments.
-- Optics: 10 segments.
-- Atomic and molecular physics: 10 segments.
+- Classical mechanics: 12 segments.
+- Electromagnetism: 9 segments.
+- Thermodynamics and statistical mechanics: 7 segments.
+- Quantum mechanics: 9 segments.
+- Relativity: 7 segments.
+- Waves and acoustics: 7 segments.
+- Optics: 6 segments.
+- Atomic and molecular physics: 5 segments.
 
 These counts describe files, not completed audits. Previous curriculum documents and review entries retain their own audit status.
 
@@ -37,10 +41,8 @@ The nine previously proposed strands are included below, together with Electroni
 
 Begins with deformable continua and conservation laws, then develops solids, ideal and viscous fluids, compressibility, instability and environmental flow models. Elastic waves remain introduced in Waves and acoustics; this route supplies the broader stress and constitutive framework.
 
-- Continuum kinematics and balance laws
-- Elasticity and deformable solids
-- Fluid statics and ideal flow
-- Viscous flow and boundary layers
+- Continuum mechanics and elasticity
+- Ideal and viscous fluid dynamics
 - Compressible flow and transport
 - Hydrodynamic stability and turbulence
 - Rotating stratified and environmental flows
@@ -49,10 +51,8 @@ Begins with deformable continua and conservation laws, then develops solids, ide
 
 Begins with structure and bonding, then develops collective vibrations, electronic states, transport and phases. Soft matter has an introductory segment here. This is not yet a full polymer, liquid-crystal or active-matter curriculum.
 
-- Crystal structure bonding and diffraction
-- Lattice dynamics and thermal properties
-- Electrons in crystals and band structure
-- Electronic transport and semiconductor physics
+- Crystal structure and lattice dynamics
+- Electronic structure transport and semiconductors
 - Magnetism and ordered phases
 - Superconductivity and superfluidity
 - Correlated and topological matter
@@ -62,8 +62,7 @@ Begins with structure and bonding, then develops collective vibrations, electron
 
 Draws on semiconductor material physics in Condensed matter and inherited circuit foundations in Electromagnetism. It develops device boundary conditions, circuit behaviour, digital logic and measurement chains. The current inherited path is mathematically demanding; an earlier phenomenological electronics entry route remains a review question.
 
-- Semiconductor junctions and diodes
-- Bipolar and field-effect transistors
+- Semiconductor junctions and transistors
 - Analogue circuits feedback and signal conditioning
 - Digital logic and sequential circuits
 - Data conversion and electronic measurement
@@ -73,11 +72,9 @@ Draws on semiconductor material physics in Condensed matter and inherited circui
 
 Begins with measured nuclear properties and interactions. Nuclear models, decay, reactions and detection precede an overview of extreme nuclear matter. Full quantum chromodynamics is developed in Particle physics rather than required for every introductory nuclear model.
 
-- Nuclear properties and nuclear interactions
-- Nuclear structure and collective models
+- Nuclear structure and interactions
 - Radioactive decay and nuclear transitions
-- Nuclear reactions and scattering
-- Fission fusion and nucleosynthesis
+- Nuclear reactions energy and nucleosynthesis
 - Radiation detection and nuclear measurements
 - Nuclear matter and extreme conditions
 
@@ -85,10 +82,8 @@ Begins with measured nuclear properties and interactions. Nuclear models, decay,
 
 Develops field dynamics, quantisation, amplitudes, functional methods, renormalisation and gauge theories. The final segment identifies nonperturbative and curved-spacetime continuations. Its brief research overview does not supply a quantum-gravity curriculum.
 
-- Classical fields symmetries and relativistic wave equations
-- Quantised fields and particle states
-- Scattering amplitudes and perturbative field theory
-- Functional integrals and quantum effective actions
+- Classical and quantised fields
+- Perturbative and functional field theory
 - Renormalisation and effective field theory
 - Gauge theories and spontaneous symmetry breaking
 - Nonperturbative fields and advanced directions
@@ -99,9 +94,7 @@ Begins with particles, processes and measurements, then adds formal QFT at the e
 
 - Particles interactions and conservation laws
 - Accelerators detectors and particle measurements
-- Quantum electrodynamics and precision particle tests
-- Strong interactions and hadron structure
-- Electroweak interactions and the Higgs mechanism
+- Particle interactions and the Standard Model
 - Flavour neutrinos and symmetry violation
 - Physics beyond the Standard Model
 
@@ -109,10 +102,8 @@ Begins with particles, processes and measurements, then adds formal QFT at the e
 
 Develops particle, kinetic and fluid descriptions before waves, instabilities, transport, laboratory systems and natural plasmas. Fusion reaction physics comes from Nuclear physics. Space-plasma examples do not replace a complete heliophysics or planetary-space curriculum.
 
-- Plasma scales and charged-particle motion
-- Plasma kinetic theory and electrostatic waves
-- Plasma fluid theory and magnetohydrodynamics
-- Magnetised plasma waves and instabilities
+- Plasma foundations and kinetic theory
+- Magnetohydrodynamics waves and instabilities
 - Plasma transport turbulence and reconnection
 - Laboratory plasmas and controlled fusion
 - Space and astrophysical plasmas
@@ -121,10 +112,8 @@ Develops particle, kinetic and fluid descriptions before waves, instabilities, t
 
 Begins with observable quantities and radiation, then develops stars, compact objects, interstellar matter, galaxies and planetary systems. Detailed cosmological inference belongs in Cosmology. Planetary interiors and atmospheres are introductions, not complete planetary science.
 
-- Astronomical observations and physical scales
-- Astrophysical radiation and matter
-- Stellar structure and evolution
-- Compact objects accretion and transients
+- Observational astrophysics and radiation
+- Stellar physics and compact objects
 - Interstellar matter and star formation
 - Galaxies and stellar dynamics
 - Planetary systems and celestial dynamics
@@ -135,11 +124,9 @@ Uses the relativistic background model already introduced in Relativity. It deve
 
 - Cosmological observations and background evolution
 - Thermal history and primordial nucleosynthesis
-- Cosmological perturbations and structure growth
-- Cosmic microwave background and observational probes
+- Cosmological perturbations and observational probes
 - Dark matter dark energy and nonlinear structure
-- Inflation and primordial fluctuations
-- Early-universe particles and cosmological frontiers
+- Inflation and early-universe physics
 
 ### Quantum information
 
@@ -148,8 +135,7 @@ Develops information measures, circuits, communication, error correction and fau
 - Quantum information states and correlations
 - Quantum circuits and computation
 - Quantum communication and cryptography
-- Quantum noise and error correction
-- Fault-tolerant quantum computing
+- Quantum error correction and fault tolerance
 - Quantum simulation sensing and hardware
 
 ## Semiconductor and logic placement

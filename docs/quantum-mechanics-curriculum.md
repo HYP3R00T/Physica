@@ -1,17 +1,16 @@
 # Quantum mechanics curriculum
 
+Current grouping: see [Segment consolidation](roadmap-consolidation.md) and the [roadmap index](roadmap-index.md). Original drafting counts and audit descriptions below record the earlier file boundaries.
+
 Proposed on 16 September 2026. Twelve segments are visible for author review, with `draft: false`. The baseline was committed as `748fa21` before the [source audit](quantum-mechanics-audit.md). Audit refinements retain twelve segments and were approved for commit on 16 September 2026.
 
 ## Proposed sequence
 
-- Quantum phenomena and matter waves
-- Wavefunctions and Schrödinger dynamics
+- Quantum foundations and wave mechanics
 - Quantum states, observables and measurement
-- Quantum angular momentum and spin
-- Central potentials and the hydrogen atom
+- Quantum angular momentum and central potentials
 - Quantum symmetries and charged-particle motion
-- Stationary quantum approximation methods
-- Quantum transitions and time-dependent methods
+- Quantum approximation and transition methods
 - Composite quantum systems and identical particles
 - Quantum scattering theory
 - Quantum propagators and path integrals

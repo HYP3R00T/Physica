@@ -1,22 +1,21 @@
 # Thermodynamics and statistical mechanics curriculum
 
+Current grouping: see [Segment consolidation](roadmap-consolidation.md) and the [roadmap index](roadmap-index.md). Original drafting counts and audit descriptions below record the earlier file boundaries.
+
 Proposed on 15 September 2026. Ten segments are visible for author review, with topic checklists and no outcome sections. These files are a first full draft, not a completed source audit.
 
 ## Proposed sequence
 
-- Thermal equilibrium and equations of state
+- Thermodynamic foundations and laws
     - Macroscopic states, temperature, material response and gas models.
-- Heat, work and the first law
     - Energy transfers, heat capacities, enthalpy and thermodynamic processes.
-- Entropy and the second law
     - Reversibility, engine limits, entropy balances and the third law.
 - Thermodynamic potentials and equilibrium
     - Natural variables, response identities, stability, coexistence and mixtures.
 - Kinetic theory and transport
     - Molecular distributions, collisions, kinetic equations and heat transfer.
-- Statistical description and microcanonical equilibrium
+- Statistical foundations and equilibrium ensembles
     - State counting, probability, statistical entropy and isolated-system equilibrium.
-- Ensembles and classical statistical mechanics
     - Reservoirs, partition functions, interactions, fluctuations and sampling.
 - Quantum statistics and quantum gases
     - Quantum ensembles, Bose and Fermi gases, radiation and lattice heat capacities.

@@ -33,9 +33,13 @@ Assign the stage from the dominant treatment of a segment, not its position alon
 - Quantum information: states, circuits and communication remain Foundations. Error correction, fault tolerance and the combined simulation, sensing and hardware treatment are Advanced.
 - Mathematics: all five existing segments are Foundations within their respective strands. There is no Advanced quota to fill before later mathematics is written.
 
+## Consolidated segments
+
+The 17 September consolidation preserves all topics and assigns one label to each combined unit. The former per-file stages remain in the [consolidation record](roadmap-consolidation.md). Wave optics and Molecular structure retain Foundations as their dominant entry treatment while including advanced later sections. Stellar physics and compact objects is Advanced because the combined treatment substantially develops compact-object physics. A segment label does not classify every subtopic individually.
+
 ## Assignment inventory
 
-Titles below are grouped alphabetically for lookup. Study order and prerequisites remain in the [roadmap index](roadmap-index.md).
+Titles are alphabetical for lookup; study order is in the [roadmap index](roadmap-index.md).
 
 ### Algebra
 
@@ -43,25 +47,18 @@ Titles below are grouped alphabetically for lookup. Study order and prerequisite
 
 ### Astrophysics
 
-- Astronomical observations and physical scales: Foundations
-- Astrophysical radiation and matter: Foundations
-- Compact objects accretion and transients: Advanced
 - Galaxies and stellar dynamics: Advanced
 - Interstellar matter and star formation: Advanced
+- Observational astrophysics and radiation: Foundations
 - Planetary systems and celestial dynamics: Advanced
-- Stellar structure and evolution: Foundations
+- Stellar physics and compact objects: Advanced
 
 ### Atomic and molecular physics
 
-- Atomic and molecular collisions: Advanced
-- Atomic spectra and level structure: Foundations
-- Atomic structure and electron configurations: Foundations
-- Atoms and molecules in external fields: Foundations
+- Atomic collisions cooling and trapping: Advanced
+- Atomic structure spectra and external fields: Foundations
 - Coherent light-matter interactions: Advanced
-- Cooling, trapping and ultracold matter: Advanced
-- Molecular bonding and electronic structure: Foundations
-- Molecular electronic transitions and dynamics: Advanced
-- Molecular rotation, vibration and spectra: Foundations
+- Molecular structure spectra and dynamics: Foundations
 - Precision atomic and molecular measurements: Advanced
 
 ### Calculus
@@ -72,27 +69,23 @@ Titles below are grouped alphabetically for lookup. Study order and prerequisite
 ### Classical mechanics
 
 - Circular and rotational motion: Foundations
-- Coupled oscillations and normal modes: Advanced
 - Gravitation and central-force motion: Foundations
 - Hamiltonian mechanics: Advanced
 - Impulse, momentum and collisions: Foundations
 - Kinematics: Foundations
-- Lagrangian mechanics: Advanced
+- Lagrangian mechanics and mechanical systems: Advanced
 - Momentum, forces and Newton's laws: Foundations
 - Non-inertial reference frames: Foundations
 - Nonlinear dynamics and approximation methods: Advanced
 - Oscillations: Foundations
 - Physical quantities and measurement: Foundations
-- Three-dimensional rigid-body dynamics: Advanced
 - Work and energy: Foundations
 
 ### Condensed matter physics
 
 - Correlated and topological matter: Advanced
-- Crystal structure bonding and diffraction: Foundations
-- Electronic transport and semiconductor physics: Foundations
-- Electrons in crystals and band structure: Foundations
-- Lattice dynamics and thermal properties: Foundations
+- Crystal structure and lattice dynamics: Foundations
+- Electronic structure transport and semiconductors: Foundations
 - Magnetism and ordered phases: Foundations
 - Soft matter and complex materials: Advanced
 - Superconductivity and superfluidity: Advanced
@@ -100,21 +93,17 @@ Titles below are grouped alphabetically for lookup. Study order and prerequisite
 ### Continuum mechanics and fluid dynamics
 
 - Compressible flow and transport: Advanced
-- Continuum kinematics and balance laws: Foundations
-- Elasticity and deformable solids: Foundations
-- Fluid statics and ideal flow: Foundations
+- Continuum mechanics and elasticity: Foundations
 - Hydrodynamic stability and turbulence: Advanced
+- Ideal and viscous fluid dynamics: Foundations
 - Rotating stratified and environmental flows: Advanced
-- Viscous flow and boundary layers: Foundations
 
 ### Cosmology
 
-- Cosmic microwave background and observational probes: Advanced
 - Cosmological observations and background evolution: Foundations
-- Cosmological perturbations and structure growth: Foundations
+- Cosmological perturbations and observational probes: Advanced
 - Dark matter dark energy and nonlinear structure: Advanced
-- Early-universe particles and cosmological frontiers: Advanced
-- Inflation and primordial fluctuations: Advanced
+- Inflation and early-universe physics: Advanced
 - Thermal history and primordial nucleosynthesis: Foundations
 
 ### Differential equations
@@ -123,129 +112,103 @@ Titles below are grouped alphabetically for lookup. Study order and prerequisite
 
 ### Electromagnetism
 
-- Electric charge, fields and potential: Foundations
 - Electric current and conduction: Foundations
 - Electromagnetic induction and circuit dynamics: Foundations
 - Electromagnetic radiation and scattering: Advanced
 - Electromagnetic waveguides and resonators: Advanced
-- Electromagnetic waves and material response: Foundations
-- Electrostatic boundary-value problems: Foundations
-- Magnetic fields and magnetostatics: Foundations
-- Magnetisation and magnetic materials: Foundations
-- Maxwell's equations and field conservation: Foundations
+- Electrostatics and boundary-value methods: Foundations
+- Magnetostatics and magnetic matter: Foundations
+- Maxwell equations and electromagnetic waves: Foundations
 - Polarisation and electric fields in matter: Foundations
 - Relativistic electrodynamics: Advanced
 
 ### Electronics and semiconductor devices
 
 - Analogue circuits feedback and signal conditioning: Foundations
-- Bipolar and field-effect transistors: Foundations
 - Data conversion and electronic measurement: Advanced
 - Digital logic and sequential circuits: Foundations
 - Power optoelectronic and integrated devices: Advanced
-- Semiconductor junctions and diodes: Foundations
+- Semiconductor junctions and transistors: Foundations
 
 ### Nuclear physics
 
-- Fission fusion and nucleosynthesis: Foundations
 - Nuclear matter and extreme conditions: Advanced
-- Nuclear properties and nuclear interactions: Foundations
-- Nuclear reactions and scattering: Foundations
-- Nuclear structure and collective models: Foundations
+- Nuclear reactions energy and nucleosynthesis: Foundations
+- Nuclear structure and interactions: Foundations
 - Radiation detection and nuclear measurements: Foundations
 - Radioactive decay and nuclear transitions: Foundations
 
 ### Optics
 
-- Fourier optics and image formation: Advanced
-- Geometrical optics: Foundations
-- Laser physics: Advanced
+- Geometrical optics and optical systems: Foundations
 - Nonlinear and ultrafast optics: Advanced
-- Optical beams and resonators: Advanced
+- Optical beams resonators and lasers: Advanced
 - Optical detection and spectroscopy: Advanced
-- Optical diffraction: Foundations
-- Optical interference and coherence: Foundations
-- Optical systems and aberrations: Foundations
 - Polarisation and crystal optics: Advanced
+- Wave optics and image formation: Foundations
 
 ### Particle physics
 
 - Accelerators detectors and particle measurements: Foundations
-- Electroweak interactions and the Higgs mechanism: Advanced
 - Flavour neutrinos and symmetry violation: Advanced
+- Particle interactions and the Standard Model: Advanced
 - Particles interactions and conservation laws: Foundations
 - Physics beyond the Standard Model: Advanced
-- Quantum electrodynamics and precision particle tests: Advanced
-- Strong interactions and hadron structure: Advanced
 
 ### Plasma physics
 
 - Laboratory plasmas and controlled fusion: Advanced
-- Magnetised plasma waves and instabilities: Advanced
-- Plasma fluid theory and magnetohydrodynamics: Foundations
-- Plasma kinetic theory and electrostatic waves: Foundations
-- Plasma scales and charged-particle motion: Foundations
+- Magnetohydrodynamics waves and instabilities: Advanced
+- Plasma foundations and kinetic theory: Foundations
 - Plasma transport turbulence and reconnection: Advanced
 - Space and astrophysical plasmas: Advanced
 
 ### Quantum field theory
 
-- Classical fields symmetries and relativistic wave equations: Foundations
-- Functional integrals and quantum effective actions: Foundations
+- Classical and quantised fields: Foundations
 - Gauge theories and spontaneous symmetry breaking: Advanced
 - Nonperturbative fields and advanced directions: Advanced
-- Quantised fields and particle states: Foundations
+- Perturbative and functional field theory: Foundations
 - Renormalisation and effective field theory: Foundations
-- Scattering amplitudes and perturbative field theory: Foundations
 
 ### Quantum information
 
-- Fault-tolerant quantum computing: Advanced
 - Quantum circuits and computation: Foundations
 - Quantum communication and cryptography: Foundations
+- Quantum error correction and fault tolerance: Advanced
 - Quantum information states and correlations: Foundations
-- Quantum noise and error correction: Advanced
 - Quantum simulation sensing and hardware: Advanced
 
 ### Quantum mechanics
 
-- Central potentials and the hydrogen atom: Foundations
 - Composite quantum systems and identical particles: Foundations
-- Quantum angular momentum and spin: Foundations
+- Quantum angular momentum and central potentials: Foundations
+- Quantum approximation and transition methods: Foundations
+- Quantum foundations and wave mechanics: Foundations
 - Quantum measurement and open systems: Advanced
-- Quantum phenomena and matter waves: Foundations
 - Quantum propagators and path integrals: Advanced
 - Quantum scattering theory: Advanced
 - Quantum states, observables and measurement: Foundations
 - Quantum symmetries and charged-particle motion: Foundations
-- Quantum transitions and time-dependent methods: Foundations
-- Stationary quantum approximation methods: Foundations
-- Wavefunctions and Schrödinger dynamics: Foundations
 
 ### Relativity
 
-- Black holes and horizons: Advanced
-- Einstein field equations and gravitational dynamics: Foundations
-- Equivalence principle and curved spacetime: Foundations
 - Gravitational evolution and global spacetime structure: Advanced
 - Relativistic cosmology: Advanced
 - Relativistic fields and stress-energy: Foundations
-- Relativistic particle dynamics: Foundations
-- Special relativity and spacetime: Foundations
-- Spherical gravity and relativistic stars: Advanced
+- Spacetime geometry and general relativity: Foundations
+- Special relativity and particle dynamics: Foundations
+- Spherical gravity and compact objects: Advanced
 - Weak gravity and gravitational radiation: Advanced
 
 ### Thermodynamics and statistical mechanics
 
-- Ensembles and classical statistical mechanics: Foundations
-- Entropy and the second law: Foundations
-- Heat, work and the first law: Foundations
 - Kinetic theory and transport: Foundations
 - Nonequilibrium statistical physics: Advanced
 - Phase transitions and critical phenomena: Advanced
 - Quantum statistics and quantum gases: Foundations
-- Statistical description and microcanonical equilibrium: Foundations
-- Thermal equilibrium and equations of state: Foundations
+- Statistical foundations and equilibrium ensembles: Foundations
+- Thermodynamic foundations and laws: Foundations
 - Thermodynamic potentials and equilibrium: Foundations
 
 ### Trigonometry
@@ -257,9 +220,7 @@ Titles below are grouped alphabetically for lookup. Study order and prerequisite
 - Acoustic radiation and scattering: Advanced
 - Dissipation and nonlinear acoustics: Advanced
 - Elastic and surface waves: Advanced
-- Sound and linear acoustics: Foundations
-- Spatial waves, refraction and diffraction: Foundations
-- Wave boundaries, interference and standing waves: Foundations
-- Wave motion and propagation: Foundations
+- Sound and spatial wave propagation: Foundations
 - Wave packets, dispersion and periodic media: Foundations
+- Wave propagation interference and resonance: Foundations
 - Waveguides, resonators and acoustic spaces: Advanced

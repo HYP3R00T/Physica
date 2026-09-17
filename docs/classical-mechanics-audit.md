@@ -64,21 +64,21 @@ Section and page numbers below refer to printed book numbering unless explicitly
 
 ### A03: Make constraint terminology searchable
 
-- File: `lagrangian-mechanics.mdx`.
+- File: `lagrangian-mechanics-and-mechanical-systems.mdx`.
 - Added “scleronomic” and “rheonomic” alongside time-independent and time-dependent constraints.
 - Reason: The concepts were already present. This is a terminology refinement, not a previously absent branch of mechanics.
 - Evidence: SVNIT PH203's constraints subsection.
 
 ### A04: Clarify the normal-mode test
 
-- File: `coupled-oscillations-and-normal-modes.mdx`.
+- File: `lagrangian-mechanics-and-mechanical-systems.mdx`.
 - Named the secular equation and characteristic determinant. Added accidental zero modes and higher-order stability analysis.
 - Reason: A zero eigenvalue is not always explained by a continuous symmetry and does not, by itself, settle stability. The existing nonlinear segment already covers limits of linearisation; the warning belongs at its earlier use too.
 - Evidence: SVNIT PH203 names the secular equation; GPS sections 6.1–6.3 and Taylor section 11.5 provide the small-oscillation framework. The zero-mode qualification is an audit inference from the quadratic approximation: a vanishing quadratic term leaves higher-order terms undecided.
 
 ### A05: Correct and complete spatial-rotation descriptions
 
-- File: `three-dimensional-rigid-body-dynamics.mdx`.
+- File: `lagrangian-mechanics-and-mechanical-systems.mdx`.
 - Named Euler's rotation theorem about a fixed point and orientation reconstruction from angular velocity.
 - Replaced the ambiguous pairing of an inertia ellipsoid with an angular-momentum sphere. The checklist now distinguishes representations before naming Poinsot's inertia ellipsoid, invariable plane, polhode and herpolhode.
 - Reason: In angular-velocity components, the energy and angular-momentum constraints generally define two ellipsoids. In angular-momentum components, the fixed-magnitude constraint is a sphere. Mixing those descriptions without identifying the coordinates obscures the construction.

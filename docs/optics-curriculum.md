@@ -1,24 +1,22 @@
 # Optics curriculum
 
+Current grouping: see [Segment consolidation](roadmap-consolidation.md) and the [roadmap index](roadmap-index.md). Original drafting counts and audit descriptions below record the earlier file boundaries.
+
 Proposed on 16 September 2026. Ten segments are visible for author review, with `draft: false`. Each contains topic and subtopic lists. The first draft was committed as `a35fc1d` before the [optics audit](optics-audit.md). Audit refinements were approved for commit on 16 September 2026.
 
 ## Proposed sequence
 
-- Geometrical optics
+- Geometrical optics and optical systems
     - Optical paths, reflection, refraction, mirrors, lenses and ray limits.
-- Optical systems and aberrations
     - Compound systems, apertures, instruments, light collection and image defects.
-- Optical interference and coherence
+- Wave optics and image formation
     - Interferometers, temporal and spatial coherence, and partially coherent light.
-- Optical diffraction
     - Aperture propagation, near-field and far-field patterns, resolution and scalar-model limits.
-- Fourier optics and image formation
     - Spatial filtering, coherent and incoherent imaging, phase imaging and holography.
 - Polarisation and crystal optics
     - Polarimetric methods, anisotropic propagation, retarders and controlled optical response.
-- Optical beams and resonators
+- Optical beams resonators and lasers
     - Gaussian and structured beams, mode matching and optical cavities.
-- Laser physics
     - Gain, pumping, threshold, modes, dynamics and pulse generation.
 - Optical detection and spectroscopy
     - Radiometry, detectors, noise, signal recovery and spectral measurements.

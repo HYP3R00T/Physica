@@ -1,26 +1,25 @@
 # Electromagnetism curriculum
 
+Current grouping: see [Segment consolidation](roadmap-consolidation.md) and the [roadmap index](roadmap-index.md). Original drafting counts and audit descriptions below record the earlier file boundaries.
+
 Proposed on 16 September 2026. Twelve segments are visible for author review. Each contains topics and subtopics, with no outcome section. The first draft was committed as `221ba25` before the source audit. The subsequent audit refinements were approved for commit on 16 September 2026.
 
 ## Proposed sequence
 
-- Electric charge, fields and potential
+- Electrostatics and boundary-value methods
     - Electrostatic interactions, Gauss's law, potential, energy and dipoles.
-- Electrostatic boundary-value problems
     - Conductors, potential equations, solution methods, multipoles and capacitance.
 - Polarisation and electric fields in matter
     - Bound charge, constitutive response, dielectric interfaces, energy and forces.
 - Electric current and conduction
     - Charge transport, steady conduction, sources, dissipation and direct-current networks.
-- Magnetic fields and magnetostatics
+- Magnetostatics and magnetic matter
     - Lorentz force, steady-current fields, magnetic potentials and dipoles.
-- Magnetisation and magnetic materials
     - Bound currents, material response, demagnetising fields and hysteresis.
 - Electromagnetic induction and circuit dynamics
     - Induction, inductance, energy conversion, transients and alternating-current circuits.
-- Maxwell's equations and field conservation
+- Maxwell equations and electromagnetic waves
     - Displacement current, causal potentials, field energy, momentum and stress.
-- Electromagnetic waves and material response
     - Propagation, polarisation, dispersion, absorption and interfaces.
 - Electromagnetic waveguides and resonators
     - Transmission lines, guided modes, cavities and dielectric confinement.

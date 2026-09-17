@@ -436,6 +436,15 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Criteria: Relative to each strand and based on the dominant treatment. Branching, prerequisites, subject importance and audit status are separate. See [Segment stages](roadmap-stages.md) for definitions, boundary decisions and every assignment.
 - Next step: Author review of classifications, especially mixed-depth segments. Segment mergers and graph lane reuse remain separate work. Stage changes approved for commit on 17 September 2026.
 
+### R048: Consolidate coherent physics segments
+
+- Status: Open
+- Request: Apply the reviewed mergers without losing topics, rename files and references, preserve prerequisite validity, and leave changes uncommitted.
+- Implemented: Physics reduced from 156 to 113 segments across 18 strands. Eighty files consolidated into 37 units. Mathematics remains at five segments.
+- Preservation: Original source titles remain as sections. Every substantive body line and all checklist entries were verified against the pre-merge snapshot; only heading levels changed. Every original dependency remains internal or transitively reachable, with no cycles.
+- Scope: Strong undergraduate foundations are the coverage goal, with selected master's-level continuations. Consolidation does not establish completeness and removes no advanced material.
+- Review: See [Segment consolidation](roadmap-consolidation.md) for provenance, mixed-stage decisions and counts. Consolidation approved for commit on 17 September 2026. Further manual review and graph lane reuse remain separate work.
+
 ## Resolved items
 
 ### R004 — Scope of base quantities and dimensions
