@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "docs:roadmap": "node --experimental-strip-types scripts/update-roadmap-index.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
