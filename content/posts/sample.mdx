@@ -19,7 +19,7 @@ A regular paragraph should have comfortable line spacing. **Bold text**, *italic
 
 A second paragraph checks the space between paragraphs. Here is an [external link to Astro](https://astro.build), an [internal link to the roadmap](/roadmap), and a [link to the mathematics section](#mathematics).
 
-A deliberate line break ends here.
+A deliberate line break ends here.<br />
 This continues on the next line within the same paragraph.
 
 ### Third-level heading
@@ -128,9 +128,19 @@ A long line checks horizontal scrolling: distance_covered_during_the_first_inter
 
 Simple notation should sit comfortably in a sentence: $x$, $0$, $x^2$, $a_n$, $\alpha$, and $\mathbf{v}$.
 
-A fraction $\dfrac{a+b}{c}$, a root $\sqrt{x^2+y^2}$, and a limit $\lim_{x\to 0}\dfrac{\sin x}{x}=1$ check different inline heights.
+A fraction $\dfrac{a+b}{c}$ and a root $\sqrt{x^2+y^2}$ check different inline heights.
 
-The derivative $f'(x)=\lim_{h\to 0}\dfrac{f(x+h)-f(x)}{h}$ checks fractions and subscripts together. A speed of $2\,\mathrm{m/s}$ checks text inside mathematics.
+Longer expressions use display blocks so they do not crowd a paragraph:
+
+$$
+\lim_{x\to 0}\dfrac{\sin x}{x}=1
+$$
+
+$$
+f'(x)=\lim_{h\to 0}\dfrac{f(x+h)-f(x)}{h}
+$$
+
+A speed of $2\,\mathrm{m/s}$ checks text inside mathematics.
 
 ### Display mathematics
 

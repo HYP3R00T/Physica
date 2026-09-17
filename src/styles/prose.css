@@ -1,216 +1,296 @@
-/* Prose rules exclude KaTeX wrappers and descendants; KaTeX owns math formatting. */
+/* Prose formatting stops at KaTeX; math keeps its own internal styles. */
 @layer base {
-  .prose:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
+    &:is() {
     @apply text-foreground-2 w-full max-w-none font-sans text-base leading-7;
   }
 
-  .prose a:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-accent-1 decoration-accent-1 relative font-medium underline underline-offset-4 transition-colors;
-  }
+  .prose :not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
 
-  .prose a:hover:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-accent-2 decoration-accent-2;
-  }
+    &:is(a) {
+      @apply text-accent-1 decoration-accent-1 relative font-medium underline underline-offset-4 transition-colors;
+    }
 
-  .prose h1:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-foreground-0 font-display mt-0 mb-6 text-4xl leading-tight font-semibold tracking-tight md:text-5xl;
-  }
+    &:is(a:hover) {
+      @apply text-accent-2 decoration-accent-2;
+    }
 
-  .prose h2:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-foreground-0 font-display mt-18 mb-6 border-l-4 border-accent-1 pl-4 scroll-mt-28 text-3xl leading-tight font-semibold tracking-tight;
-  }
+    &:is(h1) {
+      @apply text-foreground-0 font-display mt-0 mb-6 text-4xl leading-tight font-semibold tracking-tight md:text-5xl;
+    }
 
-  .prose h3:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-foreground-1 font-display mt-12 mb-4 scroll-mt-28 text-2xl leading-tight font-semibold;
-  }
+    &:is(h2) {
+      @apply text-foreground-0 font-display mt-18 mb-6 border-l-4 border-accent-1 pl-4 scroll-mt-28 text-3xl leading-tight font-semibold tracking-tight;
+    }
 
-  .prose h4:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-accent-2 font-display mt-8 mb-3 text-xl leading-snug font-semibold;
-  }
+    &:is(h3) {
+      @apply text-foreground-1 font-display mt-12 mb-4 scroll-mt-28 text-2xl leading-tight font-semibold;
+    }
 
-  .prose h5:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-foreground-1 mt-6 mb-1 text-base font-semibold tracking-wide uppercase;
-  }
+    &:is(h4) {
+      @apply text-accent-2 font-display mt-8 mb-3 text-xl leading-snug font-semibold;
+    }
 
-  .prose h6:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply text-foreground-1 mt-6 mb-1 text-sm font-semibold tracking-wide uppercase;
-  }
+    &:is(h5) {
+      @apply text-foreground-1 mt-6 mb-1 text-base font-semibold tracking-wide uppercase;
+    }
 
-  .prose :is(h2, h3, h4):not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply relative;
-  }
+    &:is(h6) {
+      @apply text-foreground-1 mt-6 mb-1 text-sm font-semibold tracking-wide uppercase;
+    }
 
-  .prose .heading-permalink:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply ml-2 inline-flex text-foreground-3 no-underline opacity-0 transition-opacity hover:text-accent-1 focus-visible:opacity-100;
-  }
+    &:is(:is(h2, h3, h4)) {
+      @apply relative;
+    }
 
-  .prose .heading-permalink:not(:where(.katex, .katex *, .katex-display, .katex-display *))::before {
-    content: "#";
-  }
+    &:is(.heading-permalink) {
+      @apply ml-2 inline-flex text-foreground-3 no-underline opacity-0 transition-opacity hover:text-accent-1 focus-visible:opacity-100;
+    }
 
-  .prose :is(h2, h3, h4):hover .heading-permalink:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply opacity-100;
-  }
+    &:is(.heading-permalink)::before {
+      content: "#";
+    }
 
-  .prose p:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-5 font-sans text-foreground-2;
-  }
+    &:is(:is(h2, h3, h4):hover .heading-permalink) {
+      @apply opacity-100;
+    }
 
-  .prose p:first-child:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-0;
-  }
+    &:is(p) {
+      @apply my-5 font-sans text-foreground-2;
+    }
 
-  .prose p+p:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-5;
-  }
+    &:is(p:first-child) {
+      @apply mt-0;
+    }
 
-  .prose p+ :is(ul, ol, blockquote, pre, table, hr, div, a):not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose :is(ul, ol, blockquote, pre, table, hr, div, a)+p:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose :is(ul, ol, blockquote, pre, table, hr, div, a)+ :is(ul, ol, blockquote, pre, table, hr, div, a):not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-7;
-  }
+    &:is(p+p) {
+      @apply mt-5;
+    }
 
-  .prose strong:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply font-semibold text-foreground-0;
-  }
+    &:is(p+ :is(ul, ol, blockquote, pre, table, hr, div, a)),
+    &:is(:is(ul, ol, blockquote, pre, table, hr, div, a)+p),
+    &:is(:is(ul, ol, blockquote, pre, table, hr, div, a)+ :is(ul, ol, blockquote, pre, table, hr, div, a)) {
+      @apply mt-7;
+    }
 
-  .prose ul:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose ol:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 space-y-2;
-  }
+    &:is(strong) {
+      @apply font-semibold text-foreground-0;
+    }
 
-  .prose ul:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply list-disc pl-6;
-  }
+    &:is(ul),
+    &:is(ol) {
+      @apply my-0 space-y-2;
+    }
 
-  .prose ol:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply list-decimal pl-6;
-  }
+    &:is(ul) {
+      @apply list-disc pl-6;
+    }
 
-  .prose li:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply font-sans leading-7 text-foreground-2;
-  }
+    &:is(ol) {
+      @apply list-decimal pl-6;
+    }
 
-  .prose li:not(:where(.katex, .katex *, .katex-display, .katex-display *))::marker {
-    @apply text-foreground-3;
-  }
+    &:is(li) {
+      @apply font-sans leading-7 text-foreground-2;
+    }
 
-  .prose li+li:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-1;
-  }
+    &:is(li)::marker {
+      @apply text-foreground-3;
+    }
 
-  .prose li ul:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose li ol:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-2 mb-0;
-  }
+    &:is(li+li) {
+      @apply mt-1;
+    }
 
-  .prose blockquote:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 rounded-lg border border-border/80 bg-background-1 px-6 py-5 text-foreground-1;
-  }
+    &:is(li ul),
+    &:is(li ol) {
+      @apply mt-2 mb-0;
+    }
 
-  .prose blockquote p:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 text-foreground-1;
-  }
+    &:is(blockquote) {
+      @apply my-0 rounded-lg border border-border/80 bg-background-1 px-6 py-5 text-foreground-1;
+    }
 
-  .prose blockquote h2:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose blockquote h3:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose blockquote h4:not(:where(.katex, .katex *, .katex-display, .katex-display *)),
-  .prose blockquote h5:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-0;
-  }
+    &:is(blockquote p) {
+      @apply my-0 text-foreground-1;
+    }
 
-  .prose .callout:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-7 grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-lg border bg-background-1 px-5 py-4;
-  }
+    &:is(blockquote h2),
+    &:is(blockquote h3),
+    &:is(blockquote h4),
+    &:is(blockquote h5) {
+      @apply mt-0;
+    }
 
-  .prose .callout-title:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply m-0 font-mono text-sm font-semibold tracking-normal;
-  }
+    &:is(.callout) {
+      @apply my-7 grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-lg border bg-background-1 px-5 py-4;
+    }
 
-  .prose .callout-icon:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-0.5 size-5 shrink-0;
-  }
+    &:is(.callout-title) {
+      @apply m-0 font-mono text-sm font-semibold tracking-normal;
+    }
 
-  .prose .callout-content:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply min-w-0;
-  }
+    &:is(.callout-icon) {
+      @apply mt-0.5 size-5 shrink-0;
+    }
 
-  .prose .callout-body:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-2 text-foreground-1;
-  }
+    &:is(.callout-content) {
+      @apply min-w-0;
+    }
 
-  .prose .callout-body> :first-child:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mt-0;
-  }
+    &:is(.callout-body) {
+      @apply mt-2 text-foreground-1;
+    }
 
-  .prose .callout-body> :last-child:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply mb-0;
-  }
+    &:is(.callout-body> :first-child) {
+      @apply mt-0;
+    }
 
-  .prose code:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply rounded-sm bg-background-2 px-2 py-0.5 font-mono text-[0.92rem] font-medium text-foreground-0;
-  }
+    &:is(.callout-body> :last-child) {
+      @apply mb-0;
+    }
 
-  .prose :is(h1, h2, h3, h4, h5, h6) code:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    font-size: 0.78em;
-    line-height: 1;
-    padding: 0.08em 0.3em;
-    vertical-align: 0.08em;
-  }
+    &:is(code) {
+      @apply rounded-sm bg-background-2 px-2 py-0.5 font-mono text-[0.92rem] font-medium text-foreground-0;
+    }
 
-  .prose pre code:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply bg-transparent p-0 text-inherit;
-  }
+    &:is(:is(h1, h2, h3, h4, h5, h6) code) {
+      font-size: 0.78em;
+      line-height: 1;
+      padding: 0.08em 0.3em;
+      vertical-align: 0.08em;
+    }
 
-  .prose pre:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 overflow-x-auto rounded-lg border border-border/80 bg-background-2/70 px-6 py-5 text-[0.98rem] leading-7 text-foreground-0;
-  }
+    &:is(pre code) {
+      @apply bg-transparent p-0 text-inherit;
+    }
 
-  /* .astro-code {
-      @apply bg-background-0 my-8 px-6 py-5 font-mono text-base;
-    } */
+    &:is(pre) {
+      @apply my-0 overflow-x-auto rounded-lg border border-border/80 bg-background-2/70 px-6 py-5 text-[0.98rem] leading-7 text-foreground-0;
+    }
 
-  .prose table:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 w-full overflow-hidden rounded-lg border border-border/80 bg-background-1 font-sans text-base;
-  }
+    /* .astro-code {
+        @apply bg-background-0 my-8 px-6 py-5 font-mono text-base;
+      } */
 
-  .prose th:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply border-border/80 border-b bg-background-2 px-4 py-3 text-left font-semibold text-foreground-0;
-  }
+    &:is(table) {
+      @apply my-0 w-full overflow-hidden rounded-lg border border-border/80 bg-background-1 font-sans text-base;
+    }
 
-  .prose td:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply border-border/80 border-b px-4 py-3 align-top text-foreground-2;
-  }
+    &:is(th) {
+      @apply border-border/80 border-b bg-background-2 px-4 py-3 text-left font-semibold text-foreground-0;
+    }
 
-  .prose tr:last-child td:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply border-b-0;
-  }
+    &:is(td) {
+      @apply border-border/80 border-b px-4 py-3 align-top text-foreground-2;
+    }
 
-  .prose img:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 rounded-lg border border-border/80;
-  }
+    &:is(tr:last-child td) {
+      @apply border-b-0;
+    }
 
-  .prose iframe:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 aspect-video w-full rounded-lg border border-border/80;
-  }
+    &:is(img) {
+      @apply my-0 rounded-lg border border-border/80;
+    }
 
-  .prose hr:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply my-0 border-border/80;
-  }
+    &:is(iframe) {
+      @apply my-0 aspect-video w-full rounded-lg border border-border/80;
+    }
 
-  .prose .equation:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply relative my-8 w-full scroll-mt-28 pr-10;
-  }
+    &:is(hr) {
+      @apply my-0 border-border/80;
+    }
 
-  .prose .equation-number:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply absolute top-1/2 right-0 m-0 -translate-y-1/2 font-mono text-sm text-foreground-3;
-  }
+    &:is(.equation) {
+      @apply my-8 grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 scroll-mt-28;
+    }
 
-  .prose .equation-number a:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply font-normal text-foreground-3 no-underline hover:text-accent-1;
-  }
+    &:is(.equation-scroll) {
+      @apply min-w-0 overflow-x-auto;
+    }
 
-  .prose .equation-reference:not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
-    @apply font-mono font-normal whitespace-nowrap no-underline hover:no-underline;
+    &:is(.equation-scroll:focus-visible) {
+      @apply outline-2 outline-offset-2 outline-ring;
+    }
+
+    &:is(.equation-number) {
+      @apply m-0 font-mono text-sm text-foreground-3;
+    }
+
+    &:is(.equation-number a) {
+      @apply font-normal text-foreground-3 no-underline hover:text-accent-1;
+    }
+
+    &:is(.equation-reference) {
+      @apply font-mono font-normal whitespace-nowrap no-underline hover:no-underline;
+    }
+    &:is(dl) {
+      @apply my-7;
+    }
+
+    &:is(dt) {
+      @apply font-semibold text-foreground-0;
+    }
+
+    &:is(dd) {
+      @apply mt-1 ml-5;
+    }
+
+    &:is(dd + dt) {
+      @apply mt-5;
+    }
+
+    &:is(details) {
+      @apply my-7 rounded-lg border border-border px-5 py-4;
+    }
+
+    &:is(summary) {
+      @apply cursor-pointer font-medium text-foreground-0;
+    }
+
+    &:is(.task-list-item) {
+      @apply relative mb-[.85rem] list-none pl-[1.6rem];
+    }
+
+    &:is(.contains-task-list) {
+      @apply list-none p-0;
+    }
+
+    &:is(.task-list-item input[type="checkbox"]) {
+      @apply absolute top-[calc((1lh-0.875rem)/2+1px)] left-0 size-3.5 cursor-pointer appearance-none rounded-sm border border-input bg-background p-0 shadow-xs transition-colors;
+    }
+
+    &:is(.task-list-item input[type="checkbox"]:hover) {
+      @apply border-primary;
+    }
+
+    &:is(.task-list-item input[type="checkbox"]:checked) {
+      @apply border-primary bg-primary;
+    }
+
+    &:is(.task-list-item input[type="checkbox"]:focus-visible) {
+      @apply outline-2 outline-offset-2 outline-ring ring-3 ring-ring/50;
+    }
+
+    &:is(.task-list-item input[type="checkbox"])::after {
+      @apply absolute top-px left-0.75 h-2 w-1.25 rotate-45 border-r-2 border-b-2 border-primary-foreground opacity-0 content-[''];
+    }
+
+    &:is(.task-list-item input[type="checkbox"]:checked)::after {
+      @apply opacity-100;
+    }
+
+    &:is(.task-list-item:has(> input:checked), .task-list-item:has(> p > input:checked)) {
+      @apply text-foreground-3/75;
+    }
+
+    @media (forced-colors: active) {
+      &:is(.task-list-item input[type="checkbox"]) {
+        appearance: auto;
+      }
+
+      &:is(.task-list-item input[type="checkbox"])::after {
+        display: none;
+      }
+    }
   }
 }

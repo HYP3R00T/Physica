@@ -47,7 +47,7 @@ const normalizeAnsiSource = (node) => {
 
   for (const child of node.children ?? []) {
     if (child.type !== "text") continue
-    child.value = child.value.replace(/\\(?:x1b|u001b)/gi, "^[")
+    child.value = child.value.replace(/\\(?:x1b|u001b)/gi, "\u001b")
   }
 }
 
