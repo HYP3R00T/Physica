@@ -47,6 +47,13 @@ const learning = defineCollection({
   }),
 })
 
+const roadmapMetadata = z.object({
+  title: z.string().min(1),
+  domain: z.enum(["mathematics", "physics"]),
+  strand: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  draft: z.boolean().default(false),
+})
+
 const roadmap = defineCollection({
   loader: glob({
     base: "./content/roadmap",
@@ -54,22 +61,38 @@ const roadmap = defineCollection({
     generateId: ({ entry, data }) => {
       const { id, domain } = roadmapFileIdentity(entry)
       data.domain = domain
-      return id
+      data.overview = id === "index"
+      // Keep overview IDs distinct so duplicate strand overviews can be validated.
+      return data.overview ? `overview/${entry.replaceAll("\\", "/").replace(/\.mdx?$/, "")}` : id
     },
   }),
-  schema: z.object({
-    title: z.string().min(1),
-    domain: z.enum(["mathematics", "physics"]),
-    subject: z.string().min(1).optional(),
-    strand: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-    stage: z.enum(["Foundations", "Advanced"]),
-    dependencies: z.array(z.string()).default([]),
-    follows: z
-      .string()
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-      .optional(),
-    draft: z.boolean().default(false),
-  }),
+  schema: z.discriminatedUnion("overview", [
+    roadmapMetadata
+      .extend({
+        overview: z.literal(true),
+        title: z.string().default(""),
+        strand: z
+          .string()
+          .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+          .or(z.literal(""))
+          .default(""),
+        description: z.string().optional(),
+      })
+      .refine(
+        (data) => Boolean(data.title) === Boolean(data.strand),
+        "An overview needs both title and strand, or neither for an empty placeholder.",
+      ),
+    roadmapMetadata.extend({
+      overview: z.literal(false),
+      subject: z.string().min(1).optional(),
+      stage: z.enum(["Foundations", "Advanced"]),
+      dependencies: z.array(z.string()).default([]),
+      follows: z
+        .string()
+        .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+        .optional(),
+    }),
+  ]),
 })
 
 export const collections = { components, posts, learning, roadmap }

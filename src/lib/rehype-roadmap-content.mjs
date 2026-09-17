@@ -4,10 +4,18 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 export default function rehypeRoadmapContent() {
   return (tree, file) => {
     const path = String(file.path ?? "").replaceAll("\\", "/")
-    const match = path.match(/\/content\/roadmap\/(?:mathematics|physics)\/([a-z0-9]+(?:-[a-z0-9]+)*)\.mdx?$/i)
+    const match = path.match(
+      /\/content\/roadmap\/(?:mathematics|physics)\/(?:[^/]+\/)*([a-z0-9]+(?:-[a-z0-9]+)*)\.mdx?$/i,
+    )
     if (!match) return
     rehypeHeadingIds()(tree, file)
-    const prefix = `segment-${match[1].toLowerCase()}--`
+    const prefix =
+      match[1] === "index"
+        ? `overview-${path
+            .split("/content/roadmap/")[1]
+            .replace(/\.mdx?$/i, "")
+            .replaceAll("/", "-")}--`
+        : `segment-${match[1].toLowerCase()}--`
     const ids = new Map()
     const walk = (node, callback) => {
       callback(node)

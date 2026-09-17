@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import type { RoadmapSegment, RoadmapStrand } from "@/lib/roadmap"
 import { filterRoadmap, type RoadmapFilter } from "@/lib/roadmap-domain"
 import { getRoadmapLayout, ROADMAP_ROW_HEIGHT as ROW } from "@/lib/roadmap-geometry"
-import { readRoadmapProgress, resolveRoadmapHash } from "@/lib/roadmap-identity"
+import { readRoadmapProgress, readRoadmapSubject, resolveRoadmapHash, roadmapUrl } from "@/lib/roadmap-identity"
 
 const anchor = (id: string) => `segment-${id.toLowerCase()}`
 const PROGRESS_KEY = "physica.roadmap.checklist.v1"
@@ -31,13 +31,15 @@ function UpArrow() {
 export default function RoadmapExplorer({
   segments,
   strands,
+  subjectOverviews = [],
   children: content,
 }: {
   segments: RoadmapSegment[]
   strands: RoadmapStrand[]
+  subjectOverviews?: { id: string; title: string }[]
   children?: ReactNode
 }) {
-  const [selected, setSelected] = useState(segments[0].id)
+  const [selected, setSelected] = useState("")
   const [domain, setDomain] = useState<RoadmapFilter>("all")
   const [focusedStrand, setFocusedStrand] = useState("")
   const [mobileView, setMobileView] = useState("path")
@@ -52,6 +54,8 @@ export default function RoadmapExplorer({
   )
   const strandOptions = strands.filter((strand) => domain === "all" || strand.id.startsWith(`${domain}/`))
   const strandLabel = (id: string) => {
+    const overview = subjectOverviews.find((subject) => subject.id === id)
+    if (overview) return overview.title
     const name = id.split("/").at(-1)?.replaceAll("-", " ") ?? id
     return name.charAt(0).toUpperCase() + name.slice(1)
   }
@@ -66,12 +70,14 @@ export default function RoadmapExplorer({
   const lanes = visibleStrands.map(({ id }) => id)
   const strandById = new Map(strands.map((strand) => [strand.id, strand]))
   const graphWidth = laneCount * 15 + 25
-  const current = segments.find((segment) => segment.id === selected) ?? segments[0]
-  const children = segments.filter((segment) => segment.dependencies.includes(current.id))
-  const connected = new Set([current.id, ...current.dependencies, ...children.map((segment) => segment.id)])
+  const current = segments.find((segment) => segment.id === selected)
+  const children = segments.filter((segment) => segment.dependencies.includes(selected))
+  const connected = new Set(
+    current ? [current.id, ...current.dependencies, ...children.map((segment) => segment.id)] : [],
+  )
   for (const edge of edges) {
-    if (edge.source === current.id) connected.add(edge.target)
-    if (edge.target === current.id) connected.add(edge.source)
+    if (edge.source === selected) connected.add(edge.target)
+    if (edge.target === selected) connected.add(edge.source)
   }
   const byId = new Map(segments.map((segment) => [segment.id, segment]))
   const color = (id: string) => strandById.get(byId.get(id)?.strand ?? "")?.color ?? "var(--foreground-2)"
@@ -129,34 +135,41 @@ export default function RoadmapExplorer({
   function changeDomain(value: RoadmapFilter) {
     setDomain(value)
     requestAnimationFrame(() => {
-      if (value === "all" || current.domain === value) reveal(current.id)
+      if (current && (value === "all" || current.domain === value)) reveal(current.id)
       else window.scrollTo({ top: 0, behavior: "instant" })
     })
   }
 
   function changeStrand(value: string) {
     setFocusedStrand(value)
-    const visible = filterRoadmap(segments, domain, value)
-    const target =
-      visible.find((segment) => segment.id === selected) ??
-      visible.find((segment) => segment.strand === value) ??
-      visible[0]
-    if (target) {
-      setSelected(target.id)
-      const hash = `#${anchor(target.id)}`
-      if (location.hash !== hash) history.pushState(null, "", hash)
-      requestAnimationFrame(() => reveal(target.id))
-    } else window.scrollTo({ top: 0, behavior: "instant" })
+    setSelected("")
+    const url = roadmapUrl(location.href, value, "")
+    if (url !== location.pathname + location.search + location.hash) history.pushState(null, "", url)
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }
+
+  function openOverview(subject: string) {
+    changeStrand(subject)
+    setMobileView("details")
+    requestAnimationFrame(() => {
+      body.current?.scrollTo({ top: 0, behavior: "instant" })
+      document.getElementById("roadmap-overview")?.focus({ preventScroll: true })
+    })
   }
 
   function choose(id: string, hash = `#${anchor(id)}`, openDetails = true) {
     if (!byId.has(id)) return
+    const subject =
+      focusedStrand && filterRoadmap(segments, "all", focusedStrand).some((segment) => segment.id === id)
+        ? focusedStrand
+        : ""
+    setFocusedStrand(subject)
     if (!visibleSegments.some((segment) => segment.id === id)) {
-      setFocusedStrand("")
       if (domain !== "all" && byId.get(id)?.domain !== domain) setDomain("all")
     }
     setSelected(id)
-    if (location.hash !== hash) history.pushState(null, "", hash)
+    const url = roadmapUrl(location.href, subject, hash)
+    if (url !== location.pathname + location.search + location.hash) history.pushState(null, "", url)
     const mobile = window.matchMedia("(width < 850px)").matches
     if (mobile && openDetails) setMobileView("details")
     requestAnimationFrame(() => {
@@ -188,6 +201,11 @@ export default function RoadmapExplorer({
     const link = (event.target as Element).closest<HTMLAnchorElement>("a[href]")
     if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     if (link.origin !== location.origin || link.pathname !== location.pathname) return
+    if (new URL(link.href).searchParams.has("subject") && !link.hash) {
+      event.preventDefault()
+      openOverview(readRoadmapSubject(link.search, strands))
+      return
+    }
     const target = resolveRoadmapHash(link.hash, segments)
     if (!target) return
     event.preventDefault()
@@ -200,23 +218,29 @@ export default function RoadmapExplorer({
 
   useEffect(() => {
     function restore() {
-      const target = resolveRoadmapHash(location.hash, segments)
-      const match = segments.find((segment) => segment.id === target?.id)
-      if (target && location.hash !== target.hash) history.replaceState(null, "", target.hash)
-      const selectedSegment = match ?? segments[0]
-      setDomain((active) => (active === "all" || active === selectedSegment.domain ? active : "all"))
-      setFocusedStrand((active) =>
-        active && filterRoadmap(segments, "all", active).some((segment) => segment.id === selectedSegment.id)
-          ? active
-          : "",
-      )
-      setSelected(selectedSegment.id)
-      if (match) {
+      const subject = readRoadmapSubject(location.search, strands)
+      const visible = filterRoadmap(segments, "all", subject)
+      const target = resolveRoadmapHash(location.hash, visible)
+      const match = visible.find((segment) => segment.id === target?.id)
+      const heading = document.getElementById(location.hash.slice(1))
+      const subjectHeading =
+        subject && heading?.closest<HTMLElement>("[data-subject-panel]")?.dataset.subjectPanel === subject
+          ? heading
+          : null
+      const hash = target?.hash ?? (subjectHeading ? location.hash : "")
+      const url = roadmapUrl(location.href, subject, hash)
+      if (url !== location.pathname + location.search + location.hash) history.replaceState(null, "", url)
+      setDomain("all")
+      setFocusedStrand(subject)
+      setSelected(match?.id ?? "")
+      if (match || subject) {
         const mobile = window.matchMedia("(width < 850px)").matches
-        if (mobile) setMobileView("details")
+        if (mobile && (match || subject)) setMobileView("details")
         requestAnimationFrame(() => {
-          if (mobile) columns.current?.scrollIntoView({ block: "start" })
-          else reveal(match.id)
+          if (mobile && match) columns.current?.scrollIntoView({ block: "start" })
+          else if (match) reveal(match.id)
+          else window.scrollTo({ top: 0, behavior: "instant" })
+          if (subjectHeading) subjectHeading.scrollIntoView({ block: "nearest" })
           if (target?.hash.includes("--"))
             document.getElementById(target.hash.slice(1))?.scrollIntoView({ block: "nearest" })
         })
@@ -229,7 +253,7 @@ export default function RoadmapExplorer({
       window.removeEventListener("popstate", restore)
       window.removeEventListener("hashchange", restore)
     }
-  }, [segments, reveal])
+  }, [segments, strands, reveal])
 
   // The slot contains Astro-rendered MDX, including any hydrated MDX components.
   // Toggle its panels without replacing their DOM or injecting HTML strings.
@@ -237,8 +261,11 @@ export default function RoadmapExplorer({
     for (const panel of panels.current?.querySelectorAll<HTMLElement>("[data-segment-panel]") ?? []) {
       panel.hidden = panel.dataset.segmentPanel !== selected
     }
+    for (const panel of panels.current?.querySelectorAll<HTMLElement>("[data-subject-panel]") ?? []) {
+      panel.hidden = Boolean(selected) || panel.dataset.subjectPanel !== focusedStrand
+    }
     if (body.current) body.current.scrollTop = 0
-  }, [selected])
+  }, [selected, focusedStrand])
 
   useEffect(() => {
     const container = panels.current
@@ -279,7 +306,7 @@ export default function RoadmapExplorer({
   return (
     <section
       data-roadmap
-      style={{ "--ring": color(current.id) } as CSSProperties}
+      style={{ "--ring": current ? color(current.id) : "var(--accent-1)" } as CSSProperties}
       className="group/roadmap text-foreground-0 [&_button]:cursor-pointer [&_:is(button,a,input,summary):focus-visible]:outline-2 [&_:is(button,a,input,summary):focus-visible]:outline-ring [&_:is(button,a,input,summary):focus-visible]:-outline-offset-2"
       aria-label="Physics curriculum explorer"
       data-mobile-view={mobileView}
@@ -503,7 +530,7 @@ export default function RoadmapExplorer({
         <aside
           className="sticky top-16 flex max-h-[calc(100dvh-4rem)] min-w-0 flex-col **:[[hidden]]:hidden! max-[850px]:static max-[850px]:max-h-none max-[850px]:group-data-[mobile-view=path]/roadmap:hidden"
           id="roadmap-detail"
-          aria-label="Selected segment"
+          aria-label={current ? "Selected segment" : "Subject overview"}
         >
           <div
             data-roadmap-column-header
@@ -513,8 +540,22 @@ export default function RoadmapExplorer({
               data-roadmap-heading-text
               className="flex min-w-0 flex-1 items-center justify-between gap-3 px-6 py-3 [&>span]:text-foreground-2"
             >
-              <h2>In this segment</h2>
-              <span aria-live="polite">{current.stage}</span>
+              {current ? (
+                <a
+                  className="min-w-0 truncate text-accent-1 hover:underline"
+                  href={`?subject=${(focusedStrand || current.strand).split("/").at(-1)}`}
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+                    event.preventDefault()
+                    openOverview(focusedStrand || current.strand)
+                  }}
+                >
+                  ← {strandLabel(focusedStrand || current.strand)} overview
+                </a>
+              ) : (
+                <h2>Overview</h2>
+              )}
+              <span aria-live="polite">{current?.stage}</span>
             </div>
             <div
               data-roadmap-heading-actions
@@ -537,6 +578,41 @@ export default function RoadmapExplorer({
             className="min-h-0 overflow-y-auto overscroll-contain px-10 pt-8 pb-12 scrollbar-gutter-stable focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 max-[1100px]:p-6 max-[850px]:overflow-visible max-[850px]:p-6"
             ref={body}
           >
+            <div id="roadmap-overview" tabIndex={-1} className="outline-none" />
+            {!current && !subjectOverviews.some((subject) => subject.id === focusedStrand) && (
+              <div>
+                <h1 className="mb-6 text-3xl font-semibold text-foreground-1">
+                  {focusedStrand ? strandLabel(focusedStrand) : "Explore the roadmap"}
+                </h1>
+                <p className="text-sm leading-relaxed text-foreground-2">
+                  {focusedStrand
+                    ? "Explore this subject through its segments and direct prerequisites. Choose a segment from the learning path to see its topics."
+                    : "Choose a subject to focus the map, or select a segment from the learning path to see its topics."}
+                </p>
+                {!focusedStrand && (
+                  <ul className="mt-6 space-y-3 text-sm">
+                    {strandOptions.map((strand) => (
+                      <li key={strand.id}>
+                        <a
+                          className="text-accent-1 hover:underline"
+                          href={`?subject=${strand.id.split("/").at(-1)}`}
+                          onClick={(event) => {
+                            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+                            event.preventDefault()
+                            openOverview(strand.id)
+                          }}
+                        >
+                          {strandLabel(strand.id)}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p className="mt-4 font-mono text-xs text-foreground-2">
+                  {visibleSegments.length} segments in this view
+                </p>
+              </div>
+            )}
             {/* Links and checkboxes in the server-rendered MDX retain native keyboard behaviour. */}
             {/* biome-ignore lint/a11y/noStaticElementInteractions: Delegates native anchor clicks in the Astro slot. */}
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: Native anchors already dispatch keyboard clicks. */}

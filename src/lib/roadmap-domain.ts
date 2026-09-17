@@ -3,8 +3,13 @@ export type RoadmapDomain = (typeof roadmapDomains)[number]
 export type RoadmapFilter = "all" | RoadmapDomain
 
 export function roadmapFileIdentity(path: string): { id: string; domain: RoadmapDomain } {
-  const match = path.replaceAll("\\", "/").match(/^(mathematics|physics)\/([a-z0-9]+(?:-[a-z0-9]+)*)\.mdx?$/)
-  if (!match) throw new Error(`Invalid roadmap path: ${path}. Use mathematics/<slug>.mdx or physics/<slug>.mdx.`)
+  const match = path
+    .replaceAll("\\", "/")
+    .match(/^(mathematics|physics)\/(?:[^/]+\/)*([a-z0-9]+(?:-[a-z0-9]+)*)\.mdx?$/)
+  if (!match)
+    throw new Error(
+      `Invalid roadmap path: ${path}. Use a Markdown file with a slug filename under mathematics/ or physics/.`,
+    )
   return { id: match[2], domain: match[1] as RoadmapDomain }
 }
 
