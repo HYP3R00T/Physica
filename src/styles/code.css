@@ -1,0 +1,114 @@
+.code-block {
+  overflow: hidden;
+  margin-block: 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--shiki-light-bg);
+  color: var(--shiki-light);
+}
+
+.code-block code[data-theme*=" "],
+.code-block code[data-theme*=" "] span {
+  background-color: var(--shiki-light-bg) !important;
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+.dark .code-block {
+  background-color: var(--shiki-dark-bg);
+  color: var(--shiki-dark);
+}
+
+.dark .code-block code[data-theme*=" "],
+.dark .code-block code[data-theme*=" "] span {
+  background-color: var(--shiki-dark-bg) !important;
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
+}
+
+.code-block__header {
+  display: flex;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-left: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}
+
+.code-block__meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.code-block__language {
+  flex: none;
+  opacity: 0.62;
+  text-transform: uppercase;
+}
+
+.code-block__filename {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code-block__filename::before {
+  margin-right: 0.625rem;
+  opacity: 0.38;
+  content: "/";
+}
+
+.code-block__copy {
+  align-self: stretch;
+  flex: none;
+  border: 0;
+  border-left: 1px solid var(--border);
+  padding-inline: 0.875rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  opacity: 0.65;
+  transition:
+    background-color 150ms ease,
+    opacity 150ms ease;
+}
+
+.code-block__copy:hover {
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  opacity: 1;
+}
+
+.code-block__copy:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: -3px;
+  opacity: 1;
+}
+
+.code-block__copy[data-copied="true"] {
+  opacity: 1;
+}
+
+.prose .code-block pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 1.125rem 1.25rem;
+  background: transparent !important;
+}
+
+.prose .code-block pre code {
+  display: grid;
+  min-width: max-content;
+}

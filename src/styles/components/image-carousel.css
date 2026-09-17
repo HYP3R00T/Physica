@@ -1,0 +1,10 @@
+.image-carousel-container .carousel-slide {
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
+  pointer-events: none;
+}
+
+.image-carousel-container .carousel-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}

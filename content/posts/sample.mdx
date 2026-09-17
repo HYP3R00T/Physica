@@ -1,111 +1,271 @@
 ---
-author: Rajesh
 pubDatetime: 2023-07-21
-title: Sample Markdown
-featured: true
-draft: true
+title: Content formatting reference
+featured: false
+draft: false
 tags:
-  - linux
-description: A step-by-step guide to my personal Arch Linux installation process using LUKS encryption, Logical Volume Management (LVM), and systemd-boot. This guide also includes WiFi setup using iwd and aims for a minimal, secure, and functional base system.
-category: Technology
+  - reference
+  - formatting
+description: A visual reference for typography, lists, code, mathematics, images and video in MDX.
 cover: "./images/docker.png"
-coverAlt: Neofetch output of Arch Linux
+coverAlt: Sample cover image
 ---
+
+This page collects examples for checking our content styles. Compare them in light and dark mode, on a narrow screen and on a wide screen.
+
+## Text and headings
+
+A regular paragraph should have comfortable line spacing. **Bold text**, *italic text*, ***bold italic text***, ~~strikethrough~~ and `inline code` should remain easy to distinguish.
+
+A second paragraph checks the space between paragraphs. Here is an [external link to Astro](https://astro.build), an [internal link to the roadmap](/roadmap), and a [link to the mathematics section](#mathematics).
+
+A deliberate line break ends here.
+This continues on the next line within the same paragraph.
+
+### Third-level heading
+
+A short paragraph under a subsection.
+
+#### Fourth-level heading with `inline code`
+
+A short paragraph under a smaller subsection.
+
+##### Fifth-level heading
+
+A short paragraph under a fifth-level heading.
+
+###### Sixth-level heading
+
+A short paragraph under the smallest heading. The page title supplies the first-level heading.
+
+## Lists
+
+- Physical quantities
+  - Length and time
+  - Mass and temperature
+- Motion
+  - Position and displacement
+  - Velocity and acceleration
+
+1. Choose a system.
+2. Identify the quantities.
+   1. Record known values.
+   2. Identify the unknown value.
+3. Check the units.
+
+- [x] Read the definitions.
+- [ ] Check the examples.
+  - [x] Constant velocity
+  - [ ] Constant acceleration
+- [ ] Revisit the assumptions.
+
+## Quotes and callouts
+
+> A quoted paragraph can contain **emphasis**, a [link](/roadmap), and inline mathematics such as $v = d/t$.
+>
+> A second paragraph checks spacing within the quotation.
+>
+> - First quoted item
+> - Second quoted item
+>
+> > A nested quotation checks indentation.
+
+<div className="callout">
+  <span className="callout-icon" aria-hidden="true">💡</span>
+  <div className="callout-content">
+    <p className="callout-title">A note on units</p>
+    <div className="callout-body">
+      <p>Use consistent units before substituting values. This callout uses our existing CSS classes through MDX markup.</p>
+      <p>A second paragraph checks the spacing inside the callout.</p>
+    </div>
+  </div>
+</div>
+
+## Tables
+
+| Quantity | Symbol | SI unit |
+| :--- | :---: | ---: |
+| Distance | $d$ | metre |
+| Time | $t$ | second |
+| Speed | $v$ | metre per second |
+
+| Item | Description |
+| --- | --- |
+| **Assumption** | Constant speed throughout the interval |
+| `distance` | A variable in the code example |
+| [Roadmap](/roadmap) | A link inside a table |
+
+## Code
+
+Inline code: `distance = speed * time`.
+
+```python title="motion.py"
+speed = 2
+time = 3
+distance = speed * time
+print(f"Distance: {distance} m")
+```
+
+```js
+const speed = 2;
+const time = 3;
+console.log(speed * time);
+```
+
+```text
+Plain text without syntax highlighting.
+A long line checks horizontal scrolling: distance_covered_during_the_first_interval + distance_covered_during_the_second_interval + distance_covered_during_the_third_interval
+```
+
+```ansi
+\x1b[32mPASS\x1b[0m Equation rendered
+\x1b[33mCHECK\x1b[0m Narrow-screen spacing
+```
+
+## Mathematics
+
+### Inline mathematics
+
+Simple notation should sit comfortably in a sentence: $x$, $0$, $x^2$, $a_n$, $\alpha$, and $\mathbf{v}$.
+
+A fraction $\dfrac{a+b}{c}$, a root $\sqrt{x^2+y^2}$, and a limit $\lim_{x\to 0}\dfrac{\sin x}{x}=1$ check different inline heights.
+
+The derivative $f'(x)=\lim_{h\to 0}\dfrac{f(x+h)-f(x)}{h}$ checks fractions and subscripts together. A speed of $2\,\mathrm{m/s}$ checks text inside mathematics.
+
+### Display mathematics
+
+This unnumbered equation checks the default display layout:
+
+$$
+\int_0^T v(t)\,\mathrm{d}t = x(T)-x(0)
+$$
+
+### Numbered equations and references
+
+The reference to equation \eqref(sample-kinetic-energy) points forward. References should resolve regardless of where they appear in this post.
+
+$$
+d = vt
+\label{sample-distance}
+$$
+
+Equation \eqref(sample-distance) relates distance, speed and time for constant speed.
+
+$$
+K = \dfrac{1}{2}mv^2
+\label{sample-kinetic-energy}
+$$
+
+Compare equations \eqref(sample-distance) and \eqref(sample-kinetic-energy). Repeated references should retain the same numbers.
+
+Labels and references use our custom plugin. Labels go inside display math; references go directly in prose. This code block shows the source literally:
+
+```latex
+$$
+d = vt
+\label{sample-distance}
+$$
+
+See equation \eqref(sample-distance).
+```
+
+### Aligned equations
+
+$$
+\begin{aligned}
+v(t) &= v_0 + at \\
+x(t) &= x_0 + v_0t + \dfrac{1}{2}at^2
+\end{aligned}
+\label{sample-constant-acceleration}
+$$
+
+Equation \eqref(sample-constant-acceleration) gives two relations in one numbered block.
+
+### Matrices and piecewise functions
+
+$$
+\mathbf{A} =
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+\qquad
+\mathbf{x} = \begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix}
+$$
+
+$$
+|x| =
+\begin{cases}
+x, & \text{if } x \geq 0, \\
+-x, & \text{if } x < 0.
+\end{cases}
+$$
+
+### Sums, operators and accents
+
+$$
+\sum_{n=0}^{\infty}\dfrac{x^n}{n!}=e^x
+\qquad
+\nabla\cdot\mathbf{E}=\dfrac{\rho}{\varepsilon_0}
+\qquad
+\hat{\mathbf{n}}\cdot\vec{v}=v_n
+$$
+
+### Mathematics in other content
+
+- A list item with $\Delta x = x_2-x_1$.
+- A checklist can include a mathematical expression:
+  - [ ] Evaluate $\int_0^1 x^2\,\mathrm{d}x$.
+
+> The expression $\dfrac{\mathrm{d}x}{\mathrm{d}t}$ should keep its mathematical formatting inside a quotation.
+
+### Wide equation
+
+This deliberately long equation checks horizontal overflow on small screens:
+
+$$
+(a+b+c+d+e+f)^2 = a^2+b^2+c^2+d^2+e^2+f^2+2ab+2ac+2ad+2ae+2af+2bc+2bd+2be+2bf+2cd+2ce+2cf+2de+2df+2ef
+$$
+
+## Images and video
+
+![Sample image for checking width, borders and spacing](./images/docker.png)
+
+The paragraph after the image checks the return to regular text spacing.
 
 <Video id="zYW3f9kMwbA" title="Sample YouTube video" />
 
-This is a sample paragraph under **Heading 1**. You can include _italic_, **bold**, or `inline code` here. Here's a [link to Astro](https://astro.build).
+The video should keep its proportions as the page narrows and load lazily.
 
-## Heading Level 2
+## Footnotes
 
-Another paragraph with **more content**. Here's a line with a footnote[^1].
+This sentence has a short footnote.[^short] This one has a longer footnote.[^long] The short footnote is referenced again here.[^short]
 
-### Heading Level 3
+## Definitions and disclosure
 
-Nested list example:
+This definition list uses explicit MDX markup, rather than unsupported Markdown definition-list syntax.
 
-- Item 1
-    - Subitem 1a
-    - Subitem 1b
-- Item 2
-  1. Ordered Subitem 2a
-  2. Ordered Subitem 2b
-- Item 3
+<dl>
+  <dt>Displacement</dt>
+  <dd>The change in position between two points in time.</dd>
+  <dt>Velocity</dt>
+  <dd>The rate of change of position with time.</dd>
+</dl>
 
-#### Heading Level 4
+<details>
+  <summary>Open a native disclosure</summary>
+  <p>This checks ordinary HTML embedded in MDX, including <strong>emphasis</strong> and a <a href="/roadmap">link</a>.</p>
+</details>
 
-> This is a blockquote. It can span multiple lines.
->
-> - It can also contain lists
-> - Nested within the blockquote
+## Separators and characters
 
-##### Heading Level 5
+A paragraph before a horizontal rule.
 
-1. Ordered list example
-2. Second item
-   - Nested unordered list
-   - Another nested item
-3. Third item
+---
 
-###### Heading Level 6
+A paragraph after the rule. Unicode examples: α β γ, ©, →, ±, ×, and °. Emoji examples: 🔬 🧮 💡 ✅ ❌ ❤️.
 
-**Table Example:**
+[^short]: A short footnote with a [roadmap link](/roadmap).
 
-| Name        | Age | Occupation       |
-| ----------- | --- | ---------------- |
-| Alice       | 30  | Engineer         |
-| Bob         | 25  | Designer         |
-| Charlie     | 35  | Product Manager  |
-
-**Code Block Example:**
-
-```js
-function greet(name) {
-  console.log(`Hello, ${name}!`);
-}
-greet("Hyperoot");
-```
-
-Inline code example: `npm install astro`
-
-**Image Example:**
-
-![Placeholder Image](./images/docker.png)
-
-**Footnote Example:**
-
-This is some text with a footnote.[^1]
-
-[^1]: This is the footnote content. You can include links [like this](https://example.com).
-
-**Horizontal Rule Example:**
-
-**Task List Example:**
-
-- [x] Completed task
-- [ ] Incomplete task
-- [ ] Another task
-
-**Blockquote with nested elements:**
-
-> ### Nested Heading
->
-> Some quote text here with **bold** and _italic_ styles.
->
-> ```python
-> # Python code block inside blockquote
-> def hello():
->     print("Hello World")
-> ```
-
-**Definition List Example:**
-
-Term 1
-: Definition of term 1
-
-Term 2
-: Definition of term 2
-
-**Emoji and Special Characters:**
-
-I ❤️ Markdown! Check these out: 😎 ✨ ✅ ❌
+[^long]: A footnote containing **bold text**, `inline code`, and mathematics $v=d/t$.

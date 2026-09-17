@@ -9,6 +9,7 @@ const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`;
 ---
 
 <iframe
+  class="youtube-video"
   src={src}
   title={title}
   width="560"
@@ -18,16 +19,3 @@ const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`;
   allowfullscreen
   referrerpolicy="strict-origin-when-cross-origin"
 />
-
-<style>
-  iframe {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    margin-block: 2rem;
-    border: 0;
-    border-radius: var(--radius-lg);
-    background: var(--background-1);
-  }
-</style>

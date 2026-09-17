@@ -71,19 +71,6 @@ const totalImages = images.length;
   }
 </div>
 
-<style>
-  .carousel-slide {
-    opacity: 0;
-    transition: opacity 500ms ease-in-out;
-    pointer-events: none;
-  }
-
-  .carousel-slide.is-active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-</style>
-
 <script>
   document.addEventListener("astro:page-load", () => {
     const carousels = document.querySelectorAll(".image-carousel-container");
