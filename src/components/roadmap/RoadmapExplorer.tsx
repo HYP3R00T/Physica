@@ -1,6 +1,7 @@
 import type { CSSProperties, MouseEvent, ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { RoadmapSegment, RoadmapStrand } from "@/lib/roadmap"
 import { filterRoadmap, type RoadmapFilter } from "@/lib/roadmap-domain"
 import { getRoadmapLayout, ROADMAP_ROW_HEIGHT as ROW } from "@/lib/roadmap-geometry"
@@ -337,7 +338,12 @@ export default function RoadmapExplorer({
                   key={value}
                   type="button"
                   size="xs"
-                  variant={domain === value ? "secondary" : "ghost"}
+                  variant="ghost"
+                  className={
+                    domain === value
+                      ? "border-accent-1/50 bg-background-1 text-accent-1 hover:bg-background-2 hover:text-accent-1 dark:hover:bg-background-2"
+                      : "text-foreground-2"
+                  }
                   aria-pressed={domain === value}
                   aria-controls="roadmap-map"
                   onClick={() => changeDomain(value)}
@@ -364,34 +370,31 @@ export default function RoadmapExplorer({
             <div className="flex w-full min-w-0 basis-full flex-col gap-2 border-t border-border px-4 py-2 max-[850px]:col-span-2">
               <div className="flex min-w-0 items-center gap-3">
                 <label htmlFor="roadmap-strand" className="shrink-0">
-                  Strand
+                  Subject
                 </label>
-                <select
-                  id="roadmap-strand"
-                  value={focusedStrand}
-                  aria-controls="roadmap-map"
-                  aria-describedby={focusedStrand ? "roadmap-strand-hint" : undefined}
-                  onChange={(event) => changeStrand(event.target.value)}
-                  className="min-w-0 flex-1 rounded border border-border bg-background-0 px-2 py-1.5 text-foreground-0 focus-visible:outline-2 focus-visible:outline-ring"
+                <Select
+                  value={focusedStrand || "all"}
+                  onValueChange={(value) => changeStrand(value === "all" ? "" : value)}
                 >
-                  <option value="">All strands</option>
-                  {focusedStrand && !strandOptions.some((strand) => strand.id === focusedStrand) && (
-                    <option value={focusedStrand} hidden>
-                      {strandLabel(focusedStrand)}
-                    </option>
-                  )}
-                  {strandOptions.map((strand) => (
-                    <option key={strand.id} value={strand.id}>
-                      {strandLabel(strand.id)}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger id="roadmap-strand" size="sm" className="min-w-0 flex-1 font-mono text-xs">
+                    <SelectValue>
+                      <span className="truncate">{focusedStrand ? strandLabel(focusedStrand) : "All subjects"}</span>
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent position="popper" align="start" className="max-w-[calc(100vw-2rem)] font-mono">
+                    <SelectGroup>
+                      <SelectItem value="all" className="text-xs">
+                        All subjects
+                      </SelectItem>
+                      {strandOptions.map((strand) => (
+                        <SelectItem key={strand.id} value={strand.id} className="text-xs">
+                          {strandLabel(strand.id)}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
-              {focusedStrand && (
-                <p id="roadmap-strand-hint" className="text-foreground-2">
-                  Includes direct prerequisites only.
-                </p>
-              )}
             </div>
           </div>
           <div id="roadmap-map">
