@@ -245,3 +245,62 @@ test("hidden reading steps are skipped without hiding independent published topi
   d.data.dependencies = []
   assert.equal(getPublishedRoadmap(validateRoadmap([a, b, c, d]))[0].data.follows, undefined)
 })
+
+test("strand focus includes only direct prerequisites and excludes their ancestors", () => {
+  const segments = [
+    { id: "math", domain: "mathematics", strand: "mathematics/algebra", dependencies: [] },
+    { id: "unrelated", domain: "physics", strand: "physics/mechanics", dependencies: [] },
+    { id: "base", domain: "physics", strand: "physics/mechanics", dependencies: ["math"], follows: "unrelated" },
+    { id: "em", domain: "physics", strand: "physics/electromagnetism", dependencies: ["base"] },
+    { id: "em-next", domain: "physics", strand: "physics/electromagnetism", dependencies: ["em"], follows: "em" },
+    { id: "optics", domain: "physics", strand: "physics/optics", dependencies: ["em"] },
+  ]
+  const original = structuredClone(segments)
+  const view = filterRoadmap(segments, "physics", "physics/electromagnetism")
+  assert.deepEqual(
+    view.map(({ id }) => id),
+    ["base", "em", "em-next"],
+  )
+  assert.equal(view[0].follows, undefined)
+  assert.equal(view[2].follows, "em")
+  assert.deepEqual(view[0].dependencies, [])
+  assert.deepEqual(view[1].dependencies, ["base"])
+  assert.deepEqual(segments, original)
+  assert.deepEqual(filterRoadmap(segments, "all", "physics/missing"), [])
+  assert.equal(filterRoadmap(segments, "all").length, segments.length)
+})
+
+test("strand focus handles shared prerequisites and distinguishes domain-qualified strands", () => {
+  const segments = [
+    { id: "math", domain: "mathematics", strand: "mathematics/shared", dependencies: [] },
+    { id: "a", domain: "physics", strand: "physics/shared", dependencies: ["math"] },
+    { id: "b", domain: "physics", strand: "physics/shared", dependencies: ["math", "a"] },
+  ]
+  assert.deepEqual(
+    filterRoadmap(segments, "all", "mathematics/shared").map(({ id }) => id),
+    ["math"],
+  )
+  assert.deepEqual(
+    filterRoadmap(segments, "all", "physics/shared").map(({ id }) => id),
+    ["math", "a", "b"],
+  )
+})
+
+test("domain and strand filters intersect independently, including mathematics for a physics strand", () => {
+  const segments = [
+    { id: "earlier", domain: "mathematics", strand: "mathematics/algebra", dependencies: [] },
+    { id: "math", domain: "mathematics", strand: "mathematics/calculus", dependencies: ["earlier"] },
+    { id: "mechanics", domain: "physics", strand: "physics/mechanics", dependencies: ["math"] },
+    { id: "other", domain: "physics", strand: "physics/optics", dependencies: [] },
+  ]
+  const original = structuredClone(segments)
+  const ids = (domain, strand) => filterRoadmap(segments, domain, strand).map(({ id }) => id)
+  assert.deepEqual(ids("all", "physics/mechanics"), ["math", "mechanics"])
+  assert.deepEqual(ids("physics", "physics/mechanics"), ["mechanics"])
+  assert.deepEqual(ids("mathematics", "physics/mechanics"), ["math"])
+  assert.deepEqual(ids("all", "physics/mechanics"), ["math", "mechanics"])
+  assert.deepEqual(ids("physics", ""), ["mechanics", "other"])
+  assert.deepEqual(ids("mathematics", "physics/optics"), [])
+  assert.deepEqual(filterRoadmap(segments, "physics", "physics/mechanics")[0].dependencies, [])
+  assert.deepEqual(segments, original)
+})
