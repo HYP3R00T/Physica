@@ -16,7 +16,7 @@ Measured on 13 September 2026 using cold browser visits to production output. Th
 |---|---:|---:|
 | / | 94.6 KiB | 5.8 KiB |
 | /roadmap | 98.5 KiB | 80.4 KiB |
-| /components/dropdown-menu | 111.8 KiB | 103.9 KiB |
+| /components/dropdown-menu (removed) | 111.8 KiB | 103.9 KiB |
 
 The homepage figures also apply to the tested blog listing, roadmap article and sample note. Inline scripts are separate: ordinary pages changed from about 7.9 KiB to 10.4 KiB uncompressed, carried within the HTML. The main reduction comes from deferring React and the search interface, not from eliminating their behavior. The roadmap still needs React at startup.
 

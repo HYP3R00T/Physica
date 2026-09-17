@@ -3,18 +3,6 @@ import { glob } from "astro/loaders"
 import { z } from "astro/zod"
 import { roadmapFileIdentity } from "./lib/roadmap-domain"
 
-const components = defineCollection({
-  loader: glob({
-    pattern: ["**/*.md", "**/*.mdx"],
-    base: "./content/components",
-  }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    category: z.string().optional(),
-  }),
-})
-
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./content/posts" }),
   schema: ({ image }) =>
@@ -95,4 +83,4 @@ const roadmap = defineCollection({
   ]),
 })
 
-export const collections = { components, posts, learning, roadmap }
+export const collections = { posts, learning, roadmap }
