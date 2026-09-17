@@ -1,17 +1,33 @@
 ---
-import "plyr/dist/plyr.css";
+interface Props {
+  id: string;
+  title?: string;
+}
 
-const { id } = Astro.props;
+const { id, title = "YouTube video" } = Astro.props;
+const src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}`;
 ---
 
-<div
-  id="player"
-  data-plyr-provider="youtube"
-  data-plyr-embed-id={id}
->
-</div>
+<iframe
+  src={src}
+  title={title}
+  width="560"
+  height="315"
+  loading="lazy"
+  allow="encrypted-media; fullscreen; picture-in-picture"
+  allowfullscreen
+  referrerpolicy="strict-origin-when-cross-origin"
+/>
 
-<script>
-  import initPlyr from "@/lib/initPlyr";
-  initPlyr();
-</script>
+<style>
+  iframe {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin-block: 2rem;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--background-1);
+  }
+</style>
