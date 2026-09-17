@@ -14,7 +14,6 @@ const titleId = `subject-title-${subjectId.replaceAll("/", "-")}`
 <article data-subject-panel={subjectId} hidden aria-labelledby={titleId} tabindex="-1">
   <header class="prose mb-8">
     <h1 id={titleId} class="text-foreground-2!">{entry.data.title}</h1>
-    {entry.data.description && <p>{entry.data.description}</p>}
   </header>
   <div class="prose [&_:is(pre,table,.katex-display)]:max-w-full [&_:is(pre,table,.katex-display)]:overflow-x-auto [&_a]:wrap-anywhere">
     <Content />
