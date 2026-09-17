@@ -1,16 +1,15 @@
 # Relativity curriculum
 
+Current grouping: see [Segment consolidation](roadmap-consolidation.md) and the [roadmap index](roadmap-index.md). Original drafting counts and audit descriptions below record the earlier file boundaries.
+
 Proposed on 16 September 2026. Ten segments are visible for author review, with `draft: false`. This is the initial topic-list draft, not the subsequent multi-book audit. The author approved committing this baseline on 16 September 2026. The detailed source audit remains pending.
 
 ## Proposed sequence
 
-- Special relativity and spacetime
-- Relativistic particle dynamics
+- Special relativity and particle dynamics
 - Relativistic fields and stress-energy
-- Equivalence principle and curved spacetime
-- Einstein field equations and gravitational dynamics
-- Spherical gravity and relativistic stars
-- Black holes and horizons
+- Spacetime geometry and general relativity
+- Spherical gravity and compact objects
 - Weak gravity and gravitational radiation
 - Relativistic cosmology
 - Gravitational evolution and global spacetime structure

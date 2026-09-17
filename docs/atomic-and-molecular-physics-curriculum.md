@@ -1,18 +1,15 @@
 # Atomic and molecular physics curriculum
 
+Current grouping: see [Segment consolidation](roadmap-consolidation.md) and the [roadmap index](roadmap-index.md). Original drafting counts and audit descriptions below record the earlier file boundaries.
+
 Proposed on 16 September 2026. Ten segments are visible with `draft: false` for author review. This is the initial draft; the detailed textbook and institutional audit remains pending. Baseline approved for commit on 17 September 2026.
 
 ## Proposed sequence
 
-- Atomic structure and electron configurations
-- Atomic spectra and level structure
-- Atoms and molecules in external fields
-- Molecular bonding and electronic structure
-- Molecular rotation, vibration and spectra
-- Molecular electronic transitions and dynamics
+- Atomic structure spectra and external fields
+- Molecular structure spectra and dynamics
 - Coherent light-matter interactions
-- Atomic and molecular collisions
-- Cooling, trapping and ultracold matter
+- Atomic collisions cooling and trapping
 - Precision atomic and molecular measurements
 
 The route develops atomic states and spectra, molecular structure and motion, then interactions and experimental control. It uses the methods introduced in Quantum mechanics to describe particular physical systems. Segments now use Foundations or Advanced relative to this strand; see [Segment stages](roadmap-stages.md).
