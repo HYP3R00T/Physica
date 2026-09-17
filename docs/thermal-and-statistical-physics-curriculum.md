@@ -1,4 +1,4 @@
-# Thermal and statistical physics curriculum
+# Thermodynamics and statistical mechanics curriculum
 
 Proposed on 15 September 2026. Ten segments are visible for author review, with topic checklists and no outcome sections. These files are a first full draft, not a completed source audit.
 

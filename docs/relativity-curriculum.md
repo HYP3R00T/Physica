@@ -1,4 +1,4 @@
-# Relativity and gravitation curriculum
+# Relativity curriculum
 
 Proposed on 16 September 2026. Ten segments are visible for author review, with `draft: false`. This is the initial topic-list draft, not the subsequent multi-book audit. The author approved committing this baseline on 16 September 2026. The detailed source audit remains pending.
 
