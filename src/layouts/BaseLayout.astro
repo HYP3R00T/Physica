@@ -5,7 +5,7 @@ import Header from "@/components/core/Header.astro";
 import HeadSEO from "@/components/core/HeadSEO.astro";
 import type { BaseLayoutProps } from "@/lib/types";
 import Footer from "@/components/core/Footer.astro";
-import CodeCopyButton from "@/components/core/CodeCopyButton.astro";
+import CodeCopyButton from "@/components/common/CodeCopyButton.astro";
 
 const { title, description, image, imageAlt, contentType, layout = "default", showFooterBorder = layout === "notes" } = Astro.props as BaseLayoutProps;
 const frameWidth = layout === "default" ? "84rem" : "56rem";

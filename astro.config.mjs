@@ -70,7 +70,7 @@ export default defineConfig({
         ],
       },
     }),
-    AutoImport({ imports: ["./src/components/core/Video.astro"] }),
+    AutoImport({ imports: ["./src/components/common/Video.astro"] }),
     mdx(),
     react(),
   ],
