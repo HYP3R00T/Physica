@@ -1,3 +1,4 @@
+import { ArrowLeftIcon } from "lucide-react"
 import type { CSSProperties, MouseEvent, ReactNode } from "react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -541,17 +542,18 @@ export default function RoadmapExplorer({
               className="flex min-w-0 flex-1 items-center justify-between gap-3 px-6 py-3 [&>span]:text-foreground-2"
             >
               {current ? (
-                <a
-                  className="min-w-0 truncate text-accent-1 hover:underline"
-                  href={`?subject=${(focusedStrand || current.strand).split("/").at(-1)}`}
-                  onClick={(event) => {
-                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-                    event.preventDefault()
-                    openOverview(focusedStrand || current.strand)
-                  }}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="min-w-0 shrink gap-2 font-mono text-xs"
+                  title={`Back to ${strandLabel(focusedStrand || current.strand)} overview`}
+                  aria-label={`Back to ${strandLabel(focusedStrand || current.strand)} overview`}
+                  onClick={() => openOverview(focusedStrand || current.strand)}
                 >
-                  ← {strandLabel(focusedStrand || current.strand)} overview
-                </a>
+                  <ArrowLeftIcon className="size-4 shrink-0" aria-hidden="true" />
+                  <span className="truncate">{strandLabel(focusedStrand || current.strand)} overview</span>
+                </Button>
               ) : (
                 <h2>Overview</h2>
               )}
