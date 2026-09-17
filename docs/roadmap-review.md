@@ -331,11 +331,11 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Remaining gaps: Connect mathematics, thermal physics and continuum mechanics at their first use. Review the advanced scope before treating the strand as an independently followable curriculum.
 - Next step: Author review of the differences from `61f67e0`. Audit corrections remain uncommitted; no changes to Classical mechanics or the archive.
 
-### R036: Draft Thermal and statistical physics
+### R036: Draft Thermodynamics and statistical mechanics
 
 - Status: Open
 - Request: Create the full proposed strand for review together.
-- Implemented: Ten visible segments, from thermal equilibrium through nonequilibrium statistical physics. See [Thermal and statistical physics curriculum](thermal-and-statistical-physics-curriculum.md) for the sequence, level and initial source comparison.
+- Implemented: Ten visible segments, from thermal equilibrium through nonequilibrium statistical physics. See [Thermodynamics and statistical mechanics curriculum](thermal-and-statistical-physics-curriculum.md) for the sequence, level and initial source comparison.
 - Dependencies: The strand begins at Work and energy. Kinetic theory adds collisions; statistical foundations adds Hamiltonian mechanics. Later segments inherit these requirements through the thermal sequence.
 - Deferred foundations: Multivariable calculus, probability, quantum mechanics, continuum descriptions and stochastic methods need their own coverage and links. Acoustic prerequisites will be connected after author review.
 - Next step: Review grouping and topic coverage, then perform the detailed textbook and institutional audit. No commits made; existing mechanics, acoustics and archive files preserved.
@@ -398,11 +398,11 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 - Remaining work: Mathematical foundations, special relativity and a relativistic quantum continuation; review links from existing optics and thermal physics. Specialist quantum optics and many-body theory remain separate continuations.
 - Decision: Audit corrections and documentation approved for commit on 16 September 2026. Keep this item open until the missing foundations and cross-strand links are addressed.
 
-### R044: Draft Relativity and gravitation
+### R044: Draft Relativity
 
 - Status: Open
 - Request: Create the full proposed strand after the quantum-mechanics audit.
-- Implemented: Ten visible segments, from special relativity to gravitational evolution and global spacetime structure. See [Relativity and gravitation curriculum](relativity-and-gravitation-curriculum.md) for the proposed sequence and scope.
+- Implemented: Ten visible segments, from special relativity to gravitational evolution and global spacetime structure. See [Relativity curriculum](relativity-curriculum.md) for the proposed sequence and scope.
 - Dependencies: Cumulative reading order with existing mechanics, electromagnetic conservation and thermal foundations at their first use. Existing strands were not rewritten or linked back during this draft.
 - Remaining foundations: Tensor algebra, multivariable calculus, differential geometry, partial differential equations and stellar material models need coverage and appropriate links.
 - Boundaries: Full cosmology, numerical relativity, relativistic quantum theory and quantum gravity remain continuations. Review the depth of the final segment and overlap with Relativistic electrodynamics.
@@ -411,12 +411,22 @@ The structural principles are in [Organising a learning roadmap](learning-roadma
 ### R045: Draft Atomic and molecular physics
 
 - Status: Open
-- Request: Create the next strand after Relativity and gravitation.
+- Request: Create the next strand after Relativity.
 - Implemented: Ten visible segments from electronic structure through molecular dynamics, collisions, cooling and precision measurements. See [Atomic and molecular physics curriculum](atomic-and-molecular-physics-curriculum.md).
 - Dependencies: Starts from composite quantum systems, adds open-system methods before coherent interactions and kinetic theory before cooling. The cumulative quantum path already supplies scattering.
 - Remaining foundations: Mathematical symmetry methods, molecular geometry, statistics, supporting optical methods, relativistic quantum theory and nuclear inputs need review and appropriate links.
 - Boundaries: Full quantum chemistry, quantum optics, quantum gases and many-body phases remain continuations. Review the proposed advanced endpoint during the source audit.
 - Decision: Baseline approved for commit on 17 September 2026. Detailed source audit, mathematical foundations and cross-strand links remain pending.
+
+### R046: Physics coverage and additional strands
+
+- Status: Open
+- Request: Create the nine proposed subject strands and account explicitly for omitted fields, semiconductor devices and logic circuits.
+- Implemented: 69 visible segments across nine proposed strands plus Electronics and semiconductor devices. See [Physics strands and coverage](physics-strands-and-coverage.md) for sequences, boundaries and gaps.
+- Placement: Semiconductor material physics belongs in Condensed matter; PN junctions, NPN/PNP transistors, PNPN devices, analogue circuits and digital logic belong in Electronics and semiconductor devices. The Standard Model belongs in Particle physics.
+- Dependencies: Cumulative reading sequences, with cross-strand entry requirements and inherited prerequisites removed. These are initial educational routes, not minimal mathematical dependency claims.
+- Remaining work: Audit each new curriculum against textbooks and university courses; build missing mathematics; review the advanced entry to electronics and specialist overlaps. The coverage document records omitted or partial experimental, computational, biological, environmental, medical and other fields.
+- Decision: No claim of complete physics coverage. Expansion approved for commit on 17 September 2026. Existing content and unrelated pending changes remain preserved.
 
 ## Resolved items
 

@@ -62,7 +62,7 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Nonlinear dynamics and approximation methods
   - Hamiltonian mechanics
 
-### Relativity and gravitation
+### Relativity
 
 - Special relativity and spacetime
   - Kinematics
@@ -121,7 +121,7 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Electromagnetic radiation and scattering
   - Relativistic electrodynamics
 
-### Thermal and statistical physics
+### Thermodynamics and statistical mechanics
 
 - Thermal equilibrium and equations of state
   - Work and energy
@@ -145,6 +145,25 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Quantum statistics and quantum gases
 - Nonequilibrium statistical physics
   - Phase transitions and critical phenomena
+
+### Continuum mechanics and fluid dynamics
+
+- Continuum kinematics and balance laws
+  - Circular and rotational motion
+  - Thermodynamic potentials and equilibrium
+- Elasticity and deformable solids
+  - Continuum kinematics and balance laws
+- Fluid statics and ideal flow
+  - Elasticity and deformable solids
+- Viscous flow and boundary layers
+  - Fluid statics and ideal flow
+- Compressible flow and transport
+  - Viscous flow and boundary layers
+  - Kinetic theory and transport
+- Hydrodynamic stability and turbulence
+  - Compressible flow and transport
+- Rotating stratified and environmental flows
+  - Hydrodynamic stability and turbulence
 
 ### Waves and acoustics
 
@@ -193,6 +212,49 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Nonlinear and ultrafast optics
   - Optical detection and spectroscopy
 
+### Plasma physics
+
+- Plasma scales and charged-particle motion
+  - Maxwell's equations and field conservation
+  - Kinetic theory and transport
+- Plasma kinetic theory and electrostatic waves
+  - Plasma scales and charged-particle motion
+- Plasma fluid theory and magnetohydrodynamics
+  - Plasma kinetic theory and electrostatic waves
+  - Continuum kinematics and balance laws
+- Magnetised plasma waves and instabilities
+  - Plasma fluid theory and magnetohydrodynamics
+- Plasma transport turbulence and reconnection
+  - Magnetised plasma waves and instabilities
+- Laboratory plasmas and controlled fusion
+  - Plasma transport turbulence and reconnection
+  - Fission fusion and nucleosynthesis
+- Space and astrophysical plasmas
+  - Laboratory plasmas and controlled fusion
+
+### Astrophysics
+
+- Astronomical observations and physical scales
+  - Thermal equilibrium and equations of state
+  - Geometrical optics
+- Astrophysical radiation and matter
+  - Astronomical observations and physical scales
+  - Atomic spectra and level structure
+  - Electromagnetic radiation and scattering
+- Stellar structure and evolution
+  - Astrophysical radiation and matter
+  - Fission fusion and nucleosynthesis
+  - Compressible flow and transport
+- Compact objects accretion and transients
+  - Stellar structure and evolution
+  - Black holes and horizons
+- Interstellar matter and star formation
+  - Compact objects accretion and transients
+- Galaxies and stellar dynamics
+  - Interstellar matter and star formation
+- Planetary systems and celestial dynamics
+  - Galaxies and stellar dynamics
+
 ### Quantum mechanics
 
 - Quantum phenomena and matter waves
@@ -223,6 +285,27 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
 - Quantum measurement and open systems
   - Quantum propagators and path integrals
 
+### Cosmology
+
+- Cosmological observations and background evolution
+  - Relativistic cosmology
+  - Quantum statistics and quantum gases
+- Thermal history and primordial nucleosynthesis
+  - Cosmological observations and background evolution
+  - Fission fusion and nucleosynthesis
+- Cosmological perturbations and structure growth
+  - Thermal history and primordial nucleosynthesis
+- Cosmic microwave background and observational probes
+  - Cosmological perturbations and structure growth
+- Dark matter dark energy and nonlinear structure
+  - Cosmic microwave background and observational probes
+- Inflation and primordial fluctuations
+  - Dark matter dark energy and nonlinear structure
+  - Quantised fields and particle states
+- Early-universe particles and cosmological frontiers
+  - Inflation and primordial fluctuations
+  - Flavour neutrinos and symmetry violation
+
 ### Atomic and molecular physics
 
 - Atomic structure and electron configurations
@@ -247,3 +330,110 @@ Regenerate with `pnpm docs:roadmap` after editing the segment frontmatter.
   - Kinetic theory and transport
 - Precision atomic and molecular measurements
   - Cooling, trapping and ultracold matter
+
+### Condensed matter physics
+
+- Crystal structure bonding and diffraction
+  - Composite quantum systems and identical particles
+  - Quantum statistics and quantum gases
+- Lattice dynamics and thermal properties
+  - Crystal structure bonding and diffraction
+- Electrons in crystals and band structure
+  - Lattice dynamics and thermal properties
+- Electronic transport and semiconductor physics
+  - Electrons in crystals and band structure
+- Magnetism and ordered phases
+  - Electronic transport and semiconductor physics
+- Superconductivity and superfluidity
+  - Magnetism and ordered phases
+- Correlated and topological matter
+  - Superconductivity and superfluidity
+- Soft matter and complex materials
+  - Correlated and topological matter
+
+### Nuclear physics
+
+- Nuclear properties and nuclear interactions
+  - Quantum scattering theory
+  - Relativistic particle dynamics
+- Nuclear structure and collective models
+  - Nuclear properties and nuclear interactions
+- Radioactive decay and nuclear transitions
+  - Nuclear structure and collective models
+- Nuclear reactions and scattering
+  - Radioactive decay and nuclear transitions
+- Fission fusion and nucleosynthesis
+  - Nuclear reactions and scattering
+- Radiation detection and nuclear measurements
+  - Fission fusion and nucleosynthesis
+- Nuclear matter and extreme conditions
+  - Radiation detection and nuclear measurements
+  - Quantum statistics and quantum gases
+
+### Particle physics
+
+- Particles interactions and conservation laws
+  - Quantum scattering theory
+  - Relativistic particle dynamics
+- Accelerators detectors and particle measurements
+  - Particles interactions and conservation laws
+- Quantum electrodynamics and precision particle tests
+  - Accelerators detectors and particle measurements
+  - Scattering amplitudes and perturbative field theory
+- Strong interactions and hadron structure
+  - Quantum electrodynamics and precision particle tests
+  - Gauge theories and spontaneous symmetry breaking
+- Electroweak interactions and the Higgs mechanism
+  - Strong interactions and hadron structure
+- Flavour neutrinos and symmetry violation
+  - Electroweak interactions and the Higgs mechanism
+- Physics beyond the Standard Model
+  - Flavour neutrinos and symmetry violation
+
+### Quantum field theory
+
+- Classical fields symmetries and relativistic wave equations
+  - Quantum propagators and path integrals
+  - Relativistic fields and stress-energy
+- Quantised fields and particle states
+  - Classical fields symmetries and relativistic wave equations
+- Scattering amplitudes and perturbative field theory
+  - Quantised fields and particle states
+- Functional integrals and quantum effective actions
+  - Scattering amplitudes and perturbative field theory
+- Renormalisation and effective field theory
+  - Functional integrals and quantum effective actions
+- Gauge theories and spontaneous symmetry breaking
+  - Renormalisation and effective field theory
+- Nonperturbative fields and advanced directions
+  - Gauge theories and spontaneous symmetry breaking
+
+### Quantum information
+
+- Quantum information states and correlations
+  - Quantum measurement and open systems
+- Quantum circuits and computation
+  - Quantum information states and correlations
+- Quantum communication and cryptography
+  - Quantum circuits and computation
+- Quantum noise and error correction
+  - Quantum communication and cryptography
+- Fault-tolerant quantum computing
+  - Quantum noise and error correction
+- Quantum simulation sensing and hardware
+  - Fault-tolerant quantum computing
+
+### Electronics and semiconductor devices
+
+- Semiconductor junctions and diodes
+  - Electronic transport and semiconductor physics
+- Bipolar and field-effect transistors
+  - Semiconductor junctions and diodes
+- Analogue circuits feedback and signal conditioning
+  - Bipolar and field-effect transistors
+- Digital logic and sequential circuits
+  - Analogue circuits feedback and signal conditioning
+- Data conversion and electronic measurement
+  - Digital logic and sequential circuits
+- Power optoelectronic and integrated devices
+  - Data conversion and electronic measurement
