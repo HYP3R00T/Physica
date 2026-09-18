@@ -53,13 +53,15 @@ export default function RoadmapExplorer({
     () => filterRoadmap(segments, domain, focusedStrand),
     [segments, domain, focusedStrand],
   )
-  const strandOptions = strands.filter((strand) => domain === "all" || strand.id.startsWith(`${domain}/`))
   const strandLabel = (id: string) => {
     const overview = subjectOverviews.find((subject) => subject.id === id)
     if (overview) return overview.title
     const name = id.split("/").at(-1)?.replaceAll("-", " ") ?? id
     return name.charAt(0).toUpperCase() + name.slice(1)
   }
+  const strandOptions = strands
+    .filter((strand) => domain === "all" || strand.id.startsWith(`${domain}/`))
+    .sort((left, right) => strandLabel(left.id).localeCompare(strandLabel(right.id), "en", { sensitivity: "base" }))
   const visibleStrands = useMemo(
     () => strands.filter((strand) => visibleSegments.some((segment) => segment.strand === strand.id)),
     [strands, visibleSegments],
