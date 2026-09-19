@@ -12,4 +12,4 @@ Articles remain in `content/posts`. Draft articles are excluded from public rout
 
 Add learning modules under `content/notes/<module>/index.mdx`, with ordered notes alongside them (for example, `010-vectors.mdx`). Every entry needs a `title` in its frontmatter. Optional fields are `description`, `tags`, `related`, `created`, `updated`, and `draft`. The `related` field on modules contains other module slugs.
 
-A module is available at `/<module>` and its notes use the filename without the numeric prefix, such as `/vectors`. Note slugs must be unique across modules. Published modules, notes, and blog posts populate the full-text search index automatically. A dummy module and sample note are included to preview the layout; replace them with real content when ready.
+A module is available at `/<module>` and its notes use the filename without the numeric prefix, such as `/vectors`. Note slugs must be unique across modules. Published modules, notes, and blog posts populate the full-text search index automatically. The physical quantities and measurement module accompanies the first classical mechanics roadmap segment.
