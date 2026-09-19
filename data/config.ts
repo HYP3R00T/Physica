@@ -16,6 +16,7 @@ export const SITE: SiteConfig = {
 }
 
 export const navItems: NavItem[] = [
+  { href: "/modules", label: "Modules" },
   { href: "/roadmap", label: "Roadmap" },
   { href: "/post", label: "Blog" },
 ]
