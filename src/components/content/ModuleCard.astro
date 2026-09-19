@@ -1,0 +1,19 @@
+---
+import { Icon } from "astro-icon/components"
+import { getModuleSlug, type LearningEntry } from "@/lib/content"
+
+interface Props {
+  module: LearningEntry
+  noteCount: number
+}
+const { module, noteCount } = Astro.props
+---
+
+<a class="flex flex-wrap items-center justify-between gap-6 rounded-lg border border-border p-7 transition-colors hover:border-accent-1 hover:bg-background-1 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-4 [&+a]:mt-4" href={`/${getModuleSlug(module)}`}>
+  <div>
+    <p class="font-mono text-[.7rem] text-foreground-2">{noteCount} {noteCount === 1 ? "note" : "notes"} available</p>
+    <h3 class="mt-3 font-display text-2xl">{module.data.title}</h3>
+    {module.data.description && <p class="mt-2 text-sm leading-[1.7] text-foreground-2">{module.data.description}</p>}
+  </div>
+  <span class="inline-flex items-center gap-2.5 text-sm [&_svg]:size-4">Open module <Icon name="arrow-right" aria-hidden="true" /></span>
+</a>

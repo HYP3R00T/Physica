@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import Section from "@/components/common/Section.astro"
+import ModuleCard from "@/components/content/ModuleCard.astro"
+import { getModuleNotes, isModule } from "@/lib/content"
+import "../styles/components/modules.css"
+
+const learning = await getCollection("learning", ({ data }) => !data.draft)
+const modules = learning.filter(isModule).sort((a, b) => a.data.title.localeCompare(b.data.title))
+---
+
+<BaseLayout title="Modules | Physica" description="Find a physics module and study its notes, one topic at a time.">
+  <Section frameClass="module-directory">
+    <header>
+      <h1>Modules</h1>
+      <p>Find a topic to study. Each module brings its notes together in reading order.</p>
+    </header>
+    <module-search>
+      <form role="search" class="module-search-form">
+        <label for="module-query">Search modules</label>
+        <input id="module-query" type="search" placeholder="Search by topic or keyword" autocomplete="off" aria-controls="module-results" />
+      </form>
+      <p class="module-result-count" role="status" aria-live="polite">{modules.length} {modules.length === 1 ? "module" : "modules"}</p>
+      <div id="module-results" class="module-results">
+        {modules.map(module => <div data-module-search={[module.data.title, module.data.description, ...module.data.tags].filter(Boolean).join(" ").toLocaleLowerCase()}>
+          <ModuleCard module={module} noteCount={getModuleNotes(learning, module).length} />
+        </div>)}
+      </div>
+      <p data-empty hidden={modules.length > 0}>No modules found. Try a different topic or clear your search.</p>
+    </module-search>
+    <p class="module-directory-help">Looking for the order to study things? <a href="/roadmap">Explore the roadmap.</a></p>
+  </Section>
+</BaseLayout>
+
+<script>
+  class ModuleSearch extends HTMLElement {
+    connectedCallback() {
+      const input = this.querySelector<HTMLInputElement>("input")!
+      const entries = [...this.querySelectorAll<HTMLElement>("[data-module-search]")]
+      const status = this.querySelector<HTMLElement>('[role="status"]')!
+      const empty = this.querySelector<HTMLElement>("[data-empty]")!
+      const update = () => {
+        const terms = input.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean)
+        let count = 0
+        for (const entry of entries) {
+          entry.hidden = !terms.every(term => entry.dataset.moduleSearch!.includes(term))
+          if (!entry.hidden) count++
+        }
+        status.textContent = `${count} ${count === 1 ? "module" : "modules"}${terms.length ? " found" : ""}`
+        empty.hidden = count > 0
+      }
+      input.oninput = update
+      this.querySelector("form")!.onsubmit = event => event.preventDefault()
+      update()
+    }
+  }
+  if (!customElements.get("module-search")) customElements.define("module-search", ModuleSearch)
+</script>

@@ -1,0 +1,13 @@
+@layer components {
+  .module-directory { padding: clamp(1.5rem, 4.5vw, 4rem); min-height: 65vh; }
+  .module-directory h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -.04em; }
+  .module-directory header > p { color: var(--foreground-2); margin-top: 1rem; max-width: 40rem; line-height: 1.7; }
+  module-search { display: block; margin-top: 2.5rem; }
+  .module-search-form label { display: block; margin-bottom: .75rem; font-size: .9rem; }
+  .module-search-form input { width: 100%; max-width: 40rem; padding: .85rem 1rem; border: 1px solid var(--border); border-radius: .4rem; background: var(--background-1); color: var(--foreground-0); }
+  .module-result-count { margin-block: 1.5rem 1rem; color: var(--foreground-2); font-size: .85rem; }
+  .module-results { display: grid; gap: 1rem; }
+  .module-directory-help { margin-top: 3rem; color: var(--foreground-2); font-size: .9rem; line-height: 1.7; }
+  .module-directory-help a { color: var(--accent-1); text-decoration: underline; text-underline-offset: 4px; }
+  .module-search-form input:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; }
+}
