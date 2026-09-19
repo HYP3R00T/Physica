@@ -1,0 +1,100 @@
+---
+title: Dimensions and dimensional analysis
+description: Distinguish dimensions from units and use them to check physical equations.
+tags:
+  - measurement
+  - dimensions
+created: 2026-09-17
+draft: false
+---
+
+A length can be expressed in metres, centimetres or kilometres. Those are different units for the same kind of quantity. Its dimension is length, whatever unit we choose.
+
+Dimensions give us a way to check the structure of an equation before substituting any numbers. If one side represents a length and the other represents an area, changing the units will not fix it.
+
+## Dimensions and units
+
+We write $[q]$ for the dimensions of a quantity $q$. For a length $\ell$, an area $A$ and a volume $V$:
+
+$$
+[\ell] = \mathsf{L}, \qquad [A] = \mathsf{L}^{2}, \qquad [V] = \mathsf{L}^{3}
+$$
+
+Here $\mathsf{L}$ denotes the dimension of length, not the metre or a particular numerical value. An area measured in square centimetres still has dimensions of length squared.
+
+In mechanics, we commonly express dimensions using mass, length and time, written $\mathsf{M}$, $\mathsf{L}$ and $\mathsf{T}$. These are not the only base dimensions used in physics. SI also has base quantities for electric current, thermodynamic temperature, amount of substance and luminous intensity. We will focus on mechanical examples here.
+
+## Building derived dimensions
+
+Density is mass per unit volume. If $\rho = m/V$, then:
+
+$$
+[\rho] = \frac{[m]}{[V]} = \mathsf{M}\mathsf{L}^{-3}
+$$
+
+Its SI unit is kilograms per cubic metre. The dimensional expression tells us how mass and length enter the quantity; the unit tells us which measurement standards we use to express it.
+
+We can apply the same reasoning to a rate. A volume delivered per unit time has dimensions $\mathsf{L}^{3}\mathsf{T}^{-1}$, and can be expressed in cubic metres per second.
+
+## Checking an equation
+
+Terms added or subtracted in a physical equation must have the same dimensions. The two sides of an equality must also match. This requirement is called dimensional consistency, or dimensional homogeneity.
+
+Suppose a container initially holds volume $V_0$, and liquid enters at a constant volume flow rate $Q$. With no outflow, the volume after time $t$ is:
+
+$$
+V = V_0 + Qt
+$$
+
+Both $V$ and $V_0$ have dimensions $\mathsf{L}^{3}$. The added term has dimensions:
+
+$$
+[Qt] = \mathsf{L}^{3}\mathsf{T}^{-1}\mathsf{T} = \mathsf{L}^{3}
+$$
+
+All terms agree. Writing $V = V_0 + Q$ would fail this check because a volume and a volume flow rate cannot be added.
+
+<Callout title="Question" color="blue">
+
+If an equation is dimensionally consistent, does that prove it is physically correct?
+
+</Callout>
+
+No. The equation $V = V_0 + 2Qt$ has the same dimensions, but it would predict twice the volume added under the conditions we described. Dimensional consistency is necessary; it does not establish the model or its numerical factors.
+
+## Inferring a possible relationship
+
+Dimensions can also constrain the form of a relationship. Suppose we expect the mass of a uniform solid sphere to depend only on its density $\rho$ and radius $r$. Try a product of powers:
+
+$$
+m = C\rho^{a}r^{b}
+$$
+
+Assuming $C$ is dimensionless, matching dimensions gives:
+
+$$
+\mathsf{M} = (\mathsf{M}\mathsf{L}^{-3})^{a}\mathsf{L}^{b}
+= \mathsf{M}^{a}\mathsf{L}^{b-3a}
+$$
+
+The powers of mass and length must agree on both sides. This gives $a=1$ and $b=3$, so the possible relationship is $m=C\rho r^3$.
+
+Geometry supplies $C=4\pi/3$ for a sphere. Dimensional analysis alone cannot determine that number. It also cannot tell us whether we chose all the relevant quantities in the first place.
+
+## Dimensionless quantities
+
+A ratio of two lengths has no remaining dimension:
+
+$$
+\left[\frac{\ell_1}{\ell_2}\right] = 1
+$$
+
+We call such a quantity dimensionless. Strain, for example, compares a change in length with an original length. Dimensionless does not mean physically unimportant, and it does not always mean that a quantity has no named unit. Plane angle is dimensionless and is expressed in radians, while solid angle is expressed in steradians.
+
+Arguments of functions such as the exponential, logarithm and sine must be dimensionless in physical equations. For example, an expression $\exp(-t/\tau)$ is dimensionally meaningful when both $t$ and $\tau$ are times. Writing $\exp(-t)$ without a time scale would make its interpretation depend on the chosen time unit.
+
+## Try a dimensional check
+
+A sheet of uniform material has density $\rho$, area $A$ and thickness $h$. Which expression could represent its mass: $\rho A$, $\rho Ah$, or $\rho A/h$?
+
+Write the dimensions of each factor before simplifying. Then explain why dimensional consistency alone would not tell you whether the sheet really has uniform density and thickness.
