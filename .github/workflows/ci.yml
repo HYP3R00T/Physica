@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   repository-checks:
-    name: Repository checks
+    name: quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
