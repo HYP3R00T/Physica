@@ -11,5 +11,6 @@
 @import "./components/image-carousel.css";
 @import "./components/mobile-menu-toggle.css";
 @import "./components/video.css";
+@import "./components/roadmap.css";
 
 @custom-variant dark (&:is(.dark *));
