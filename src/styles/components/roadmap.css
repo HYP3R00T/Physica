@@ -1,0 +1,42 @@
+@property --roadmap-scrollbar-thumb {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+@layer components {
+  [data-roadmap-detail-body] {
+    scrollbar-gutter: stable;
+  }
+
+  @media (hover: hover) and (pointer: fine) and (min-width: 851px) {
+    [data-roadmap-detail-body] {
+      --roadmap-scrollbar-thumb: transparent;
+      transition: --roadmap-scrollbar-thumb 180ms ease-out;
+    }
+
+    #roadmap-detail:is(:hover, :focus-within) [data-roadmap-detail-body] {
+      --roadmap-scrollbar-thumb: var(--foreground-2);
+    }
+
+    @supports not selector(::-webkit-scrollbar) {
+      [data-roadmap-detail-body] {
+        scrollbar-color: var(--roadmap-scrollbar-thumb) transparent;
+      }
+    }
+
+    [data-roadmap-detail-body]::-webkit-scrollbar-thumb {
+      background-color: var(--roadmap-scrollbar-thumb);
+    }
+
+    #roadmap-detail:is(:hover, :focus-within) [data-roadmap-detail-body]::-webkit-scrollbar-thumb:hover {
+      background-color: var(--accent-1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-roadmap-detail-body] {
+        transition: none;
+      }
+    }
+  }
+}
