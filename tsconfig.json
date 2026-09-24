@@ -20,5 +20,8 @@
     },
     "strictNullChecks": true,
     "allowJs": true
+  },
+  "mdx": {
+    "plugins": ["remark-math"]
   }
 }
