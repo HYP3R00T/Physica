@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { Icon } from "astro-icon/components"
 import Pagination from "@/components/post/Pagination.astro"
 import PostCard from "@/components/post/PostCard.astro"
 import Section from "@/components/common/Section.astro"
@@ -26,7 +27,7 @@ const pageOffset = (page.currentPage - 1) * pageSize
       <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">{author ? "Author articles" : "Articles & insights"}</p>
       <h1 class="mt-5 max-w-4xl font-display text-5xl leading-[0.95] font-semibold tracking-tight text-foreground-0 md:text-7xl">{author ? `Articles by ${author.name}` : "Ideas behind the learning."}</h1>
       <p class="mt-7 max-w-2xl text-lg leading-8 text-foreground-2 md:text-xl">{author ? `Every article ${author.name} has written or co-written for Physica.` : "Explorations in physics concepts, learning methods, and building intuition through practice."}</p>
-      {author && <a href="/post" class="mt-8 inline-block text-sm text-accent-1 hover:text-accent-2">← All articles</a>}
+      {author && <a href="/post" class="mt-8 inline-flex items-center gap-2 text-sm text-accent-1 hover:text-accent-2"><Icon name="arrow-left" class="size-4" aria-hidden="true" /> All articles</a>}
     </header>
   </Section>
   <Section aria-label="Articles">

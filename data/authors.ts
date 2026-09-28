@@ -3,7 +3,7 @@ interface Author {
   role?: string
   profile?: {
     bio: string
-    links?: { label: string; href: string }[]
+    links?: { label: string; href: string; icon: "globe" | "github" | "linkedin" }[]
   }
 }
 
@@ -14,9 +14,9 @@ export const AUTHORS = {
     profile: {
       bio: "I started Physica to work through physics from the basics and make that learning useful to others.",
       links: [
-        { label: "Website", href: "https://rajeshdas.dev" },
-        { label: "GitHub", href: "https://github.com/HYP3R00T" },
-        { label: "LinkedIn", href: "https://linkedin.com/in/rajesh-kumar-das" },
+        { label: "Website", href: "https://rajeshdas.dev", icon: "globe" },
+        { label: "GitHub", href: "https://github.com/HYP3R00T", icon: "github" },
+        { label: "LinkedIn", href: "https://linkedin.com/in/rajesh-kumar-das", icon: "linkedin" },
       ],
     },
   },
