@@ -1,0 +1,35 @@
+---
+import type { PaginateFunction } from "astro"
+import { getCollection } from "astro:content"
+import PostListing from "@/components/post/PostListing.astro"
+import { SITE } from "@data/config"
+import { authorIds } from "../../../../data/authors"
+
+export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
+  const posts = (await getCollection("posts", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf())
+  const filterAuthors = authorIds.filter((id) => posts.some((post) => post.data.authors.includes(id)))
+
+  for (const authorId of filterAuthors) {
+    if (posts.some((post) => post.id === authorId)) {
+      throw new Error(`Author ID "${authorId}" conflicts with an article URL.`)
+    }
+  }
+
+  return filterAuthors.flatMap((authorId) => {
+    const authoredPosts = posts.filter((post) => post.data.authors.includes(authorId))
+    const pagination = paginate(authoredPosts, { pageSize: SITE.pageSize ?? 10, params: { author: authorId } })
+    return pagination.map((page) => ({
+      ...page,
+      props: {
+        ...page.props,
+        authorId,
+        totalPages: pagination.length,
+        page: { ...page.props.page, pageSize: SITE.pageSize ?? 10 },
+      },
+    }))
+  })
+}
+---
+
+<PostListing {...Astro.props} />

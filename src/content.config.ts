@@ -1,7 +1,10 @@
 import { defineCollection } from "astro:content"
 import { glob } from "astro/loaders"
 import { z } from "astro/zod"
+import { isAuthorId } from "../data/authors"
 import { roadmapFileIdentity } from "./lib/roadmap-domain"
+
+const authors = z.array(z.string().refine(isAuthorId, "Unknown author ID")).default([])
 
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./content/posts" }),
@@ -13,6 +16,7 @@ const posts = defineCollection({
       featured: z.boolean().optional().default(false),
       draft: z.boolean().optional().default(false),
       tags: z.array(z.string()).default([]),
+      authors,
       cover: image(),
       coverAlt: z.string().optional(),
     }),
@@ -29,6 +33,7 @@ const learning = defineCollection({
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
       .optional(),
     tags: z.array(z.string()).default([]),
+    authors,
     created: z.coerce.date().optional(),
     updated: z.coerce.date().optional(),
     draft: z.boolean().default(false),

@@ -3,6 +3,7 @@ import { render } from "astro:content"
 import ModuleRoadmapLink from "./ModuleRoadmapLink.astro"
 
 import NotesLayout from "@/layouts/NotesLayout.astro"
+import AuthorLinks from "./AuthorLinks.astro"
 import { getModuleSlug } from "@/lib/content"
 import type { LearningEntry } from "@/lib/content"
 
@@ -36,6 +37,8 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "m
       <h1 class="mt-4 font-display text-4xl leading-tight font-semibold tracking-tight text-foreground-0 md:text-5xl">
         {note.data.title}
       </h1>
+
+      {note.data.authors.length > 0 && <p class="mt-5 font-mono text-xs text-foreground-3"><AuthorLinks authors={note.data.authors} /></p>}
 
       {
         (note.data.created || note.data.updated) && (
