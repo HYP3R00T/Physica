@@ -1,0 +1,12 @@
+---
+import type { AuthorId } from "../../../data/authors"
+import AuthorPreview from "./AuthorPreview"
+
+interface Props {
+  authors: AuthorId[]
+}
+
+const { authors } = Astro.props as Props
+---
+
+{authors.length > 0 && <span>By {authors.map((id, index) => <><AuthorPreview id={id} client:load />{index < authors.length - 1 && ", "}</>)}</span>}

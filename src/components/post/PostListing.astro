@@ -1,0 +1,41 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro"
+import Pagination from "@/components/post/Pagination.astro"
+import PostCard from "@/components/post/PostCard.astro"
+import Section from "@/components/common/Section.astro"
+import { SITE } from "@data/config"
+import { getAuthor, type AuthorId } from "../../../data/authors"
+import type { PostEntry, PostsPageProps } from "@/lib/types"
+
+interface Props extends PostsPageProps {
+  authorId?: AuthorId
+}
+
+const { page, totalPages, featured, authorId } = Astro.props as Props
+const author = authorId ? getAuthor(authorId) : undefined
+const pageSize = page.pageSize ?? SITE.pageSize ?? 10
+const pageOffset = (page.currentPage - 1) * pageSize
+---
+
+<BaseLayout
+  title={author ? `Articles by ${author.name} — Physica` : "Articles — Physica"}
+  description={author ? `Articles written or co-written by ${author.name}.` : "Explorations in physics concepts, learning methods, and building intuition."}
+>
+  <Section>
+    <header class="px-5 py-16 md:px-10 md:py-24 lg:px-15 lg:py-28">
+      <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">{author ? "Author articles" : "Articles & insights"}</p>
+      <h1 class="mt-5 max-w-4xl font-display text-5xl leading-[0.95] font-semibold tracking-tight text-foreground-0 md:text-7xl">{author ? `Articles by ${author.name}` : "Ideas behind the learning."}</h1>
+      <p class="mt-7 max-w-2xl text-lg leading-8 text-foreground-2 md:text-xl">{author ? `Every article ${author.name} has written or co-written for Physica.` : "Explorations in physics concepts, learning methods, and building intuition through practice."}</p>
+      {author && <a href="/post" class="mt-8 inline-block text-sm text-accent-1 hover:text-accent-2">← All articles</a>}
+    </header>
+  </Section>
+  <Section aria-label="Articles">
+    <div class="grid md:grid-cols-2">
+      {featured && page.currentPage === 1 && <PostCard post={featured} index={0} />}
+      {page.data.map((post: PostEntry, index: number) => <PostCard post={post} index={pageOffset + index + (featured ? 1 : 0)} />)}
+    </div>
+    <div class="border-t border-border px-5 py-8 md:px-10 lg:px-15">
+      <Pagination currentPage={page.currentPage} prevUrl={page.url.prev} nextUrl={page.url.next} first={page.url.first} last={page.url.last} totalPages={totalPages} />
+    </div>
+  </Section>
+</BaseLayout>

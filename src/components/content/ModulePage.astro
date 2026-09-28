@@ -1,6 +1,7 @@
 ---
 import { render } from "astro:content"
 import ModuleRoadmapLink from "./ModuleRoadmapLink.astro"
+import AuthorLinks from "./AuthorLinks.astro"
 
 import Section from "@/components/common/Section.astro"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -41,6 +42,7 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
           {module.data.title}
         </h1>
         {module.data.description && <p class="mt-5 text-lg leading-8 text-foreground-2">{module.data.description}</p>}
+        {module.data.authors.length > 0 && <p class="mt-5 font-mono text-xs text-foreground-3"><AuthorLinks authors={module.data.authors} /></p>}
         <ModuleRoadmapLink module={module} />
         <div class="prose mt-8">
           <Content />

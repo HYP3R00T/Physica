@@ -2,10 +2,11 @@
 import { Icon } from "astro-icon/components"
 import { Image } from "astro:assets"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import AuthorLinks from "@/components/content/AuthorLinks.astro"
 import { formatDateUppercase, estimateReadTime } from "@/lib/utils"
 import "katex/dist/katex.min.css"
 
-const { title, description, pubDatetime, tags, cover, coverAlt, headings = [], body } = Astro.props
+const { title, description, pubDatetime, tags, authors, cover, coverAlt, headings = [], body } = Astro.props
 const tableOfContents = headings.filter(({ depth }: { depth: number }) => depth === 2 || depth === 3)
 ---
 
@@ -19,7 +20,7 @@ const tableOfContents = headings.filter(({ depth }: { depth: number }) => depth 
         <a href="/post" class="font-mono text-xs text-accent-1 hover:text-accent-2">Articles</a>
         <h1 class="mt-4 font-display text-4xl leading-tight font-semibold tracking-tight text-foreground-0 md:text-5xl">{title}</h1>
         <p class="mt-5 text-lg leading-8 text-foreground-2">{description}</p>
-        <p class="mt-5 font-mono text-xs text-foreground-3"><time datetime={pubDatetime.toISOString()}>{formatDateUppercase(pubDatetime)}</time> · {estimateReadTime(body ?? "")} MIN READ</p>
+        <p class="mt-5 flex flex-wrap gap-x-2 font-mono text-xs text-foreground-3">{authors.length > 0 && <><AuthorLinks authors={authors} /><span aria-hidden="true">·</span></>}<time datetime={pubDatetime.toISOString()}>{formatDateUppercase(pubDatetime)}</time> · {estimateReadTime(body ?? "")} MIN READ</p>
         <ul class="mt-6 flex flex-wrap gap-2" aria-label="Article topics">{tags.map((tag: string) => <li class="rounded-full border border-border px-3 py-1 font-mono text-xs text-foreground-2">{tag}</li>)}</ul>
       </header>
       <div class="px-5 pt-10 md:px-10 lg:px-14"><Image src={cover} alt={coverAlt || title} class="aspect-video w-full border border-border object-cover" /></div>
