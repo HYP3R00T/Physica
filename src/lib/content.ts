@@ -40,6 +40,10 @@ export const validateContent = (entries: LearningEntry[]) => {
   const publicSlugs = new Map<string, string>()
 
   for (const entry of entries) {
+    if (!isModule(entry) && !entry.data.draft && entry.data.authors.length === 0) {
+      throw new Error(`Published note "${entry.id}" needs at least one author.`)
+    }
+
     if (!isModule(entry) && !moduleFolders.has(getModuleFolder(entry))) {
       throw new Error(`Note "${entry.id}" has no module index file.`)
     }

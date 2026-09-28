@@ -1,19 +1,19 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { getEntry } from "astro:content"
 import { Icon } from "astro-icon/components"
 import Pagination from "@/components/post/Pagination.astro"
 import PostCard from "@/components/post/PostCard.astro"
 import Section from "@/components/common/Section.astro"
 import { SITE } from "@data/config"
-import { getAuthor, type AuthorId } from "../../../data/authors"
 import type { PostEntry, PostsPageProps } from "@/lib/types"
 
 interface Props extends PostsPageProps {
-  authorId?: AuthorId
+  authorId?: string
 }
 
 const { page, totalPages, featured, authorId } = Astro.props as Props
-const author = authorId ? getAuthor(authorId) : undefined
+const author = authorId ? (await getEntry("authors", authorId))?.data : undefined
 const pageSize = page.pageSize ?? SITE.pageSize ?? 10
 const pageOffset = (page.currentPage - 1) * pageSize
 ---

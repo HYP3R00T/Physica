@@ -1,35 +1,34 @@
+import type { CollectionEntry } from "astro:content"
 import { ArrowRight, ArrowUpRight, Globe2 } from "lucide-react"
-import githubIconUrl from "@/assets/icons/github.svg?url"
-import linkedinIconUrl from "@/assets/icons/linkedin.svg?url"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { type AuthorId, getAuthor, hasAuthorProfile } from "../../../data/authors"
+
+const iconUrls = Object.fromEntries(
+  Object.entries(
+    import.meta.glob<string>("../../assets/icons/*.svg", { eager: true, query: "?url", import: "default" }),
+  ).map(([path, url]) => [
+    path
+      .split("/")
+      .at(-1)
+      ?.replace(/\.svg$/, ""),
+    url,
+  ]),
+)
 
 interface Props {
-  id: AuthorId
+  id: string
+  author: CollectionEntry<"authors">["data"]
 }
 
-export default function AuthorPreview({ id }: Props) {
-  const author = getAuthor(id)
-  const profile = hasAuthorProfile(id) ? author.profile : undefined
-
+export default function AuthorPreview({ id, author }: Props) {
   return (
     <HoverCard openDelay={180} closeDelay={200}>
       <HoverCardTrigger asChild>
-        {profile ? (
-          <a
-            href={`/author/${id}`}
-            className="text-foreground-2 underline-offset-2 hover:text-accent-1 hover:underline focus-visible:text-accent-1 focus-visible:underline"
-          >
-            {author.name}
-          </a>
-        ) : (
-          <button
-            type="button"
-            className="cursor-help text-foreground-2 underline-offset-2 hover:text-accent-1 hover:underline focus-visible:text-accent-1 focus-visible:underline"
-          >
-            {author.name}
-          </button>
-        )}
+        <a
+          href={`/author/${id}`}
+          className="text-foreground-2 underline-offset-2 hover:text-accent-1 hover:underline focus-visible:text-accent-1 focus-visible:underline"
+        >
+          {author.name}
+        </a>
       </HoverCardTrigger>
       <HoverCardContent>
         <div className="flex items-start gap-3">
@@ -48,10 +47,9 @@ export default function AuthorPreview({ id }: Props) {
             <p className="mt-0.5 text-xs text-foreground-3">{author.role ?? "Physica contributor"}</p>
           </div>
         </div>
-        {profile?.bio && <p className="mt-4 text-sm leading-6 text-foreground-2">{profile.bio}</p>}
-        {profile?.links && profile.links.length > 0 && (
+        {author.links.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 border-t border-border pt-3 text-xs">
-            {profile.links.map((link) => {
+            {author.links.map((link) => {
               return (
                 <a
                   key={link.href}
@@ -60,15 +58,10 @@ export default function AuthorPreview({ id }: Props) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-accent-1 hover:text-accent-2 hover:underline"
                 >
-                  {link.icon === "globe" ? (
-                    <Globe2 className="size-3.5" aria-hidden="true" />
+                  {iconUrls[link.icon] ? (
+                    <img src={iconUrls[link.icon]} className="size-3.5 dark:invert" alt="" aria-hidden="true" />
                   ) : (
-                    <img
-                      src={link.icon === "github" ? githubIconUrl : linkedinIconUrl}
-                      className="size-3.5 dark:invert"
-                      alt=""
-                      aria-hidden="true"
-                    />
+                    <Globe2 className="size-3.5" aria-hidden="true" />
                   )}
                   {link.label}
                   <ArrowUpRight className="size-3" aria-hidden="true" />
@@ -77,16 +70,14 @@ export default function AuthorPreview({ id }: Props) {
             })}
           </div>
         )}
-        {profile && (
-          <a
-            href={`/author/${id}`}
-            className="mt-4 inline-block text-xs text-foreground-2 hover:text-accent-1 hover:underline"
-          >
-            <span className="inline-flex items-center gap-1.5">
-              View author page <ArrowRight className="size-3.5" aria-hidden="true" />
-            </span>
-          </a>
-        )}
+        <a
+          href={`/author/${id}`}
+          className="mt-4 inline-block text-xs text-foreground-2 hover:text-accent-1 hover:underline"
+        >
+          <span className="inline-flex items-center gap-1.5">
+            View author page <ArrowRight className="size-3.5" aria-hidden="true" />
+          </span>
+        </a>
       </HoverCardContent>
     </HoverCard>
   )

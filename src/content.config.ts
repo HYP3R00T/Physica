@@ -1,10 +1,26 @@
-import { defineCollection } from "astro:content"
+import { defineCollection, reference } from "astro:content"
 import { glob } from "astro/loaders"
 import { z } from "astro/zod"
-import { isAuthorId } from "../data/authors"
 import { roadmapFileIdentity } from "./lib/roadmap-domain"
 
-const authors = z.array(z.string().refine(isAuthorId, "Unknown author ID")).default([])
+const authorReferences = z.array(reference("authors")).default([])
+
+const authors = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./content/authors" }),
+  schema: z.object({
+    name: z.string().min(1),
+    role: z.string().optional(),
+    links: z
+      .array(
+        z.object({
+          label: z.string().min(1),
+          href: z.url(),
+          icon: z.string().min(1),
+        }),
+      )
+      .default([]),
+  }),
+})
 
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./content/posts" }),
@@ -16,7 +32,7 @@ const posts = defineCollection({
       featured: z.boolean().optional().default(false),
       draft: z.boolean().optional().default(false),
       tags: z.array(z.string()).default([]),
-      authors,
+      authors: authorReferences,
       cover: image(),
       coverAlt: z.string().optional(),
     }),
@@ -33,7 +49,7 @@ const learning = defineCollection({
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
       .optional(),
     tags: z.array(z.string()).default([]),
-    authors,
+    authors: authorReferences,
     created: z.coerce.date().optional(),
     updated: z.coerce.date().optional(),
     draft: z.boolean().default(false),
@@ -88,4 +104,4 @@ const roadmap = defineCollection({
   ]),
 })
 
-export const collections = { posts, learning, roadmap }
+export const collections = { authors, posts, learning, roadmap }
