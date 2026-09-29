@@ -1,3 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 64" fill="none" stroke="currentColor" stroke-width="1.5">
-  <path d="M12 4Q50 32 12 60" /><path d="M30 4Q50 32 30 60" /><path d="M50 4Q50 32 50 60" /><path d="M70 4Q50 32 70 60" /><path d="M88 4Q50 32 88 60" /><path d="M4 10Q50 32 96 10" /><path d="M4 24Q50 32 96 24" /><path d="M4 40Q50 32 96 40" /><path d="M4 54Q50 32 96 54" />
+  <g class="subject-relativity-grid">
+    <path d="M12 4Q50 32 12 60M30 4Q50 32 30 60M50 4Q50 32 50 60M70 4Q50 32 70 60M88 4Q50 32 88 60" />
+    <path d="M4 10Q50 32 96 10M4 24Q50 32 96 24M4 40Q50 32 96 40M4 54Q50 32 96 54" />
+  </g>
+  <circle class="subject-relativity-well" cx="50" cy="32" r="7" fill="currentColor" opacity=".13" stroke="none" />
+  <circle cx="50" cy="32" r="2.5" fill="currentColor" stroke="none" />
 </svg>

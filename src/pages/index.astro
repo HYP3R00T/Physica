@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components"
 import Section from "@/components/common/Section.astro"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import LivingTrajectory from "@/components/home/LivingTrajectory.astro"
 import MechanicsArt from "@/assets/subjects/classical-mechanics.svg"
 import ElectromagnetismArt from "@/assets/subjects/electromagnetism.svg"
 import ThermodynamicsArt from "@/assets/subjects/thermodynamics.svg"
@@ -19,16 +20,17 @@ const subjects = [
 
 <BaseLayout title="Physica | Find your way through physics" description="Study physics through modules and notes, and explore a roadmap connecting the topics and their prerequisites.">
   <div class="[&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-accent-1 [&_a:focus-visible]:outline-offset-4">
-    <Section>
-      <div class="editorial-frame pt-[clamp(5rem,11vw,10rem)] pb-4 md:pb-10">
-        <div class="max-w-5xl">
-          <h1 class="font-display text-[clamp(3rem,6vw,5.5rem)] leading-[1.04] font-medium tracking-[-.06em]">Follow your curiosity.<br /><span class="home-hero-accent">Build your understanding.</span></h1>
+    <Section id="trajectory">
+      <div class="home-hero editorial-frame">
+        <div class="home-hero-copy">
+          <h1 class="font-display leading-[1.04] font-medium tracking-[-.06em]">Follow your curiosity.<br /><span class="home-hero-accent">Build your understanding.</span></h1>
           <p class="mt-8 max-w-2xl text-lg leading-[1.7] text-foreground-2">Read through a module, explore how ideas connect, and find your next step in physics.</p>
           <div class="mt-9 flex flex-wrap items-center gap-3 text-sm font-medium">
             <a href="/modules" class="grain-surface grain-surface--hover home-hero-action home-hero-action--primary inline-flex items-center gap-2 rounded-lg px-5 py-3.5 text-accent-1">Explore modules <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
             <a href="/roadmap" class="grain-surface grain-surface--hover home-hero-action inline-flex items-center gap-2 rounded-lg px-5 py-3.5 text-foreground-1">View roadmap <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
           </div>
         </div>
+        <LivingTrajectory />
       </div>
     </Section>
 

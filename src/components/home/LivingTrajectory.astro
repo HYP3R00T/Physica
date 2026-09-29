@@ -1,0 +1,164 @@
+---
+import { initialOrbitState, referenceOrbitPath } from "@/lib/orbit"
+
+const initial = initialOrbitState()
+const reference = referenceOrbitPath()
+---
+
+<div class="home-simulation">
+  <home-trajectory class="home-trajectory" aria-hidden="true">
+    <svg viewBox="0 0 500 500" role="presentation" focusable="false">
+      <path class="home-trajectory-reference" d={reference} />
+      <circle class="home-trajectory-field" cx="250" cy="250" r="58" />
+      <circle class="home-trajectory-center-ring" cx="250" cy="250" r="18" />
+      <circle class="home-trajectory-center" cx="250" cy="250" r="7" />
+      <path class="home-trajectory-trail" data-trail d={`M ${initial.position.x} ${initial.position.y}`} />
+      <line class="home-trajectory-force" data-force x1={initial.position.x} y1={initial.position.y} x2={initial.position.x} y2={initial.position.y} />
+      <circle class="home-trajectory-pointer-ring" data-pointer-ring cx="250" cy="250" r="25" />
+      <circle class="home-trajectory-pointer" data-pointer cx="250" cy="250" r="6" />
+      <g data-body transform={`translate(${initial.position.x} ${initial.position.y})`}>
+        <circle class="home-trajectory-body-ring" r="20" />
+        <circle class="home-trajectory-body" r="8" />
+        <circle class="home-trajectory-body-core" r="2.5" />
+      </g>
+    </svg>
+  </home-trajectory>
+  <div class="home-simulation-caption">
+    <p>Move your pointer to add a second gravity source. The dotted path shows the original orbit.</p>
+    <button type="button" data-reset-orbit>Reset orbit</button>
+  </div>
+</div>
+
+<script>
+  import { advanceOrbit, initialOrbitState, POINTER_MU, PRIMARY_SOURCE, type GravitySource, type Point } from "@/lib/orbit"
+
+  class HomeTrajectory extends HTMLElement {
+    private dispose?: () => void
+
+    connectedCallback() {
+      if (this.dispose) return
+
+      const svg = this.querySelector("svg")!
+      const body = this.querySelector<SVGGElement>("[data-body]")!
+      const trail = this.querySelector<SVGPathElement>("[data-trail]")!
+      const force = this.querySelector<SVGLineElement>("[data-force]")!
+      const pointerDot = this.querySelector<SVGCircleElement>("[data-pointer]")!
+      const pointerRing = this.querySelector<SVGCircleElement>("[data-pointer-ring]")!
+      const resetButton = this.parentElement!.querySelector<HTMLButtonElement>("[data-reset-orbit]")!
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+      const fixedStep = 1 / 120
+      let state = initialOrbitState()
+      let pointer: Point | null = null
+      let points: Point[] = [{ ...state.position }]
+      let visible = false
+      let frame = 0
+      let previousTime = 0
+      let lastTrailTime = 0
+      let accumulatedTime = 0
+
+      const draw = () => {
+        body.setAttribute("transform", `translate(${state.position.x.toFixed(1)} ${state.position.y.toFixed(1)})`)
+        trail.setAttribute("d", points.map((point, index) => `${index ? "L" : "M"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" "))
+        if (pointer) {
+          force.setAttribute("x1", state.position.x.toFixed(1))
+          force.setAttribute("y1", state.position.y.toFixed(1))
+          force.setAttribute("x2", pointer.x.toFixed(1))
+          force.setAttribute("y2", pointer.y.toFixed(1))
+        }
+      }
+
+      const step = (time: number) => {
+        frame = 0
+        if (!visible || document.hidden || reducedMotion.matches) return
+        const elapsed = previousTime ? Math.min((time - previousTime) / 1000, 0.06) : fixedStep
+        previousTime = time
+        accumulatedTime += elapsed
+        const sources: GravitySource[] = pointer
+          ? [PRIMARY_SOURCE, { ...pointer, mu: POINTER_MU, softening: 42 }]
+          : [PRIMARY_SOURCE]
+        while (accumulatedTime >= fixedStep) {
+          state = advanceOrbit(state, fixedStep, sources)
+          accumulatedTime -= fixedStep
+        }
+        if (time - lastTrailTime > 28) {
+          points.push({ ...state.position })
+          if (points.length > 52) points.shift()
+          lastTrailTime = time
+        }
+        draw()
+        frame = requestAnimationFrame(step)
+      }
+
+      const start = () => {
+        if (!frame && visible && !document.hidden && !reducedMotion.matches) frame = requestAnimationFrame(step)
+      }
+      const stop = () => {
+        cancelAnimationFrame(frame)
+        frame = 0
+        previousTime = 0
+        accumulatedTime = 0
+      }
+      const onPointerMove = (event: PointerEvent) => {
+        if (reducedMotion.matches) return
+        const bounds = svg.getBoundingClientRect()
+        pointer = {
+          x: ((event.clientX - bounds.left) / bounds.width) * 500,
+          y: ((event.clientY - bounds.top) / bounds.height) * 500,
+        }
+        pointerDot.setAttribute("cx", pointer.x.toFixed(1))
+        pointerDot.setAttribute("cy", pointer.y.toFixed(1))
+        pointerRing.setAttribute("cx", pointer.x.toFixed(1))
+        pointerRing.setAttribute("cy", pointer.y.toFixed(1))
+        this.dataset.engaged = "true"
+      }
+      const onPointerLeave = () => {
+        pointer = null
+        delete this.dataset.engaged
+      }
+      const onReset = () => {
+        state = initialOrbitState()
+        points = [{ ...state.position }]
+        pointer = null
+        delete this.dataset.engaged
+        accumulatedTime = 0
+        draw()
+      }
+      const onVisibilityChange = () => document.hidden ? stop() : start()
+      const onMotionChange = () => {
+        if (reducedMotion.matches) {
+          stop()
+          onReset()
+        } else start()
+      }
+      const observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting
+        if (visible) start()
+        else stop()
+      }, { threshold: 0.05 })
+
+      draw()
+      observer.observe(this)
+      this.addEventListener("pointermove", onPointerMove)
+      this.addEventListener("pointerleave", onPointerLeave)
+      resetButton.addEventListener("click", onReset)
+      document.addEventListener("visibilitychange", onVisibilityChange)
+      reducedMotion.addEventListener("change", onMotionChange)
+      this.dispose = () => {
+        stop()
+        observer.disconnect()
+        this.removeEventListener("pointermove", onPointerMove)
+        this.removeEventListener("pointerleave", onPointerLeave)
+        resetButton.removeEventListener("click", onReset)
+        document.removeEventListener("visibilitychange", onVisibilityChange)
+        reducedMotion.removeEventListener("change", onMotionChange)
+      }
+    }
+
+    disconnectedCallback() {
+      this.dispose?.()
+      this.dispose = undefined
+    }
+  }
+
+  if (!customElements.get("home-trajectory")) customElements.define("home-trajectory", HomeTrajectory)
+</script>
