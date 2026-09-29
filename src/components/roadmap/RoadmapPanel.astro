@@ -25,11 +25,10 @@ const { Content } = await render(entry)
   tabindex="-1"
 >
   <header class="prose mb-8">
-    <h1 class="text-foreground-2!" id={`title-${entry.id.toLowerCase()}`}>{entry.data.title}</h1>
+    <h1 id={`title-${entry.id.toLowerCase()}`}>{entry.data.title}</h1>
   </header>
   {module && (
-    <section data-roadmap-module class="mb-8 rounded-lg border border-ring/30 bg-ring/5 p-6" aria-labelledby={`module-${entry.id}`}>
-      <p class="mb-3 font-mono text-xs tracking-wide text-ring uppercase">Study module</p>
+    <section data-roadmap-module class="grain-surface grain-surface--always mb-8 rounded-xl bg-background-1 p-6" aria-labelledby={`module-${entry.id}`}>
       <h2 id={`module-${entry.id}`} class="font-display text-2xl leading-tight font-semibold text-foreground-0">{module.data.title}</h2>
       <div class="mt-5">
         <a href={`/${getModuleSlug(module)}`} class={buttonVariants({ variant: "default" })}>
