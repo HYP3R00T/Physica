@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { Icon } from "astro-icon/components"
 import Section from "@/components/common/Section.astro"
 import ModuleCard from "@/components/content/ModuleCard.astro"
 import { getModuleNotes, isModule } from "@/lib/content"
@@ -12,9 +13,12 @@ const modules = learning.filter(isModule).sort((a, b) => a.data.title.localeComp
 
 <BaseLayout title="Modules | Physica" description="Find a physics module and study its notes, one topic at a time.">
   <Section frameClass="module-directory">
-    <header>
-      <h1>Modules</h1>
-      <p>Find a topic to study. Each module brings its notes together in reading order.</p>
+    <header class="module-directory-intro">
+      <div>
+        <h1>Modules</h1>
+        <p>Study one topic at a time. Each module brings its notes together in reading order.</p>
+      </div>
+      <a class="module-roadmap-link" href="/roadmap">View roadmap <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
     </header>
     <module-search>
       <form role="search" class="module-search-form">
@@ -29,7 +33,6 @@ const modules = learning.filter(isModule).sort((a, b) => a.data.title.localeComp
       </div>
       <p data-empty hidden={modules.length > 0}>No modules found. Try a different topic or clear your search.</p>
     </module-search>
-    <p class="module-directory-help">Looking for the order to study things? <a href="/roadmap">Explore the roadmap.</a></p>
   </Section>
 </BaseLayout>
 

@@ -1,0 +1,110 @@
+.home-hero-accent {
+  color: var(--accent-1);
+  background-image:
+    url('/textures/grain.svg'),
+    linear-gradient(105deg, var(--accent-1), color-mix(in oklch, var(--accent-1) 86%, var(--cyan-0)));
+  background-blend-mode: soft-light, normal;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-hero-action {
+  transition: background-color 360ms ease, color 360ms ease;
+}
+
+.home-hero-action--primary,
+.home-hero-action:is(:hover, :focus-visible) {
+  background-color: var(--background-1);
+}
+
+.home-hero-action:is(:hover, :focus-visible) {
+  color: var(--accent-1);
+}
+
+.home-subject-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.home-subject-card::before,
+.home-subject-card::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 360ms ease;
+}
+
+.home-subject-card::before {
+  background: radial-gradient(ellipse at 80% 8%, color-mix(in oklch, var(--subject-color) 14%, transparent), transparent 72%);
+}
+
+.home-subject-card::after {
+  background: url('/textures/grain.svg') repeat;
+  mix-blend-mode: soft-light;
+}
+
+.home-subject-card:is(:hover, :focus-visible)::before {
+  opacity: 1;
+}
+
+.home-subject-card:is(:hover, :focus-visible)::after {
+  opacity: .24;
+}
+
+.home-subject-card h3 {
+  transition: color 360ms ease;
+}
+
+.home-subject-card:is(:hover, :focus-visible) h3 {
+  color: var(--subject-color);
+}
+
+.home-roadmap-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse at 86% 8%, color-mix(in oklch, var(--accent-1) 8%, transparent), transparent 68%),
+    radial-gradient(ellipse at 12% 100%, color-mix(in oklch, var(--purple-0) 4%, transparent), transparent 62%);
+}
+
+.home-roadmap-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/textures/grain.svg') repeat;
+  content: '';
+  opacity: .18;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+:root:not(.dark) .home-subject-card::before {
+  background: radial-gradient(ellipse at 80% 8%, color-mix(in oklch, var(--subject-color) 9%, transparent), transparent 72%);
+}
+
+:root:not(.dark) .home-subject-card::after {
+  mix-blend-mode: multiply;
+}
+
+:root:not(.dark) .home-subject-card:is(:hover, :focus-visible)::after {
+  opacity: .14;
+}
+
+:root:not(.dark) .home-roadmap-card::before {
+  opacity: .08;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-action,
+  .home-subject-card::before,
+  .home-subject-card::after,
+  .home-subject-card h3 {
+    transition: none;
+  }
+}

@@ -9,11 +9,11 @@ interface Props {
 const { module, noteCount } = Astro.props
 ---
 
-<a class="flex flex-wrap items-center justify-between gap-6 rounded-lg border border-border p-7 transition-colors hover:border-accent-1 hover:bg-background-1 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-4 [&+a]:mt-4" href={`/${getModuleSlug(module)}`}>
+<a class="grain-surface grain-surface--always module-card group flex min-h-60 flex-wrap items-end justify-between gap-6 rounded-xl bg-background-1 p-7 transition-colors duration-300 hover:bg-background-2/70 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-4 motion-reduce:transition-none md:p-10" href={`/${getModuleSlug(module)}`}>
   <div>
     <p class="font-mono text-[.7rem] text-foreground-2">{noteCount} {noteCount === 1 ? "note" : "notes"} available</p>
-    <h3 class="mt-3 font-display text-2xl">{module.data.title}</h3>
+    <h3 class="mt-3 font-display text-[clamp(1.6rem,3vw,2.35rem)] font-medium tracking-tight transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none">{module.data.title}</h3>
     {module.data.description && <p class="mt-2 text-sm leading-[1.7] text-foreground-2">{module.data.description}</p>}
   </div>
-  <span class="inline-flex items-center gap-2.5 text-sm [&_svg]:size-4">Open module <Icon name="arrow-right" aria-hidden="true" /></span>
+  <span class="inline-flex items-center gap-2.5 text-sm text-foreground-2 group-hover:text-accent-1 [&_svg]:size-4">Open module <Icon name="arrow-right" aria-hidden="true" /></span>
 </a>
