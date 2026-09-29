@@ -20,6 +20,14 @@
     mix-blend-mode: multiply;
   }
 
+  .roadmap-segment-row[aria-pressed='true']::before {
+    opacity: 1;
+  }
+
+  .roadmap-segment-row[aria-pressed='true']::after {
+    opacity: .14;
+  }
+
   [data-roadmap-map-scroll],
   [data-roadmap-detail-body] {
     scrollbar-gutter: stable;
