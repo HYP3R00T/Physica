@@ -1,13 +1,22 @@
 @layer components {
-  .module-directory { padding: clamp(1.5rem, 4.5vw, 4rem); min-height: 65vh; }
-  .module-directory h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -.04em; }
-  .module-directory header > p { color: var(--foreground-2); margin-top: 1rem; max-width: 40rem; line-height: 1.7; }
-  module-search { display: block; margin-top: 2.5rem; }
+  .module-directory { width: min(calc(100% - 2 * var(--page-gutter)), 68rem); margin-inline: auto; padding-block: var(--section-space); min-height: 65vh; }
+  .module-directory-intro { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+  .module-directory h1 { font-family: var(--font-display); font-size: clamp(3rem, 6vw, 5rem); font-weight: 500; letter-spacing: -.055em; line-height: 1.05; }
+  .module-directory-intro p { color: var(--foreground-2); margin-top: 1.25rem; max-width: 40rem; line-height: 1.7; }
+  .module-roadmap-link { display: inline-flex; flex: none; align-items: center; gap: .5rem; color: var(--accent-1); font-size: .875rem; transition: color 300ms ease; }
+  .module-roadmap-link:hover { color: var(--foreground-0); }
+  module-search { display: block; margin-top: clamp(3rem, 5vw, 5rem); }
   .module-search-form label { display: block; margin-bottom: .75rem; font-size: .9rem; }
-  .module-search-form input { width: 100%; max-width: 40rem; padding: .85rem 1rem; border: 1px solid var(--border); border-radius: .4rem; background: var(--background-1); color: var(--foreground-0); }
+  .module-search-form input { width: 100%; max-width: 40rem; padding: 1rem 1.25rem; border: 0; border-radius: .75rem; background: var(--background-1); color: var(--foreground-0); }
   .module-result-count { margin-block: 1.5rem 1rem; color: var(--foreground-2); font-size: .85rem; }
-  .module-results { display: grid; gap: 1rem; }
+  .module-results { display: grid; gap: .75rem; }
   .module-directory-help { margin-top: 3rem; color: var(--foreground-2); font-size: .9rem; line-height: 1.7; }
   .module-directory-help a { color: var(--accent-1); text-decoration: underline; text-underline-offset: 4px; }
   .module-search-form input:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; }
+  @media (max-width: 700px) {
+    .module-directory-intro { align-items: start; flex-direction: column; gap: 1.25rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .module-roadmap-link { transition: none; }
+  }
 }

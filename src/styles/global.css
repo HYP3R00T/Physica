@@ -12,5 +12,7 @@
 @import "./components/mobile-menu-toggle.css";
 @import "./components/video.css";
 @import "./components/roadmap.css";
+@import "./components/home.css";
+@import "./components/grain.css";
 
 @custom-variant dark (&:is(.dark *));
