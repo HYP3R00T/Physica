@@ -27,7 +27,7 @@ const author = authorId ? (await getEntry("authors", authorId))?.data : undefine
     </header>
   </Section>
   <Section aria-label="Articles">
-    <div class="editorial-frame grid gap-4">
+    <div class="editorial-frame grid gap-4 md:grid-cols-2">
       {featured && page.currentPage === 1 && <PostCard post={featured} />}
       {page.data.map((post: PostEntry) => <PostCard post={post} />)}
     </div>

@@ -502,16 +502,22 @@ export default function RoadmapExplorer({
               </section>
               <ol data-roadmap-rows className="m-0 min-w-0 list-none p-0 pr-3">
                 {visibleSegments.map((segment) => (
-                  <li key={segment.id} style={{ height: ROW }}>
+                  <li key={segment.id} className="py-0.5" style={{ height: ROW }}>
                     <button
                       type="button"
                       id={anchor(segment.id)}
                       aria-pressed={selected === segment.id}
                       aria-controls="roadmap-detail"
                       onClick={() => choose(segment.id)}
-                      className="group/segment flex h-full w-full flex-col justify-center gap-2 rounded-lg border-l-2 border-l-transparent px-4 py-3 text-left hover:bg-background-2/70 aria-pressed:border-l-(--segment-color) aria-pressed:bg-background-2/70 max-[450px]:px-[.65rem] max-[450px]:py-2"
+                      className="grain-surface grain-surface--hover roadmap-segment-row group/segment flex h-full w-full flex-col justify-center gap-2 rounded-lg px-4 py-3 text-left hover:bg-background-2/70 aria-pressed:bg-background-2/70 max-[450px]:px-[.65rem] max-[450px]:py-2"
                       data-connected={connected.has(segment.id)}
-                      style={{ "--segment-color": color(segment.id), "--ring": color(segment.id) } as CSSProperties}
+                      style={
+                        {
+                          "--segment-color": color(segment.id),
+                          "--grain-color": color(segment.id),
+                          "--ring": color(segment.id),
+                        } as CSSProperties
+                      }
                     >
                       <span
                         data-roadmap-row-meta
@@ -540,11 +546,11 @@ export default function RoadmapExplorer({
         >
           <div
             data-roadmap-column-header
-            className="z-10 flex min-h-12 shrink-0 items-center rounded-lg bg-background-0/95 font-mono text-xs backdrop-blur-lg"
+            className="z-10 flex shrink-0 items-start gap-5 bg-background-0/95 px-5 pt-5 pb-2 font-mono text-xs backdrop-blur-lg"
           >
             <div
               data-roadmap-heading-text
-              className="flex min-w-0 flex-1 items-center justify-between gap-3 py-3 [&>span]:text-foreground-2"
+              className="flex min-w-0 flex-1 items-center justify-between gap-3 [&>span]:text-foreground-2"
             >
               {current ? (
                 <Button
@@ -564,7 +570,7 @@ export default function RoadmapExplorer({
               )}
               <span aria-live="polite">{current?.stage}</span>
             </div>
-            <div data-roadmap-heading-actions className="flex shrink-0 items-center justify-center py-2">
+            <div data-roadmap-heading-actions className="flex shrink-0 items-center justify-center">
               <Button
                 type="button"
                 variant="ghost"
@@ -579,7 +585,7 @@ export default function RoadmapExplorer({
           </div>
           <div
             data-roadmap-detail-body
-            className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-8 pb-12 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pt-8 pb-12 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
             ref={detailScroller}
           >
             <div id="roadmap-overview" tabIndex={-1} className="outline-none" />
