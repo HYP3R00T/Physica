@@ -1,7 +1,7 @@
 /* Prose formatting stops at KaTeX; math keeps its own internal styles. */
 @layer base {
-    &:is() {
-    @apply text-foreground-2 w-full max-w-none font-sans text-base leading-7;
+  .prose {
+    @apply text-foreground-2 w-full max-w-none font-sans text-[1.0625rem] leading-[1.75];
   }
 
   .prose :not(:where(.katex, .katex *, .katex-display, .katex-display *)) {
@@ -19,7 +19,7 @@
     }
 
     &:is(h2) {
-      @apply text-foreground-0 font-display mt-18 mb-6 border-l-4 border-accent-1 pl-4 scroll-mt-28 text-3xl leading-tight font-semibold tracking-tight;
+      @apply text-foreground-0 font-display mt-18 mb-6 scroll-mt-28 text-3xl leading-tight font-semibold tracking-tight;
     }
 
     &:is(h3) {
@@ -90,7 +90,7 @@
     }
 
     &:is(li) {
-      @apply font-sans leading-7 text-foreground-2;
+      @apply font-sans leading-[1.75] text-foreground-2;
     }
 
     &:is(li)::marker {

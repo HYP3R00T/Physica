@@ -28,7 +28,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "m
   headings={headings}
 >
   <article>
-    <header class="border-b border-border px-5 py-12 md:px-10 md:py-16 lg:px-14">
+    <header class="pt-14 pb-10 md:pt-20 md:pb-12">
       <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-foreground-3">
         <a href={`/${getModuleSlug(module)}`} class="text-accent-1 hover:text-accent-2">{module.data.title}</a>
         {note.data.draft && <span class="text-orange-0">Draft</span>}
@@ -53,7 +53,7 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "m
       <ModuleRoadmapLink module={module} />
     </header>
 
-    <div class="prose px-5 py-10 md:px-10 lg:px-14">
+    <div class="prose pb-20">
       <Content />
     </div>
 

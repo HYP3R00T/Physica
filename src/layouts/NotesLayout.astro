@@ -31,8 +31,8 @@ const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 
   contentType="article"
   layout="notes"
 >
-  <div class="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-368 items-start lg:grid-cols-[minmax(12rem,1fr)_minmax(0,56rem)_minmax(12rem,1fr)]">
-    <aside class="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto px-5 py-8 lg:block" aria-label="Notes">
+  <div class="reading-layout min-h-[calc(100vh-4rem)] items-start">
+    <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="Notes">
       <nav aria-label={`${module.data.title} notes`}>
         <ul class="space-y-1">
           {
@@ -52,8 +52,8 @@ const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 
       </nav>
     </aside>
 
-    <div class="min-w-0 w-full max-w-4xl justify-self-center lg:max-w-none">
-      <details class="border-b border-border px-5 py-4 lg:hidden">
+    <div class="reading-main">
+      <details class="py-5 min-[72rem]:hidden">
         <summary class="cursor-pointer font-mono text-sm font-medium text-foreground-1">Browse notes</summary>
         <nav class="mt-4 grid gap-1" aria-label="Mobile notes navigation">
           <a href={`/${getModuleSlug(module)}`} class="rounded-md px-3 py-2 text-sm text-foreground-2 hover:bg-background-1">
@@ -76,7 +76,7 @@ const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 
       <slot />
     </div>
 
-    <aside class="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto px-5 py-8 lg:block" aria-label="On this page">
+    <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="On this page">
       {
         tableOfContents.length > 0 && (
           <>

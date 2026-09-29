@@ -23,33 +23,33 @@ const initials = author.data.name.split(" ").map((part) => part[0]).slice(0, 2).
 
 <BaseLayout title={`${author.data.name} — Physica`} description={`Work by ${author.data.name} on Physica.`}>
   <Section frameClass="max-w-[64rem]">
-    <header class="px-5 py-12 md:px-10 md:py-16 lg:px-15">
+    <header class="px-(--page-gutter) pt-(--section-space)">
       <a href="/post" class="inline-flex items-center gap-2 font-mono text-xs text-accent-1 hover:text-accent-2"><Icon name="arrow-left" class="size-4" aria-hidden="true" /> All articles</a>
       <div class="mt-10 grid gap-7 md:grid-cols-[6rem_minmax(0,1fr)] md:gap-8">
-        <div aria-hidden="true" class="flex size-20 items-center justify-center rounded-2xl border border-border bg-background-1 font-display text-2xl font-semibold text-accent-1 md:size-24">{initials}</div>
+        <div aria-hidden="true" class="flex size-20 items-center justify-center rounded-2xl bg-background-1 font-display text-2xl font-semibold text-accent-1 md:size-24">{initials}</div>
         <div>
           <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Author</p>
           <h1 class="mt-3 font-display text-4xl font-semibold tracking-tight text-foreground-0 md:text-5xl">{author.data.name}</h1>
-          {author.data.role && <p class="mt-4 inline-flex rounded-full border border-border px-3 py-1 font-mono text-xs text-foreground-2">{author.data.role}</p>}
-          {author.data.links.length > 0 && <ul class="mt-7 flex flex-wrap gap-2">{author.data.links.map((link) => <li><a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-foreground-1 transition-colors hover:border-accent-1 hover:text-accent-1"><Icon name={link.icon} class="size-4" aria-hidden="true" /><span>{link.label}</span><Icon name="arrow-up-right" class="ml-1 size-3.5 text-foreground-3" aria-hidden="true" /></a></li>)}</ul>}
+          {author.data.role && <p class="mt-4 font-mono text-xs text-foreground-2">{author.data.role}</p>}
+          {author.data.links.length > 0 && <ul class="mt-7 flex flex-wrap gap-5">{author.data.links.map((link) => <li><a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm text-foreground-1 transition-colors hover:text-accent-1"><Icon name={link.icon} class="size-4" aria-hidden="true" /><span>{link.label}</span><Icon name="arrow-up-right" class="size-3.5 text-foreground-3" aria-hidden="true" /></a></li>)}</ul>}
         </div>
       </div>
     </header>
   </Section>
 
-  {author.body && <Section frameClass="max-w-[64rem]"><div class="prose px-5 py-12 md:px-10 lg:px-15"><Content /></div></Section>}
+  {author.body && <Section frameClass="max-w-[64rem]"><div class="prose px-(--page-gutter)"><Content /></div></Section>}
 
   {posts.length > 0 && <Section frameClass="max-w-[64rem]">
-    <section class="px-5 py-12 md:px-10 lg:px-15" aria-labelledby="author-articles">
+    <section class="px-(--page-gutter)" aria-labelledby="author-articles">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Writing</p>
           <h2 id="author-articles" class="mt-2 font-display text-3xl font-semibold text-foreground-0">Recent articles</h2>
         </div>
-        <a href={`/post/${author.id}`} class="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm text-foreground-1 transition-colors hover:border-accent-1 hover:text-accent-1">View all articles <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
+        <a href={`/post/${author.id}`} class="inline-flex items-center gap-2 text-sm text-accent-1 hover:text-accent-2">View all articles <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
       </div>
-      <ol class="mt-8 grid gap-3 md:grid-cols-2">
-        {posts.slice(0, 4).map((post) => <li class="rounded-lg border border-border p-5 transition-colors hover:bg-background-1">
+      <ol class="mt-8 space-y-2">
+        {posts.slice(0, 4).map((post) => <li class="rounded-md px-5 py-5 transition-colors hover:bg-background-1">
           <p class="font-mono text-xs text-foreground-3"><time datetime={post.data.pubDatetime.toISOString()}>{formatDateUppercase(post.data.pubDatetime)}</time></p>
           <h3 class="mt-4 font-display text-xl font-semibold leading-snug text-foreground-0"><a href={`/post/${post.id}`} class="hover:text-accent-1">{post.data.title}</a></h3>
           <p class="mt-3 line-clamp-2 text-sm leading-6 text-foreground-2">{post.data.description}</p>
@@ -60,16 +60,16 @@ const initials = author.data.name.split(" ").map((part) => part[0]).slice(0, 2).
   </Section>}
 
   {modules.length > 0 && <Section frameClass="max-w-[64rem]">
-    <section class="px-5 py-12 md:px-10 lg:px-15" aria-labelledby="author-modules">
+    <section class="px-(--page-gutter)" aria-labelledby="author-modules">
       <h2 id="author-modules" class="font-display text-3xl font-semibold text-foreground-0">Modules</h2>
-      <ul class="mt-6 divide-y divide-border">{modules.map((module) => <li><a href={`/${getModuleSlug(module)}`} class="group block py-5"><h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">{module.data.title}</h3>{module.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{module.data.description}</p>}</a></li>)}</ul>
+      <ul class="mt-6 space-y-2">{modules.map((module) => <li><a href={`/${getModuleSlug(module)}`} class="group block rounded-md px-5 py-5 hover:bg-background-1"><h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">{module.data.title}</h3>{module.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{module.data.description}</p>}</a></li>)}</ul>
     </section>
   </Section>}
 
   {notes.length > 0 && <Section frameClass="max-w-[64rem]">
-    <section class="px-5 py-12 md:px-10 lg:px-15" aria-labelledby="author-notes">
+    <section class="px-(--page-gutter) pb-(--section-space)" aria-labelledby="author-notes">
       <h2 id="author-notes" class="font-display text-3xl font-semibold text-foreground-0">Notes</h2>
-      <ul class="mt-6 divide-y divide-border">{notes.map((note) => <li><a href={`/${getNoteSlug(note)}`} class="group block py-5"><h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">{note.data.title}</h3>{note.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{note.data.description}</p>}</a></li>)}</ul>
+      <ul class="mt-6 space-y-2">{notes.map((note) => <li><a href={`/${getNoteSlug(note)}`} class="group block rounded-md px-5 py-5 hover:bg-background-1"><h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">{note.data.title}</h3>{note.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{note.data.description}</p>}</a></li>)}</ul>
     </section>
   </Section>}
 

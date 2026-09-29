@@ -35,7 +35,7 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
   layout="focused"
 >
   <Section frameClass="max-w-[56rem]">
-    <header class="px-5 py-12 md:px-10 md:py-16 lg:px-15">
+    <header class="px-(--page-gutter) pt-(--section-space)">
       <div class="max-w-3xl">
         <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Module</p>
         <h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-foreground-0 md:text-5xl">
@@ -58,10 +58,10 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
           <h2 id="related-modules-title" class="font-display text-2xl font-semibold text-foreground-0">
             Related modules
           </h2>
-          <ul class="mt-6 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2">
+          <ul class="mt-6 space-y-2">
             {related.map((entry) => (
-              <li class="bg-background-0">
-                <a href={`/${getModuleSlug(entry)}`} class="group block h-full p-5 hover:bg-background-1">
+              <li>
+                <a href={`/${getModuleSlug(entry)}`} class="group block rounded-md px-5 py-4 hover:bg-background-1">
                   <h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">
                     {entry.data.title}
                   </h3>
@@ -79,10 +79,10 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
     <section aria-label="Module notes">
       {
         notes.length > 0 ? (
-          <ol class="divide-y divide-border">
+          <ol class="space-y-2">
             {notes.map((note, index) => (
               <li>
-                <a href={`/${getNoteSlug(note)}`} class="group grid gap-3 px-5 py-6 md:grid-cols-[3rem_minmax(0,1fr)] md:px-10 lg:px-15">
+                <a href={`/${getNoteSlug(note)}`} class="group grid gap-3 rounded-md px-5 py-6 hover:bg-background-1 md:grid-cols-[3rem_minmax(0,1fr)] md:px-10 lg:px-15">
                   <span class="font-mono text-sm text-foreground-3">{String(index + 1).padStart(2, "0")}</span>
                   <div>
                     <h3 class="font-display text-xl font-semibold text-foreground-0 group-hover:text-accent-1">

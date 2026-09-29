@@ -11,22 +11,22 @@ const tableOfContents = headings.filter(({ depth }: { depth: number }) => depth 
 ---
 
 <BaseLayout title={`${title} — Physica`} description={description} image={cover} imageAlt={coverAlt} contentType="article" layout="notes">
-  <div class="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-368 items-start lg:grid-cols-[minmax(12rem,1fr)_minmax(0,56rem)_minmax(12rem,1fr)]">
-    <aside class="sticky top-16 hidden px-5 py-8 lg:block">
+  <div class="reading-layout min-h-[calc(100vh-4rem)] items-start">
+    <aside class="sticky top-24 hidden py-8 min-[72rem]:block">
       <a href="/post" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground-2 transition-colors hover:bg-background-1 hover:text-accent-1"><Icon name="arrow-left" class="size-5 shrink-0" aria-hidden="true" /> All articles</a>
     </aside>
-    <article class="min-w-0 w-full max-w-4xl justify-self-center lg:max-w-none">
-      <header class="border-b border-border px-5 py-12 md:px-10 md:py-16 lg:px-14">
+    <article class="reading-main">
+      <header class="pt-14 pb-10 md:pt-20 md:pb-12">
         <a href="/post" class="font-mono text-xs text-accent-1 hover:text-accent-2">Articles</a>
         <h1 class="mt-4 font-display text-4xl leading-tight font-semibold tracking-tight text-foreground-0 md:text-5xl">{title}</h1>
         <p class="mt-5 text-lg leading-8 text-foreground-2">{description}</p>
         <p class="mt-5 flex flex-wrap gap-x-2 font-mono text-xs text-foreground-3">{authors.length > 0 && <><AuthorLinks authors={authors} /><span aria-hidden="true">·</span></>}<time datetime={pubDatetime.toISOString()}>{formatDateUppercase(pubDatetime)}</time> · {estimateReadTime(body ?? "")} MIN READ</p>
-        <ul class="mt-6 flex flex-wrap gap-2" aria-label="Article topics">{tags.map((tag: string) => <li class="rounded-full border border-border px-3 py-1 font-mono text-xs text-foreground-2">{tag}</li>)}</ul>
+        <ul class="mt-6 flex flex-wrap gap-x-4 gap-y-2" aria-label="Article topics">{tags.map((tag: string) => <li class="font-mono text-xs text-foreground-2">{tag}</li>)}</ul>
       </header>
-      <div class="px-5 pt-10 md:px-10 lg:px-14"><Image src={cover} alt={coverAlt || title} class="aspect-video w-full border border-border object-cover" /></div>
-      <div class="prose px-5 py-10 md:px-10 lg:px-14"><slot /></div>
+      <div><Image src={cover} alt={coverAlt || title} class="aspect-video w-full rounded-lg object-cover" /></div>
+      <div class="prose pt-10 pb-20"><slot /></div>
     </article>
-    <aside class="sticky top-16 hidden max-h-[calc(100vh-4rem)] overflow-y-auto px-5 py-8 lg:block" aria-label="On this page">
+    <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="On this page">
       {tableOfContents.length > 0 && <><h2 class="font-mono text-[0.6875rem] tracking-[0.12em] text-foreground-3 uppercase">On this page</h2><nav class="mt-4"><ul class="space-y-2">{tableOfContents.map((heading: { depth: number; slug: string; text: string }) => <li class:list={[heading.depth === 3 && "pl-3"]}><a href={`#${heading.slug}`} class="block text-sm leading-5 text-foreground-2 transition-colors hover:text-accent-1">{heading.text}</a></li>)}</ul></nav></>}
     </aside>
   </div>
