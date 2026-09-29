@@ -3,7 +3,6 @@ import { Icon } from "astro-icon/components";
 import { SITE, navItems } from "@data/config";
 import ModeToggle from "@/components/core/ModeToggle.astro";
 import { SearchPalette } from "@/components/core/SearchPalette";
-import AnimatedText from "@/components/common/AnimatedText.astro";
 import MobileMenuToggle from "@/components/core/MobileMenuToggle.astro";
 import MobileMenuPanel from "@/components/core/MobileMenuPanel.astro";
 import { buttonVariants } from "@/components/ui/button";
@@ -17,7 +16,7 @@ const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact
 <header
   data-header-shell
   data-menu-open="false"
-  class="sticky top-0 z-80 border-b border-border bg-background-0/90 backdrop-blur-xl data-[menu-open=true]:backdrop-blur-none"
+  class="sticky top-0 z-80 bg-background-0/90 backdrop-blur-xl data-[menu-open=true]:backdrop-blur-none"
 >
   <div
     data-header-nav
@@ -27,7 +26,7 @@ const primaryNavItems = visibleNavItems.filter((item) => item.href !== "/contact
   >
     <div class="flex min-w-0 items-center gap-8 pl-5 lg:gap-12 lg:pl-8">
       <a href="/" class="flex shrink-0 flex-row font-mono text-base md:text-lg" aria-label={`${SITE.title} home`}>
-        <AnimatedText text={SITE.title.toLowerCase()} className="text-accent-1" auto={true} hover={true} />
+        <span class="text-accent-1">{SITE.title.toLowerCase()}</span>
       </a>
       <nav aria-label="Primary navigation" class="hidden items-center gap-5 md:flex">
         {primaryNavItems.map((item) => (

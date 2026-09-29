@@ -9,10 +9,9 @@ import CodeCopyButton from "@/components/common/CodeCopyButton.astro";
 import ContentChecklist from "@/components/common/ContentChecklist.astro";
 
 const { title, description, image, imageAlt, contentType, layout = "default", showFooterBorder = layout === "notes" } = Astro.props as BaseLayoutProps;
-const frameWidth = layout === "default" ? "84rem" : "56rem";
 ---
 
-<html lang=`${SITE.lang ?? "en"}` style={`--site-frame-width: ${frameWidth}`}>
+<html lang=`${SITE.lang ?? "en"}`>
   <head>
     <HeadSEO title={title} description={description} image={image} imageAlt={imageAlt} contentType={contentType} />
     <ClientRouter />
@@ -25,7 +24,6 @@ const frameWidth = layout === "default" ? "84rem" : "56rem";
     >
       Skip to content
     </a>
-    <div aria-hidden="true" class="site-page-rails" transition:animate="none"></div>
     <Header />
     <div class="flex flex-1">
       <main id="main-content" class="flex h-full w-full justify-center" tabindex="-1">
@@ -55,28 +53,5 @@ const frameWidth = layout === "default" ? "84rem" : "56rem";
     applyTheme();
     document.addEventListener("astro:after-swap", applyTheme);
 
-    if (!window.__siteFrameTransitionBound) {
-      window.__siteFrameTransitionBound = true;
-
-      document.addEventListener("astro:before-swap", (event) => {
-        const root = document.documentElement;
-        const currentWidth = getComputedStyle(root).getPropertyValue("--site-frame-width").trim() || "84rem";
-        const targetWidth = event.newDocument.body.dataset.layout === "default" ? "84rem" : "56rem";
-
-        event.newDocument.documentElement.style.setProperty("--site-frame-width", currentWidth);
-        event.newDocument.documentElement.dataset.siteFrameTarget = targetWidth;
-      });
-
-      document.addEventListener("astro:after-swap", () => {
-        const root = document.documentElement;
-        const targetWidth = root.dataset.siteFrameTarget;
-        if (!targetWidth) return;
-
-        requestAnimationFrame(() => {
-          root.style.setProperty("--site-frame-width", targetWidth);
-          delete root.dataset.siteFrameTarget;
-        });
-      });
-    }
   })();
 </script>
