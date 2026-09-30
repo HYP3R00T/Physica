@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components"
 import { initialOrbitState, referenceOrbitPath } from "@/lib/orbit"
 
 const initial = initialOrbitState()
@@ -23,10 +24,19 @@ const reference = referenceOrbitPath()
       </g>
     </svg>
   </home-trajectory>
-  <div class="home-simulation-caption">
-    <p>Move your pointer to add a second gravity source. The dotted path shows the original orbit.</p>
-    <button type="button" data-reset-orbit>Reset orbit</button>
-  </div>
+  <details class="home-simulation-info" data-orbit-info>
+    <summary aria-label="About the orbit simulation" title="About the orbit simulation">
+      <span class="sr-only">About the orbit simulation</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5M12 8h.01" />
+      </svg>
+    </summary>
+    <div class="home-simulation-popover">
+      <p>Move your pointer over the orbit to add a second gravity source. The dotted path shows its original course.</p>
+      <button type="button" data-reset-orbit>Reset orbit <Icon name="arrow-right" class="size-4" aria-hidden="true" /></button>
+    </div>
+  </details>
 </div>
 
 <script>
@@ -45,6 +55,7 @@ const reference = referenceOrbitPath()
       const pointerDot = this.querySelector<SVGCircleElement>("[data-pointer]")!
       const pointerRing = this.querySelector<SVGCircleElement>("[data-pointer-ring]")!
       const resetButton = this.parentElement!.querySelector<HTMLButtonElement>("[data-reset-orbit]")!
+      const info = this.parentElement!.querySelector<HTMLDetailsElement>("[data-orbit-info]")!
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
       const fixedStep = 1 / 120
       let state = initialOrbitState()
@@ -101,6 +112,10 @@ const reference = referenceOrbitPath()
       const onPointerMove = (event: PointerEvent) => {
         if (reducedMotion.matches) return
         const bounds = svg.getBoundingClientRect()
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) {
+          onPointerLeave()
+          return
+        }
         pointer = {
           x: ((event.clientX - bounds.left) / bounds.width) * 500,
           y: ((event.clientY - bounds.top) / bounds.height) * 500,
@@ -123,6 +138,18 @@ const reference = referenceOrbitPath()
         accumulatedTime = 0
         draw()
       }
+      const onResetClick = () => {
+        onReset()
+        info.open = false
+      }
+      const onDocumentPointerDown = (event: PointerEvent) => {
+        if (!info.contains(event.target as Node)) info.open = false
+      }
+      const onDocumentKeyDown = (event: KeyboardEvent) => {
+        if (event.key !== "Escape" || !info.open) return
+        info.open = false
+        info.querySelector("summary")?.focus()
+      }
       const onVisibilityChange = () => document.hidden ? stop() : start()
       const onMotionChange = () => {
         if (reducedMotion.matches) {
@@ -140,7 +167,9 @@ const reference = referenceOrbitPath()
       observer.observe(this)
       this.addEventListener("pointermove", onPointerMove)
       this.addEventListener("pointerleave", onPointerLeave)
-      resetButton.addEventListener("click", onReset)
+      resetButton.addEventListener("click", onResetClick)
+      document.addEventListener("pointerdown", onDocumentPointerDown)
+      document.addEventListener("keydown", onDocumentKeyDown)
       document.addEventListener("visibilitychange", onVisibilityChange)
       reducedMotion.addEventListener("change", onMotionChange)
       this.dispose = () => {
@@ -148,7 +177,9 @@ const reference = referenceOrbitPath()
         observer.disconnect()
         this.removeEventListener("pointermove", onPointerMove)
         this.removeEventListener("pointerleave", onPointerLeave)
-        resetButton.removeEventListener("click", onReset)
+        resetButton.removeEventListener("click", onResetClick)
+        document.removeEventListener("pointerdown", onDocumentPointerDown)
+        document.removeEventListener("keydown", onDocumentKeyDown)
         document.removeEventListener("visibilitychange", onVisibilityChange)
         reducedMotion.removeEventListener("change", onMotionChange)
       }
