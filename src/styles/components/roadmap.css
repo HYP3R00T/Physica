@@ -31,28 +31,71 @@
   [data-roadmap-map-scroll],
   [data-roadmap-detail-body] {
     scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
   }
 
-  [data-roadmap-map-scroll] {
-    mask-image: linear-gradient(
-      to bottom,
-      transparent,
-      black 1.25rem,
-      black calc(100% - 1.25rem),
-      transparent
-    );
+  @supports (-moz-appearance: none) {
+    [data-roadmap-map-scroll],
+    [data-roadmap-detail-body] {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+
+    [data-roadmap-path]:is(:hover, :has(:focus-visible)) [data-roadmap-map-scroll],
+    #roadmap-detail:is(:hover, :has(:focus-visible)) [data-roadmap-detail-body] {
+      scrollbar-color: var(--foreground-3) transparent;
+    }
   }
 
-  [data-roadmap-path]:is(:hover, :has(:focus-visible)) [data-roadmap-map-scroll],
-  #roadmap-detail:is(:hover, :has(:focus-visible)) [data-roadmap-detail-body] {
-    scrollbar-color: var(--foreground-3) transparent;
+  [data-roadmap-map-viewport]::before,
+  [data-roadmap-map-viewport]::after,
+  [data-roadmap-detail-viewport]::before,
+  [data-roadmap-detail-viewport]::after {
+    position: absolute;
+    z-index: 1;
+    right: 8px;
+    left: 0;
+    height: 1.25rem;
+    content: '';
+    pointer-events: none;
+  }
+
+  [data-roadmap-map-viewport]::before,
+  [data-roadmap-detail-viewport]::before {
+    top: 0;
+  }
+
+  [data-roadmap-map-viewport]::after,
+  [data-roadmap-detail-viewport]::after {
+    bottom: 0;
+  }
+
+  [data-roadmap-map-viewport]::before {
+    background: linear-gradient(to bottom, var(--background-1), transparent);
+  }
+
+  [data-roadmap-map-viewport]::after {
+    background: linear-gradient(to top, var(--background-1), transparent);
+  }
+
+  [data-roadmap-detail-viewport]::before {
+    height: 2rem;
+    background: linear-gradient(to bottom, var(--background-0), transparent);
+  }
+
+  [data-roadmap-detail-viewport]::after {
+    background: linear-gradient(to top, var(--background-0), transparent);
   }
 
   [data-roadmap-map-scroll]::-webkit-scrollbar,
   [data-roadmap-detail-body]::-webkit-scrollbar {
     width: 8px;
+  }
+
+  [data-roadmap-map-scroll]::-webkit-scrollbar-button,
+  [data-roadmap-detail-body]::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   [data-roadmap-map-scroll]::-webkit-scrollbar-thumb,
