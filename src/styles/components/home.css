@@ -1,0 +1,430 @@
+.home-hero-accent {
+  color: var(--accent-1);
+  background-image:
+    url('/textures/grain.svg'),
+    linear-gradient(105deg, var(--accent-1), color-mix(in oklch, var(--accent-1) 86%, var(--cyan-0)));
+  background-blend-mode: soft-light, normal;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-hero-action {
+  transition: background-color 360ms ease, color 360ms ease;
+}
+
+.home-hero-action--primary,
+.home-hero-action:is(:hover, :focus-visible) {
+  background-color: var(--background-1);
+}
+
+.home-hero-action:is(:hover, :focus-visible) {
+  color: var(--accent-1);
+}
+
+.home-subject-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.home-subject-card::before,
+.home-subject-card::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 360ms ease;
+}
+
+.home-subject-card::before {
+  background: radial-gradient(ellipse at 80% 8%, color-mix(in oklch, var(--subject-color) 14%, transparent), transparent 72%);
+}
+
+.home-subject-card::after {
+  background: url('/textures/grain.svg') repeat;
+  mix-blend-mode: soft-light;
+}
+
+.home-subject-card:is(:hover, :focus-visible)::before {
+  opacity: 1;
+}
+
+.home-subject-card:is(:hover, :focus-visible)::after {
+  opacity: .24;
+}
+
+.home-subject-card h3 {
+  transition: color 360ms ease;
+}
+
+.home-subject-card:is(:hover, :focus-visible) h3 {
+  color: var(--subject-color);
+}
+
+.subject-mechanics-orbiting {
+  transform-origin: 0 0;
+  animation: subject-orbit 9s linear infinite;
+}
+
+.subject-em-wave {
+  transform-origin: 50px 32px;
+  animation: subject-wave 2.8s ease-in-out infinite alternate;
+}
+
+.subject-thermo-particle {
+  animation: subject-particle var(--duration) ease-in-out var(--delay) infinite alternate;
+}
+
+.subject-quantum-wave {
+  transform-origin: 50px 32px;
+}
+
+.subject-quantum-wave--main {
+  animation: subject-wave-packet 4.5s ease-in-out infinite alternate;
+}
+
+.subject-quantum-wave--ghost {
+  animation: subject-wave-packet 4.5s ease-in-out -2.25s infinite alternate-reverse;
+}
+
+.subject-relativity-grid {
+  transform-origin: 50px 32px;
+  animation: subject-spacetime 5s ease-in-out infinite alternate;
+}
+
+.subject-relativity-well {
+  transform-origin: 50px 32px;
+  animation: subject-well 5s ease-in-out infinite alternate;
+}
+
+@keyframes subject-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes subject-wave {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(-1); }
+}
+
+@keyframes subject-particle {
+  0% { transform: translate(0, 0); }
+  45% { transform: translate(var(--drift-x), var(--drift-y)); }
+  100% { transform: translate(calc(var(--drift-x) * -.6), calc(var(--drift-y) * .5)); }
+}
+
+@keyframes subject-wave-packet {
+  from { transform: translateX(-2px) scaleY(.72); }
+  to { transform: translateX(2px) scaleY(1.14); }
+}
+
+@keyframes subject-spacetime {
+  from { transform: scale(.94, .9); opacity: .7; }
+  to { transform: scale(1.04, 1.06); opacity: 1; }
+}
+
+@keyframes subject-well {
+  from { transform: scale(.7); opacity: .08; }
+  to { transform: scale(1.55); opacity: .22; }
+}
+
+.home-roadmap-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse at 86% 8%, color-mix(in oklch, var(--accent-1) 8%, transparent), transparent 68%),
+    radial-gradient(ellipse at 12% 100%, color-mix(in oklch, var(--purple-0) 4%, transparent), transparent 62%);
+}
+
+.home-roadmap-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/textures/grain.svg') repeat;
+  content: '';
+  opacity: .18;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+:root:not(.dark) .home-subject-card::before {
+  background: radial-gradient(ellipse at 80% 8%, color-mix(in oklch, var(--subject-color) 9%, transparent), transparent 72%);
+}
+
+:root:not(.dark) .home-subject-card::after {
+  mix-blend-mode: multiply;
+}
+
+:root:not(.dark) .home-subject-card:is(:hover, :focus-visible)::after {
+  opacity: .14;
+}
+
+:root:not(.dark) .home-roadmap-card::before {
+  opacity: .08;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-action,
+  .home-subject-card::before,
+  .home-subject-card::after,
+  .home-subject-card h3 {
+    transition: none;
+  }
+
+  .subject-mechanics-orbiting,
+  .subject-em-wave,
+  .subject-thermo-particle,
+  .subject-quantum-wave,
+  .subject-relativity-grid,
+  .subject-relativity-well {
+    animation: none;
+  }
+}
+.home-hero {
+  display: grid;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(5rem, 10vw, 9rem) clamp(2rem, 5vw, 4rem);
+  width: min(calc(100% - 2 * var(--page-gutter)), 76rem);
+}
+
+.home-hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero h1 {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+}
+
+.home-simulation {
+  width: min(100%, 27rem);
+  margin-inline: auto;
+}
+
+@media (max-width: 47.999rem), (hover: none) and (pointer: coarse) {
+  .home-simulation {
+    display: none;
+  }
+}
+
+.home-trajectory {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  isolation: isolate;
+  cursor: crosshair;
+}
+
+.home-trajectory::before,
+.home-trajectory::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  pointer-events: none;
+}
+
+.home-trajectory::before {
+  background: radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--accent-1) 8%, transparent), transparent 65%);
+}
+
+.home-trajectory::after {
+  background: url('/textures/grain.svg') repeat;
+  opacity: .1;
+  mix-blend-mode: soft-light;
+  mask-image: radial-gradient(circle, black 20%, transparent 72%);
+}
+
+.home-trajectory svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.home-trajectory-reference,
+.home-trajectory-center-ring,
+.home-trajectory-body-ring,
+.home-trajectory-pointer-ring {
+  fill: none;
+}
+
+.home-trajectory-reference {
+  stroke: var(--foreground-3);
+  stroke-width: 1.3;
+  stroke-dasharray: 3 7;
+  opacity: .55;
+}
+
+.home-trajectory-field {
+  fill: var(--red-0);
+  opacity: .045;
+}
+
+.home-trajectory-center {
+  fill: var(--red-0);
+}
+
+.home-trajectory-center-ring {
+  stroke: var(--red-0);
+  stroke-width: 1.5;
+  opacity: .48;
+}
+
+.home-trajectory-trail {
+  fill: none;
+  stroke: var(--accent-1);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .8;
+}
+
+.home-trajectory-body {
+  fill: var(--accent-1);
+}
+
+.home-trajectory-body-core {
+  fill: var(--background-0);
+}
+
+.home-trajectory-body-ring {
+  stroke: var(--accent-1);
+  stroke-width: 1.5;
+  opacity: .6;
+}
+
+.home-trajectory-force {
+  stroke: var(--purple-0);
+  stroke-width: 1;
+  stroke-dasharray: 3 7;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.home-trajectory-pointer,
+.home-trajectory-pointer-ring {
+  stroke: var(--purple-0);
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.home-trajectory-pointer {
+  fill: var(--purple-0);
+}
+
+.home-trajectory-pointer-ring {
+  stroke-width: 1;
+  stroke-dasharray: 2 7;
+}
+
+.home-trajectory[data-engaged='true'] :is(.home-trajectory-force, .home-trajectory-pointer, .home-trajectory-pointer-ring) {
+  opacity: .8;
+}
+
+.home-simulation-info {
+  position: relative;
+  display: flow-root;
+  padding-inline: .5rem;
+}
+
+.home-simulation-info summary {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--background-1);
+  color: var(--foreground-2);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.home-simulation-info summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-simulation-info summary svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.home-simulation-info summary:is(:hover, :focus-visible),
+.home-simulation-info[open] summary {
+  background: var(--background-2);
+  color: var(--accent-1);
+}
+
+.home-simulation-info summary:focus-visible,
+.home-simulation-popover button:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 3px;
+}
+
+.home-simulation-popover {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + .75rem);
+  right: .5rem;
+  width: min(20rem, 100%);
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+  background: var(--background-1);
+  box-shadow: 0 1rem 2.5rem color-mix(in oklch, var(--background-0) 35%, transparent);
+  color: var(--foreground-2);
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
+.home-simulation-popover button {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .9rem;
+  color: var(--accent-1);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 240ms ease;
+}
+
+.home-simulation-popover button:hover {
+  color: var(--foreground-0);
+}
+
+@media (min-width: 64rem) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+
+  .home-hero h1 {
+    font-size: clamp(4rem, 5vw, 4.8rem);
+  }
+
+  .home-simulation {
+    width: min(100%, 35rem);
+  }
+}
+
+:root:not(.dark) .home-trajectory::after {
+  opacity: .08;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-trajectory-force,
+  .home-trajectory-pointer,
+  .home-trajectory-pointer-ring,
+  .home-simulation-info summary,
+  .home-simulation-popover button {
+    transition: none;
+  }
+}

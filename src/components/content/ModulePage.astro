@@ -1,5 +1,6 @@
 ---
 import { render } from "astro:content"
+import { Icon } from "astro-icon/components"
 import ModuleRoadmapLink from "./ModuleRoadmapLink.astro"
 import AuthorLinks from "./AuthorLinks.astro"
 
@@ -35,7 +36,7 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
   layout="focused"
 >
   <Section frameClass="max-w-[56rem]">
-    <header class="px-5 py-12 md:px-10 md:py-16 lg:px-15">
+    <header class="px-(--page-gutter) pt-(--section-space)">
       <div class="max-w-3xl">
         <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Module</p>
         <h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-foreground-0 md:text-5xl">
@@ -43,12 +44,45 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
         </h1>
         {module.data.description && <p class="mt-5 text-lg leading-8 text-foreground-2">{module.data.description}</p>}
         {module.data.authors.length > 0 && <p class="mt-5 font-mono text-xs text-foreground-3"><AuthorLinks authors={module.data.authors} /></p>}
-        <ModuleRoadmapLink module={module} />
         <div class="prose mt-8">
           <Content />
         </div>
       </div>
     </header>
+  </Section>
+
+  <Section frameClass="max-w-[56rem]">
+    <section class="mx-(--page-gutter) rounded-xl bg-background-1 p-4 md:p-7" aria-labelledby="module-notes-title">
+      <div class="flex flex-wrap items-center justify-between gap-4 px-4 pt-3 pb-5 md:px-5">
+        <div>
+          <p class="font-mono text-xs text-foreground-3">{notes.length} {notes.length === 1 ? "note" : "notes"}</p>
+          <h2 id="module-notes-title" class="mt-2 font-display text-2xl font-medium text-foreground-0">In this module</h2>
+        </div>
+        <ModuleRoadmapLink module={module} />
+      </div>
+      {
+        notes.length > 0 ? (
+          <ol class="space-y-1">
+            {notes.map((note, index) => (
+              <li>
+                <a href={`/${getNoteSlug(note)}`} class="grain-surface grain-surface--hover group grid grid-cols-[2rem_minmax(0,1fr)] gap-3 rounded-lg p-4 transition-colors duration-300 hover:bg-background-2/70 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-2 motion-reduce:transition-none md:grid-cols-[3rem_minmax(0,1fr)_1.25rem] md:p-5">
+                  <span class="font-mono text-sm text-foreground-3">{String(index + 1).padStart(2, "0")}</span>
+                  <div class="min-w-0">
+                    <h3 class="font-display text-xl font-medium text-foreground-0 transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none">
+                      {note.data.title}
+                    </h3>
+                    {note.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{note.data.description}</p>}
+                  </div>
+                  <Icon name="arrow-right" class="mt-1 hidden size-4 text-foreground-3 transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none md:block" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p class="px-4 py-8 text-foreground-2 md:px-5">No published notes yet.</p>
+        )
+      }
+    </section>
   </Section>
 
   {
@@ -58,10 +92,10 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
           <h2 id="related-modules-title" class="font-display text-2xl font-semibold text-foreground-0">
             Related modules
           </h2>
-          <ul class="mt-6 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2">
+          <ul class="mt-6 space-y-2">
             {related.map((entry) => (
-              <li class="bg-background-0">
-                <a href={`/${getModuleSlug(entry)}`} class="group block h-full p-5 hover:bg-background-1">
+              <li>
+                <a href={`/${getModuleSlug(entry)}`} class="group block rounded-md px-5 py-4 hover:bg-background-1">
                   <h3 class="font-display text-lg font-semibold text-foreground-0 group-hover:text-accent-1">
                     {entry.data.title}
                   </h3>
@@ -74,30 +108,4 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
       </Section>
     )
   }
-
-  <Section frameClass="max-w-[56rem]">
-    <section aria-label="Module notes">
-      {
-        notes.length > 0 ? (
-          <ol class="divide-y divide-border">
-            {notes.map((note, index) => (
-              <li>
-                <a href={`/${getNoteSlug(note)}`} class="group grid gap-3 px-5 py-6 md:grid-cols-[3rem_minmax(0,1fr)] md:px-10 lg:px-15">
-                  <span class="font-mono text-sm text-foreground-3">{String(index + 1).padStart(2, "0")}</span>
-                  <div>
-                    <h3 class="font-display text-xl font-semibold text-foreground-0 group-hover:text-accent-1">
-                      {note.data.title}
-                    </h3>
-                    {note.data.description && <p class="mt-2 leading-7 text-foreground-2">{note.data.description}</p>}
-                  </div>
-                </a>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p class="px-5 py-10 text-foreground-2 md:px-10 lg:px-15">No published notes yet.</p>
-        )
-      }
-    </section>
-  </Section>
 </BaseLayout>

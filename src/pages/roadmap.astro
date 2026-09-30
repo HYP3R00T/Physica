@@ -10,7 +10,7 @@ const { entries: roadmapEntries, segments, strands, modulesBySegment, overviews:
 const subjectOverviews = subjectEntries.map(entry => ({ id: `${entry.data.domain}/${entry.data.strand}`, title: entry.data.title }))
 const byId = new Map(segments.map(segment => [segment.id, segment]))
 ---
-<BaseLayout showFooterBorder title="Physics roadmap — Physica" description="Follow physics from its mathematical foundations through connected subjects, notes and further study.">
+<BaseLayout title="Physics roadmap — Physica" description="Follow physics from its mathematical foundations through connected subjects, notes and further study.">
   <div class="site-grid-frame w-full">
     {segments.length ? <RoadmapExplorer client:load segments={segments} strands={strands} subjectOverviews={subjectOverviews}>
       <div>

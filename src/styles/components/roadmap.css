@@ -1,42 +1,116 @@
-@property --roadmap-scrollbar-thumb {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: transparent;
-}
-
 @layer components {
+  .roadmap-map-header {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .roadmap-map-header::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url('/textures/grain.svg') repeat;
+    content: '';
+    opacity: .11;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  :root:not(.dark) .roadmap-map-header::before {
+    opacity: .07;
+    mix-blend-mode: multiply;
+  }
+
+  .roadmap-segment-row[aria-pressed='true']::before {
+    opacity: 1;
+  }
+
+  .roadmap-segment-row[aria-pressed='true']::after {
+    opacity: .14;
+  }
+
+  [data-roadmap-map-scroll],
   [data-roadmap-detail-body] {
     scrollbar-gutter: stable;
   }
 
-  @media (hover: hover) and (pointer: fine) and (min-width: 851px) {
+  @supports (-moz-appearance: none) {
+    [data-roadmap-map-scroll],
     [data-roadmap-detail-body] {
-      --roadmap-scrollbar-thumb: transparent;
-      transition: --roadmap-scrollbar-thumb 180ms ease-out;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
     }
 
-    #roadmap-detail:is(:hover, :focus-within) [data-roadmap-detail-body] {
-      --roadmap-scrollbar-thumb: var(--foreground-2);
+    [data-roadmap-path]:is(:hover, :has(:focus-visible)) [data-roadmap-map-scroll],
+    #roadmap-detail:is(:hover, :has(:focus-visible)) [data-roadmap-detail-body] {
+      scrollbar-color: var(--foreground-3) transparent;
     }
+  }
 
-    @supports not selector(::-webkit-scrollbar) {
-      [data-roadmap-detail-body] {
-        scrollbar-color: var(--roadmap-scrollbar-thumb) transparent;
-      }
-    }
+  [data-roadmap-map-viewport]::before,
+  [data-roadmap-map-viewport]::after,
+  [data-roadmap-detail-viewport]::before,
+  [data-roadmap-detail-viewport]::after {
+    position: absolute;
+    z-index: 1;
+    right: 8px;
+    left: 0;
+    height: 1.25rem;
+    content: '';
+    pointer-events: none;
+  }
 
-    [data-roadmap-detail-body]::-webkit-scrollbar-thumb {
-      background-color: var(--roadmap-scrollbar-thumb);
-    }
+  [data-roadmap-map-viewport]::before,
+  [data-roadmap-detail-viewport]::before {
+    top: 0;
+  }
 
-    #roadmap-detail:is(:hover, :focus-within) [data-roadmap-detail-body]::-webkit-scrollbar-thumb:hover {
-      background-color: var(--accent-1);
-    }
+  [data-roadmap-map-viewport]::after,
+  [data-roadmap-detail-viewport]::after {
+    bottom: 0;
+  }
 
-    @media (prefers-reduced-motion: reduce) {
-      [data-roadmap-detail-body] {
-        transition: none;
-      }
-    }
+  [data-roadmap-map-viewport]::before {
+    background: linear-gradient(to bottom, var(--background-1), transparent);
+  }
+
+  [data-roadmap-map-viewport]::after {
+    background: linear-gradient(to top, var(--background-1), transparent);
+  }
+
+  [data-roadmap-detail-viewport]::before {
+    height: 2rem;
+    background: linear-gradient(to bottom, var(--background-0), transparent);
+  }
+
+  [data-roadmap-detail-viewport]::after {
+    background: linear-gradient(to top, var(--background-0), transparent);
+  }
+
+  [data-roadmap-map-scroll]::-webkit-scrollbar,
+  [data-roadmap-detail-body]::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  [data-roadmap-map-scroll]::-webkit-scrollbar-button,
+  [data-roadmap-detail-body]::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  [data-roadmap-map-scroll]::-webkit-scrollbar-thumb,
+  [data-roadmap-detail-body]::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background-color: transparent;
+  }
+
+  [data-roadmap-path]:is(:hover, :has(:focus-visible)) [data-roadmap-map-scroll]::-webkit-scrollbar-thumb,
+  #roadmap-detail:is(:hover, :has(:focus-visible)) [data-roadmap-detail-body]::-webkit-scrollbar-thumb {
+    background-color: var(--foreground-3);
+  }
+
+  [data-roadmap-map-scroll]::-webkit-scrollbar-thumb:hover,
+  [data-roadmap-detail-body]::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-1);
   }
 }

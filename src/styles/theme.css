@@ -1,18 +1,18 @@
 :root {
-  /* Blue-neutral surfaces, from canvas to strongest separator */
-  --background-0: oklch(0.9850 0.003 255);
-  --background-1: oklch(0.9600 0.005 255);
-  --background-2: oklch(0.9200 0.007 255);
-  --background-3: oklch(0.8500 0.010 255);
+  /* Light surfaces share a slight cool hue */
+  --background-0: oklch(0.9900 0.005 248);
+  --background-1: oklch(0.9750 0.005 248);
+  --background-2: oklch(0.9450 0.005 248);
+  --background-3: oklch(0.8950 0.005 248);
 
-  /* Cool ink with clear steps from metadata to display text */
-  --foreground-3: oklch(0.5600 0.015 255);
-  --foreground-2: oklch(0.4600 0.016 255);
-  --foreground-1: oklch(0.3400 0.018 255);
-  --foreground-0: oklch(0.2100 0.020 255);
+  /* Neutral ink with clear steps from metadata to display text */
+  --foreground-3: oklch(0.4700 0 0);
+  --foreground-2: oklch(0.3600 0 0);
+  --foreground-1: oklch(0.2500 0 0);
+  --foreground-0: oklch(0.1300 0 0);
 
   /* Focused blue interaction family */
-  --accent-1: oklch(0.5500 0.155 250);
+  --accent-1: oklch(0.5300 0.170 250);
   --accent-2: color-mix(in oklch, var(--accent-1), black 14%);
 
   /* Semantic colors balanced to share similar visual weight */
@@ -70,20 +70,20 @@
 }
 
 .dark {
-  /* Deep blue-neutral surfaces mirroring the light hierarchy */
-  --background-0: oklch(0.1700 0.014 255);
-  --background-1: oklch(0.2050 0.014 255);
-  --background-2: oklch(0.2500 0.016 255);
-  --background-3: oklch(0.3200 0.018 255);
+  /* #0e1216 canvas; keep hue/chroma fixed and widen lightness steps for stronger layers */
+  --background-0: oklch(0.17977 0.01041 248.41);
+  --background-1: oklch(0.2050 0.0104 248.4);
+  --background-2: oklch(0.2400 0.0104 248.4);
+  --background-3: oklch(0.2900 0.0104 248.4);
 
-  /* Neutral light ink without the previous cream cast */
-  --foreground-3: oklch(0.6000 0.014 250);
-  --foreground-2: oklch(0.7200 0.012 250);
-  --foreground-1: oklch(0.8600 0.010 250);
-  --foreground-0: oklch(0.9600 0.008 250);
+  /* Neutral light ink */
+  --foreground-3: oklch(0.6700 0 0);
+  --foreground-2: oklch(0.7900 0 0);
+  --foreground-1: oklch(0.9100 0 0);
+  --foreground-0: oklch(0.9850 0 0);
 
   /* Brighter blue interaction family for dark surfaces */
-  --accent-1: oklch(0.7200 0.140 245);
+  --accent-1: oklch(0.7400 0.155 245);
   --accent-2: color-mix(in oklch, var(--accent-1), white 12%);
 
   /* Semantic colors lifted evenly for dark-mode contrast */

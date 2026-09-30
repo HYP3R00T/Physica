@@ -45,8 +45,8 @@ export default function RoadmapExplorer({
   const [focusedStrand, setFocusedStrand] = useState("")
   const [mobileView, setMobileView] = useState("path")
   const panels = useRef<HTMLDivElement>(null)
-  const body = useRef<HTMLDivElement>(null)
-  const columns = useRef<HTMLDivElement>(null)
+  const mapScroller = useRef<HTMLDivElement>(null)
+  const detailScroller = useRef<HTMLDivElement>(null)
   const graphScroller = useRef<HTMLElement>(null)
   const graphDrag = useRef<{ startX: number; scrollLeft: number } | null>(null)
   const visibleSegments = useMemo(
@@ -123,23 +123,22 @@ export default function RoadmapExplorer({
   const reveal = useCallback((id: string) => {
     const row = document.getElementById(anchor(id))
     if (!row) return
+    const scroller = mapScroller.current
+    if (!scroller?.clientHeight) return
     const bounds = row.getBoundingClientRect()
-    const header = columns.current?.querySelector<HTMLElement>("[data-roadmap-column-header]")
-    const offset = header ? Number.parseFloat(getComputedStyle(header).top) + header.offsetHeight : 120
-    const bottom = columns.current?.getBoundingClientRect().bottom ?? window.innerHeight
-    const maxScroll = Math.max(0, window.scrollY + bottom - window.innerHeight)
-    const needsReveal = bounds.top < offset || bounds.bottom > window.innerHeight
-    if (needsReveal || window.scrollY > maxScroll) {
-      const target = needsReveal ? window.scrollY + bounds.top - offset : window.scrollY
-      window.scrollTo({ top: Math.max(0, Math.min(target, maxScroll)), behavior: "instant" })
-    }
+    const viewport = scroller.getBoundingClientRect()
+    const inset = 24
+    if (bounds.top < viewport.top + inset)
+      scroller.scrollBy({ top: bounds.top - viewport.top - inset, behavior: "instant" })
+    else if (bounds.bottom > viewport.bottom - inset)
+      scroller.scrollBy({ top: bounds.bottom - viewport.bottom + inset, behavior: "instant" })
   }, [])
 
   function changeDomain(value: RoadmapFilter) {
     setDomain(value)
     requestAnimationFrame(() => {
       if (current && (value === "all" || current.domain === value)) reveal(current.id)
-      else window.scrollTo({ top: 0, behavior: "instant" })
+      else mapScroller.current?.scrollTo({ top: 0, behavior: "instant" })
     })
   }
 
@@ -148,14 +147,15 @@ export default function RoadmapExplorer({
     setSelected("")
     const url = roadmapUrl(location.href, value, "")
     if (url !== location.pathname + location.search + location.hash) history.pushState(null, "", url)
-    window.scrollTo({ top: 0, behavior: "instant" })
+    mapScroller.current?.scrollTo({ top: 0, behavior: "instant" })
+    detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
   }
 
   function openOverview(subject: string) {
     changeStrand(subject)
     setMobileView("details")
     requestAnimationFrame(() => {
-      body.current?.scrollTo({ top: 0, behavior: "instant" })
+      detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
       document.getElementById("roadmap-overview")?.focus({ preventScroll: true })
     })
   }
@@ -177,20 +177,22 @@ export default function RoadmapExplorer({
     if (mobile && openDetails) setMobileView("details")
     requestAnimationFrame(() => {
       if (mobile && openDetails) {
-        columns.current?.scrollIntoView({ block: "start" })
+        detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
         document.getElementById(`panel-${id.toLowerCase()}`)?.focus({ preventScroll: true })
-      } else reveal(id)
+      } else {
+        detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
+        reveal(id)
+      }
     })
   }
-  function scrollToTop(target: "page" | "segment") {
+  function scrollToTop() {
     const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
-    if (target === "page") {
-      window.scrollTo({ top: 0, behavior })
-    } else if (window.matchMedia("(width < 850px)").matches) {
-      columns.current?.scrollIntoView({ block: "start", behavior })
-    } else {
-      body.current?.scrollTo({ top: 0, behavior })
-    }
+    detailScroller.current?.scrollTo({ top: 0, behavior })
+  }
+
+  function scrollMapToTop() {
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
+    mapScroller.current?.scrollTo({ top: 0, behavior })
   }
 
   function showPath() {
@@ -240,9 +242,12 @@ export default function RoadmapExplorer({
         const mobile = window.matchMedia("(width < 850px)").matches
         if (mobile && (match || subject)) setMobileView("details")
         requestAnimationFrame(() => {
-          if (mobile && match) columns.current?.scrollIntoView({ block: "start" })
-          else if (match) reveal(match.id)
-          else window.scrollTo({ top: 0, behavior: "instant" })
+          if (match) window.scrollTo({ top: 0, behavior: "instant" })
+          if (mobile && match) detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
+          else if (match) {
+            detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
+            reveal(match.id)
+          } else detailScroller.current?.scrollTo({ top: 0, behavior: "instant" })
           if (subjectHeading) subjectHeading.scrollIntoView({ block: "nearest" })
           if (target?.hash.includes("--"))
             document.getElementById(target.hash.slice(1))?.scrollIntoView({ block: "nearest" })
@@ -267,7 +272,6 @@ export default function RoadmapExplorer({
     for (const panel of panels.current?.querySelectorAll<HTMLElement>("[data-subject-panel]") ?? []) {
       panel.hidden = Boolean(selected) || panel.dataset.subjectPanel !== focusedStrand
     }
-    if (body.current) body.current.scrollTop = 0
   }, [selected, focusedStrand])
 
   useEffect(() => {
@@ -310,22 +314,21 @@ export default function RoadmapExplorer({
     <section
       data-roadmap
       style={{ "--ring": current ? color(current.id) : "var(--accent-1)" } as CSSProperties}
-      className="group/roadmap text-foreground-0 [&_button]:cursor-pointer [&_:is(button,a,input,summary):focus-visible]:outline-2 [&_:is(button,a,input,summary):focus-visible]:outline-ring [&_:is(button,a,input,summary):focus-visible]:-outline-offset-2"
+      className="group/roadmap h-[calc(100dvh-4rem)] min-h-0 text-foreground-0 [&_button]:cursor-pointer [&_button]:transition-none [&_button]:active:translate-y-0 [&_:is(button,a,input,summary):focus-visible]:outline-2 [&_:is(button,a,input,summary):focus-visible]:outline-ring [&_:is(button,a,input,summary):focus-visible]:-outline-offset-2"
       aria-label="Physics curriculum explorer"
       data-mobile-view={mobileView}
     >
       <div
         data-roadmap-columns
-        className="grid min-h-[calc(100dvh-4rem)] scroll-mt-16 grid-cols-2 items-start max-[850px]:block max-[850px]:min-h-0"
-        ref={columns}
+        className="grid h-full min-h-0 grid-cols-2 gap-8 p-(--page-gutter) max-[850px]:flex max-[850px]:flex-col max-[850px]:gap-0"
       >
         <nav
-          className="hidden max-[850px]:sticky max-[850px]:top-16 max-[850px]:z-20 max-[850px]:flex max-[850px]:border-b max-[850px]:border-border max-[850px]:bg-background-0"
+          className="hidden max-[850px]:mb-5 max-[850px]:flex max-[850px]:shrink-0 max-[850px]:rounded-lg max-[850px]:bg-background-1"
           aria-label="Roadmap view"
         >
           <button
             type="button"
-            className="flex-1 border-b-2 border-transparent px-2 py-[.85rem] text-[.8rem] aria-pressed:border-accent-1 aria-pressed:text-accent-1"
+            className="flex-1 rounded-lg px-2 py-[.85rem] text-[.8rem] aria-pressed:bg-background-2 aria-pressed:text-accent-1"
             aria-pressed={mobileView === "path"}
             onClick={showPath}
           >
@@ -333,7 +336,7 @@ export default function RoadmapExplorer({
           </button>
           <button
             type="button"
-            className="flex-1 border-b-2 border-transparent px-2 py-[.85rem] text-[.8rem] aria-pressed:border-accent-1 aria-pressed:text-accent-1"
+            className="flex-1 rounded-lg px-2 py-[.85rem] text-[.8rem] aria-pressed:bg-background-2 aria-pressed:text-accent-1"
             aria-pressed={mobileView === "details"}
             onClick={() => setMobileView("details")}
           >
@@ -342,20 +345,31 @@ export default function RoadmapExplorer({
         </nav>
         <div
           data-roadmap-path
-          className="min-w-0 self-stretch border-r border-border max-[850px]:border-r-0 max-[850px]:group-data-[mobile-view=details]/roadmap:hidden"
+          className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden rounded-xl bg-background-1 max-[850px]:h-auto max-[850px]:flex-1 max-[850px]:group-data-[mobile-view=details]/roadmap:hidden"
         >
           <div
             data-roadmap-column-header
-            className="flex min-h-12 flex-wrap items-stretch border-b border-border font-mono text-xs sticky top-16 z-10 bg-background-0 max-[850px]:top-[6.9rem] max-[850px]:grid max-[850px]:grid-cols-[minmax(0,1fr)_auto]"
+            className="roadmap-map-header flex shrink-0 flex-wrap items-center gap-x-2 bg-background-1 p-5 font-mono text-xs max-[450px]:p-4"
           >
-            <div
-              data-roadmap-heading-text
-              className="flex min-w-40 flex-1 items-center justify-between gap-3 px-4 py-3 [&>span]:text-foreground-2 max-[850px]:min-w-0 max-[850px]:whitespace-nowrap"
-            >
+            <div data-roadmap-heading-text className="flex min-w-0 basis-full items-center justify-between gap-3 pb-2">
               <h2>The learning path</h2>
-              <span aria-live="polite">{visibleSegments.length} segments</span>
+              <div className="flex shrink-0 items-center gap-2">
+                <span className="text-foreground-2" aria-live="polite">
+                  {visibleSegments.length} segments
+                </span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Scroll to top of learning path"
+                  title="Scroll to top of learning path"
+                  onClick={scrollMapToTop}
+                >
+                  <UpArrow />
+                </Button>
+              </div>
             </div>
-            <fieldset className="flex items-center gap-1 border-l border-border px-2 py-2 max-[850px]:col-span-2 max-[850px]:row-start-2 max-[850px]:justify-center max-[850px]:border-t max-[850px]:border-l-0">
+            <fieldset className="flex flex-1 items-center gap-1 py-1">
               <legend className="sr-only">Filter learning path</legend>
               {(
                 [
@@ -371,7 +385,7 @@ export default function RoadmapExplorer({
                   variant="ghost"
                   className={
                     domain === value
-                      ? "border-accent-1/50 bg-background-1 text-accent-1 hover:bg-background-2 hover:text-accent-1 dark:hover:bg-background-2"
+                      ? "bg-background-2 text-accent-1 hover:bg-background-2 hover:text-accent-1 dark:hover:bg-background-2"
                       : "text-foreground-2"
                   }
                   aria-pressed={domain === value}
@@ -382,22 +396,7 @@ export default function RoadmapExplorer({
                 </Button>
               ))}
             </fieldset>
-            <div
-              data-roadmap-heading-actions
-              className="flex shrink-0 items-center justify-center border-l border-border px-3 py-2 max-[850px]:col-start-2 max-[850px]:row-start-1"
-            >
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Scroll to top of page"
-                title="Scroll to top of page"
-                onClick={() => scrollToTop("page")}
-              >
-                <UpArrow />
-              </Button>
-            </div>
-            <div className="flex w-full min-w-0 basis-full flex-col gap-2 border-t border-border px-4 py-2 max-[850px]:col-span-2">
+            <div className="flex w-full min-w-0 basis-full flex-col gap-2 pt-2">
               <div className="flex min-w-0 items-center gap-3">
                 <label htmlFor="roadmap-strand" className="shrink-0">
                   Subject
@@ -427,121 +426,134 @@ export default function RoadmapExplorer({
               </div>
             </div>
           </div>
-          <div id="roadmap-map">
-            {visibleSegments.length === 0 && (
-              <p role="status" className="p-6 text-sm text-foreground-2">
-                {focusedStrand
-                  ? "No segments match this strand and subject."
-                  : `No ${domain === "mathematics" ? "mathematics" : "physics"} segments published yet.`}
-              </p>
-            )}
+          <div data-roadmap-map-viewport className="relative min-h-0 flex-1">
             <div
-              className="grid grid-cols-[min(50%,var(--roadmap-full-gutter))_minmax(0,1fr)] max-[850px]:grid-cols-2"
-              style={{ "--roadmap-full-gutter": `${graphWidth}px` } as CSSProperties}
+              id="roadmap-map"
+              ref={mapScroller}
+              data-roadmap-map-scroll
+              className="h-full overflow-y-auto overscroll-contain py-5"
             >
-              <section
-                ref={graphScroller}
-                aria-label="Learning path graph; scroll horizontally to explore strands"
-                // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need to scroll the graph horizontally.
-                tabIndex={0}
-                className="min-w-0 cursor-grab overflow-x-auto overscroll-x-contain active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
-                onPointerDown={(event) => {
-                  if (event.pointerType !== "mouse" || event.button !== 0) return
-                  graphDrag.current = { startX: event.clientX, scrollLeft: event.currentTarget.scrollLeft }
-                  event.currentTarget.setPointerCapture(event.pointerId)
-                }}
-                onPointerMove={(event) => {
-                  if (!graphDrag.current) return
-                  event.currentTarget.scrollLeft =
-                    graphDrag.current.scrollLeft + graphDrag.current.startX - event.clientX
-                }}
-                onPointerUp={() => {
-                  graphDrag.current = null
-                }}
-                onPointerCancel={() => {
-                  graphDrag.current = null
-                }}
-                onLostPointerCapture={() => {
-                  graphDrag.current = null
-                }}
+              {visibleSegments.length === 0 && (
+                <p role="status" className="p-6 text-sm text-foreground-2">
+                  {focusedStrand
+                    ? "No segments match this strand and subject."
+                    : `No ${domain === "mathematics" ? "mathematics" : "physics"} segments published yet.`}
+                </p>
+              )}
+              <div
+                className="grid grid-cols-[min(50%,var(--roadmap-full-gutter))_minmax(0,1fr)] max-[850px]:grid-cols-2"
+                style={{ "--roadmap-full-gutter": `${graphWidth}px` } as CSSProperties}
               >
-                <div className="relative" style={{ width: graphWidth, height: visibleSegments.length * ROW }}>
-                  <svg
-                    data-roadmap-graph
-                    className="pointer-events-none absolute top-0 left-2.5"
-                    width={graphWidth - 12}
-                    height={visibleSegments.length * ROW}
-                    aria-hidden="true"
-                  >
-                    {edgePaths.map(({ lane, active, d }) => (
-                      <path
-                        key={`${lane}-${active}`}
-                        d={d}
-                        fill="none"
-                        stroke={`color-mix(in srgb, ${strandById.get(lane)?.color} ${active ? 95 : 13}%, var(--background-0))`}
-                        strokeWidth={active ? 2.5 : 1.2}
-                      />
-                    ))}
-                    {visibleSegments.map((segment, index) => (
-                      <circle
-                        key={segment.id}
-                        data-selected={segment.id === selected}
-                        cx={x(segment.id)}
-                        cy={index * ROW + ROW / 2}
-                        r={segment.id === selected ? 7 : 4}
-                        fill="var(--background-0)"
-                        stroke={color(segment.id)}
-                        strokeWidth={segment.id === selected ? 3 : 2}
-                      />
-                    ))}
-                  </svg>
-                </div>
-              </section>
-              <ol data-roadmap-rows className="m-0 min-w-0 list-none p-0">
-                {visibleSegments.map((segment) => (
-                  <li key={segment.id} style={{ height: ROW }}>
-                    <button
-                      type="button"
-                      id={anchor(segment.id)}
-                      aria-pressed={selected === segment.id}
-                      aria-controls="roadmap-detail"
-                      onClick={() => choose(segment.id, undefined, selected === segment.id)}
-                      className="group/segment flex h-full w-full scroll-mt-32 flex-col justify-center gap-2 border-b border-l-2 border-b-border border-l-transparent px-4 py-3 text-left hover:bg-background-1 aria-pressed:border-l-(--segment-color) aria-pressed:bg-(--segment-color)/8 max-[450px]:px-[.65rem] max-[450px]:py-2"
-                      data-connected={connected.has(segment.id)}
-                      style={{ "--segment-color": color(segment.id), "--ring": color(segment.id) } as CSSProperties}
+                <section
+                  ref={graphScroller}
+                  aria-label="Learning path graph; scroll horizontally to explore strands"
+                  // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need to scroll the graph horizontally.
+                  tabIndex={0}
+                  className="min-w-0 cursor-grab overflow-x-auto overscroll-x-contain active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+                  onPointerDown={(event) => {
+                    if (event.pointerType !== "mouse" || event.button !== 0) return
+                    graphDrag.current = { startX: event.clientX, scrollLeft: event.currentTarget.scrollLeft }
+                    event.currentTarget.setPointerCapture(event.pointerId)
+                  }}
+                  onPointerMove={(event) => {
+                    if (!graphDrag.current) return
+                    event.currentTarget.scrollLeft =
+                      graphDrag.current.scrollLeft + graphDrag.current.startX - event.clientX
+                  }}
+                  onPointerUp={() => {
+                    graphDrag.current = null
+                  }}
+                  onPointerCancel={() => {
+                    graphDrag.current = null
+                  }}
+                  onLostPointerCapture={() => {
+                    graphDrag.current = null
+                  }}
+                >
+                  <div className="relative" style={{ width: graphWidth, height: visibleSegments.length * ROW }}>
+                    <svg
+                      data-roadmap-graph
+                      className="pointer-events-none absolute top-0 left-2.5"
+                      width={graphWidth - 12}
+                      height={visibleSegments.length * ROW}
+                      aria-hidden="true"
                     >
-                      <span
-                        data-roadmap-row-meta
-                        className="flex justify-between gap-2 font-mono text-[.65rem] text-foreground-3 group-data-[connected=true]/segment:text-(--segment-color) max-[450px]:text-[.6rem]"
+                      {edgePaths.map(({ lane, active, d }) => (
+                        <path
+                          key={`${lane}-${active}`}
+                          d={d}
+                          fill="none"
+                          stroke={`color-mix(in srgb, ${strandById.get(lane)?.color} ${active ? 95 : 13}%, var(--background-1))`}
+                          strokeWidth={active ? 2.5 : 1.2}
+                        />
+                      ))}
+                      {visibleSegments.map((segment, index) => (
+                        <circle
+                          key={segment.id}
+                          data-selected={segment.id === selected}
+                          cx={x(segment.id)}
+                          cy={index * ROW + ROW / 2}
+                          r={segment.id === selected ? 7 : 4}
+                          fill="var(--background-1)"
+                          stroke={color(segment.id)}
+                          strokeWidth={segment.id === selected ? 3 : 2}
+                        />
+                      ))}
+                    </svg>
+                  </div>
+                </section>
+                <ol data-roadmap-rows className="m-0 min-w-0 list-none p-0 pr-3">
+                  {visibleSegments.map((segment) => (
+                    <li key={segment.id} className="py-0.5" style={{ height: ROW }}>
+                      <button
+                        type="button"
+                        id={anchor(segment.id)}
+                        aria-pressed={selected === segment.id}
+                        aria-controls="roadmap-detail"
+                        onClick={() => choose(segment.id)}
+                        className="grain-surface grain-surface--hover roadmap-segment-row group/segment flex h-full w-full flex-col justify-center gap-2 rounded-lg px-4 py-3 text-left hover:bg-background-2/70 aria-pressed:bg-background-2/70 max-[450px]:px-[.65rem] max-[450px]:py-2"
+                        data-connected={connected.has(segment.id)}
+                        style={
+                          {
+                            "--segment-color": color(segment.id),
+                            "--grain-color": color(segment.id),
+                            "--ring": color(segment.id),
+                          } as CSSProperties
+                        }
                       >
-                        <span className="min-w-0 truncate">{segment.subject}</span>
-                        <span className="shrink-0">{segment.stage}</span>
-                      </span>
-                      <span
-                        data-roadmap-row-title
-                        className="text-[.85rem] leading-[1.35] text-foreground-1 group-aria-pressed/segment:font-semibold group-aria-pressed/segment:text-foreground-0 max-[450px]:text-[.8rem]"
-                      >
-                        {segment.title}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
+                        <span
+                          data-roadmap-row-meta
+                          className="flex justify-between gap-2 font-mono text-[.65rem] text-foreground-3 group-data-[connected=true]/segment:text-(--segment-color) max-[450px]:text-[.6rem]"
+                        >
+                          <span className="min-w-0 truncate">{segment.subject}</span>
+                          <span className="shrink-0">{segment.stage}</span>
+                        </span>
+                        <span
+                          data-roadmap-row-title
+                          className="text-[.85rem] leading-[1.35] text-foreground-1 group-aria-pressed/segment:font-semibold group-aria-pressed/segment:text-foreground-0 max-[450px]:text-[.8rem]"
+                        >
+                          {segment.title}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
         </div>
         <aside
-          className="sticky top-16 flex max-h-[calc(100dvh-4rem)] min-w-0 flex-col **:[[hidden]]:hidden! max-[850px]:static max-[850px]:max-h-none max-[850px]:group-data-[mobile-view=path]/roadmap:hidden"
+          className="flex h-full min-h-0 min-w-0 flex-col **:[[hidden]]:hidden! max-[850px]:h-auto max-[850px]:flex-1 max-[850px]:group-data-[mobile-view=path]/roadmap:hidden"
           id="roadmap-detail"
           aria-label={current ? "Selected segment" : "Subject overview"}
         >
           <div
             data-roadmap-column-header
-            className="flex min-h-12 items-stretch border-b border-border font-mono text-xs shrink-0"
+            className="z-10 flex shrink-0 items-start gap-5 bg-background-0/95 px-5 pt-5 pb-4 font-mono text-xs backdrop-blur-lg"
           >
             <div
               data-roadmap-heading-text
-              className="flex min-w-0 flex-1 items-center justify-between gap-3 px-6 py-3 [&>span]:text-foreground-2"
+              className="flex min-w-0 flex-1 items-center justify-between gap-3 [&>span]:text-foreground-2"
             >
               {current ? (
                 <Button
@@ -561,67 +573,66 @@ export default function RoadmapExplorer({
               )}
               <span aria-live="polite">{current?.stage}</span>
             </div>
-            <div
-              data-roadmap-heading-actions
-              className="flex shrink-0 items-center justify-center border-l border-border px-3 py-2"
-            >
+            <div data-roadmap-heading-actions className="flex shrink-0 items-center justify-center">
               <Button
                 type="button"
                 variant="ghost"
                 size="icon-sm"
                 aria-label="Scroll to top of segment"
                 title="Scroll to top of segment"
-                onClick={() => scrollToTop("segment")}
+                onClick={scrollToTop}
               >
                 <UpArrow />
               </Button>
             </div>
           </div>
-          <div
-            data-roadmap-detail-body
-            className="min-h-0 overflow-y-auto overscroll-contain px-10 pt-8 pb-12 scrollbar-gutter-stable focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2 max-[1100px]:p-6 max-[850px]:overflow-visible max-[850px]:p-6"
-            ref={body}
-          >
-            <div id="roadmap-overview" tabIndex={-1} className="outline-none" />
-            {!current && !subjectOverviews.some((subject) => subject.id === focusedStrand) && (
-              <div>
-                <h1 className="mb-6 text-3xl font-semibold text-foreground-1">
-                  {focusedStrand ? strandLabel(focusedStrand) : "Explore the roadmap"}
-                </h1>
-                <p className="text-sm leading-relaxed text-foreground-2">
-                  {focusedStrand
-                    ? "Explore this subject through its segments and direct prerequisites. Choose a segment from the learning path to see its topics."
-                    : "Choose a subject to focus the map, or select a segment from the learning path to see its topics."}
-                </p>
-                {!focusedStrand && (
-                  <ul className="mt-6 space-y-3 text-sm">
-                    {strandOptions.map((strand) => (
-                      <li key={strand.id}>
-                        <a
-                          className="text-accent-1 hover:underline"
-                          href={`?subject=${strand.id.split("/").at(-1)}`}
-                          onClick={(event) => {
-                            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-                            event.preventDefault()
-                            openOverview(strand.id)
-                          }}
-                        >
-                          {strandLabel(strand.id)}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <p className="mt-4 font-mono text-xs text-foreground-2">
-                  {visibleSegments.length} segments in this view
-                </p>
+          <div data-roadmap-detail-viewport className="relative min-h-0 flex-1">
+            <div
+              data-roadmap-detail-body
+              className="h-full overflow-y-auto overscroll-contain px-5 pt-10 pb-12 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+              ref={detailScroller}
+            >
+              <div id="roadmap-overview" tabIndex={-1} className="outline-none" />
+              {!current && !subjectOverviews.some((subject) => subject.id === focusedStrand) && (
+                <div>
+                  <h1 className="mb-6 font-display text-4xl font-medium tracking-tight text-foreground-0">
+                    {focusedStrand ? strandLabel(focusedStrand) : "Explore the roadmap"}
+                  </h1>
+                  <p className="text-sm leading-relaxed text-foreground-2">
+                    {focusedStrand
+                      ? "Explore this subject through its segments and direct prerequisites. Choose a segment from the learning path to see its topics."
+                      : "Choose a subject to focus the map, or select a segment from the learning path to see its topics."}
+                  </p>
+                  {!focusedStrand && (
+                    <ul className="mt-8 grid gap-3 text-sm sm:grid-cols-2">
+                      {strandOptions.map((strand) => (
+                        <li key={strand.id}>
+                          <a
+                            className="grain-surface grain-surface--hover flex h-full items-center rounded-lg bg-background-1 px-4 py-3 text-foreground-1 transition-colors duration-300 hover:bg-background-2/70 hover:text-accent-1 focus-visible:text-accent-1 motion-reduce:transition-none"
+                            href={`?subject=${strand.id.split("/").at(-1)}`}
+                            onClick={(event) => {
+                              if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+                              event.preventDefault()
+                              openOverview(strand.id)
+                            }}
+                          >
+                            {strandLabel(strand.id)}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <p className="mt-4 font-mono text-xs text-foreground-2">
+                    {visibleSegments.length} segments in this view
+                  </p>
+                </div>
+              )}
+              {/* Links and checkboxes in the server-rendered MDX retain native keyboard behaviour. */}
+              {/* biome-ignore lint/a11y/noStaticElementInteractions: Delegates native anchor clicks in the Astro slot. */}
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: Native anchors already dispatch keyboard clicks. */}
+              <div ref={panels} onClick={followConnection}>
+                {content}
               </div>
-            )}
-            {/* Links and checkboxes in the server-rendered MDX retain native keyboard behaviour. */}
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: Delegates native anchor clicks in the Astro slot. */}
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: Native anchors already dispatch keyboard clicks. */}
-            <div ref={panels} onClick={followConnection}>
-              {content}
             </div>
           </div>
         </aside>

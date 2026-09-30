@@ -1,4 +1,4 @@
-import type Fuse from "fuse.js"
+import Fuse from "fuse.js"
 import { BookOpen, FileText, Route, Search, X } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 import * as React from "react"
@@ -72,10 +72,7 @@ export function SearchPalette() {
       setError(false)
 
       try {
-        const [response, { default: FuseSearch }] = await Promise.all([
-          fetch("/api/search-index.json", { cache: "no-cache" }),
-          import("fuse.js"),
-        ])
+        const response = await fetch("/api/search-index.json", { cache: "no-cache" })
 
         if (!response.ok) throw new Error(`Search index returned ${response.status}`)
 
@@ -85,7 +82,7 @@ export function SearchPalette() {
             item.type === "module" || item.type === "note" || item.type === "article" || item.type === "roadmap",
         )
         setItems(searchableItems)
-        fuse.current = new FuseSearch(searchableItems, fuseOptions)
+        fuse.current = new Fuse(searchableItems, fuseOptions)
       } catch (searchError) {
         console.error("Unable to load the search index", searchError)
         setError(true)
@@ -97,13 +94,14 @@ export function SearchPalette() {
     void loadIndex()
   }, [open])
 
-  const results = React.useMemo(() => {
+  const matchingResults = React.useMemo(() => {
     const normalizedQuery = query.trim()
     const matches =
       normalizedQuery && fuse.current ? fuse.current.search(normalizedQuery).map(({ item }) => item) : items
     const filtered = filter === "all" ? matches : matches.filter((item) => resultGroup(item) === filter)
-    return filtered.slice(0, 24)
+    return filtered
   }, [filter, items, query])
+  const results = React.useMemo(() => matchingResults.slice(0, 24), [matchingResults])
 
   const groups = React.useMemo(
     () =>
@@ -160,12 +158,13 @@ export function SearchPalette() {
       <DialogPrimitive.Trigger asChild>
         <button
           type="button"
-          className="group inline-flex h-9 min-w-32 shrink-0 items-center justify-between gap-5 rounded-md border border-border bg-background-0 px-3 text-sm text-foreground-2 transition-colors hover:border-foreground-3 hover:bg-background-1 hover:text-foreground-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          className="group inline-flex size-9 shrink-0 items-center justify-center gap-3 rounded-lg bg-background-1 text-sm text-foreground-2 transition-colors duration-200 hover:bg-background-2/70 hover:text-foreground-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:w-auto md:min-w-36 md:justify-start md:px-3"
           aria-label={`Search Physica (${modifierKey}+K)`}
           title={`Search Physica (${modifierKey}+K)`}
         >
           <Search className="size-4 shrink-0" aria-hidden="true" />
-          <KbdGroup className="inline-flex">
+          <span className="hidden flex-1 text-left md:inline">Search</span>
+          <KbdGroup className="hidden md:inline-flex">
             <Kbd>{modifierKey}</Kbd>
             <Kbd>K</Kbd>
           </KbdGroup>
@@ -175,7 +174,7 @@ export function SearchPalette() {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-100 bg-background-0/75 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
         <DialogPrimitive.Content
-          className="fixed top-[10vh] left-1/2 z-101 flex max-h-[80dvh] w-[min(calc(100%-2rem),44rem)] -translate-x-1/2 flex-col overflow-hidden rounded-lg border border-border bg-background-0 shadow-2xl focus:outline-none"
+          className="fixed top-[10vh] left-1/2 z-101 flex max-h-[80dvh] w-[min(calc(100%-2rem),44rem)] -translate-x-1/2 flex-col overflow-hidden rounded-xl border border-border bg-background-0 p-2 shadow-2xl focus:outline-none"
           onOpenAutoFocus={(event) => {
             event.preventDefault()
             input.current?.focus()
@@ -186,8 +185,14 @@ export function SearchPalette() {
             Search modules, notes, roadmap topics, and blog posts.
           </DialogPrimitive.Description>
 
-          <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
-            <Search className="size-5 shrink-0 text-foreground-3" aria-hidden="true" />
+          <div className="flex h-14 shrink-0 items-center gap-3 rounded-lg bg-background-1 px-4">
+            <Search
+              className={cn(
+                "size-5 shrink-0 transition-colors duration-200",
+                query ? "text-accent-1" : "text-foreground-3",
+              )}
+              aria-hidden="true"
+            />
             <input
               ref={input}
               type="search"
@@ -205,7 +210,7 @@ export function SearchPalette() {
             <DialogPrimitive.Close asChild>
               <button
                 type="button"
-                className="rounded-md p-2 text-foreground-3 transition-colors hover:bg-background-1 hover:text-foreground-0"
+                className="rounded-md p-2 text-foreground-3 transition-colors hover:bg-background-2 hover:text-foreground-0"
                 aria-label="Close search"
               >
                 <X className="size-4" aria-hidden="true" />
@@ -213,10 +218,7 @@ export function SearchPalette() {
             </DialogPrimitive.Close>
           </div>
 
-          <fieldset
-            className="flex shrink-0 items-center gap-1 border-b border-border px-3 py-2"
-            aria-label="Search filters"
-          >
+          <fieldset className="flex shrink-0 items-center gap-1 overflow-x-auto px-2 py-3" aria-label="Search filters">
             {filters.map((item) => (
               <button
                 key={item.value}
@@ -226,7 +228,7 @@ export function SearchPalette() {
                   setFilter(item.value)
                   setActiveIndex(0)
                 }}
-                className="rounded-md px-3 py-1.5 font-mono text-xs whitespace-nowrap text-foreground-2 transition-colors hover:bg-background-1 hover:text-foreground-0 aria-pressed:bg-background-2 aria-pressed:text-accent-1"
+                className="rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap text-foreground-2 transition-colors hover:bg-background-1 hover:text-foreground-0 aria-pressed:bg-background-2 aria-pressed:text-accent-1"
               >
                 {item.label}
               </button>
@@ -234,7 +236,7 @@ export function SearchPalette() {
           </fieldset>
 
           <div
-            className="min-h-[min(12rem,30dvh)] flex-1 overflow-y-auto overscroll-contain p-3 scrollbar-gutter-stable"
+            className="min-h-[min(12rem,30dvh)] flex-1 overflow-y-auto overscroll-contain px-2 pb-2 scrollbar-gutter-stable"
             role="listbox"
             aria-label="Search results"
           >
@@ -244,14 +246,19 @@ export function SearchPalette() {
               <p className="px-3 py-10 text-center text-sm text-foreground-3">No matching results found.</p>
             )}
 
+            {!loading && !error && query.trim() && results.length > 0 && (
+              <p className="px-3 pb-3 text-xs text-foreground-3">
+                {matchingResults.length > results.length
+                  ? `Top ${results.length} of ${matchingResults.length} results`
+                  : `${results.length} ${results.length === 1 ? "result" : "results"}`}
+              </p>
+            )}
+
             {!loading &&
               !error &&
               groups.map((group) => (
-                <section key={group.type} className="not-first:mt-3" aria-labelledby={`search-${group.type}-label`}>
-                  <h2
-                    id={`search-${group.type}-label`}
-                    className="px-3 py-2 font-mono text-[0.6875rem] tracking-[0.12em] text-foreground-3 uppercase"
-                  >
+                <section key={group.type} className="not-first:mt-5" aria-labelledby={`search-${group.type}-label`}>
+                  <h2 id={`search-${group.type}-label`} className="px-3 pb-2 text-xs font-medium text-foreground-3">
                     {group.label}
                   </h2>
                   <div className="grid gap-1">
@@ -271,11 +278,19 @@ export function SearchPalette() {
                           onMouseEnter={() => setActiveIndex(currentIndex)}
                           onClick={() => selectResult(result)}
                           className={cn(
-                            "grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-md px-3 py-3 text-left transition-colors",
-                            activeIndex === currentIndex ? "bg-background-1" : "hover:bg-background-1",
+                            "group/result grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors duration-200",
+                            activeIndex === currentIndex ? "bg-background-2/70" : "hover:bg-background-1",
                           )}
                         >
-                          <ResultIcon className="size-4 text-foreground-3" aria-hidden="true" />
+                          <ResultIcon
+                            className={cn(
+                              "size-4 transition-colors duration-200",
+                              activeIndex === currentIndex
+                                ? "text-accent-1"
+                                : "text-foreground-3 group-hover/result:text-accent-1",
+                            )}
+                            aria-hidden="true"
+                          />
                           <span className="min-w-0">
                             <span className="block truncate text-sm font-medium text-foreground-0">{result.title}</span>
                             {subtitle && (
@@ -293,7 +308,7 @@ export function SearchPalette() {
               ))}
           </div>
 
-          <div className="hidden shrink-0 items-center gap-4 border-t border-border px-4 py-2 text-xs text-foreground-3 sm:flex">
+          <div className="hidden shrink-0 items-center gap-4 px-4 py-2 text-xs text-foreground-3 sm:flex">
             <span className="inline-flex items-center gap-1.5">
               <KbdGroup>
                 <Kbd>↑</Kbd>

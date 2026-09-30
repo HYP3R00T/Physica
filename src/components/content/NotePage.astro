@@ -1,10 +1,11 @@
 ---
 import { render } from "astro:content"
+import { Icon } from "astro-icon/components"
 import ModuleRoadmapLink from "./ModuleRoadmapLink.astro"
 
 import NotesLayout from "@/layouts/NotesLayout.astro"
 import AuthorLinks from "./AuthorLinks.astro"
-import { getModuleSlug } from "@/lib/content"
+import { getModuleSlug, getNoteSlug } from "@/lib/content"
 import type { LearningEntry } from "@/lib/content"
 
 interface Props {
@@ -15,8 +16,11 @@ interface Props {
 
 const { note, module, notes } = Astro.props as Props
 const { Content, headings } = await render(note)
+const noteIndex = notes.findIndex((entry) => entry.id === note.id)
+const previous = notes[noteIndex - 1]
+const next = notes[noteIndex + 1]
+const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 3)
 
-const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(date)
 ---
 
 <NotesLayout
@@ -28,34 +32,45 @@ const formatDate = (date: Date) => new Intl.DateTimeFormat("en", { dateStyle: "m
   headings={headings}
 >
   <article>
-    <header class="border-b border-border px-5 py-12 md:px-10 md:py-16 lg:px-14">
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-xs text-foreground-3">
-        <a href={`/${getModuleSlug(module)}`} class="text-accent-1 hover:text-accent-2">{module.data.title}</a>
-        {note.data.draft && <span class="text-orange-0">Draft</span>}
+    <header class="grain-surface grain-surface--always mt-10 rounded-xl bg-background-1 p-6 md:-mx-6 md:mt-16 md:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 font-mono text-xs">
+        <a href={`/${getModuleSlug(module)}`} class="inline-flex items-center gap-2 text-accent-1 transition-colors hover:text-accent-2"><Icon name="arrow-left" class="size-3.5" aria-hidden="true" />{module.data.title}</a>
+        {note.data.draft && <span class="rounded-md bg-orange-0/10 px-2.5 py-1 font-medium text-orange-0">Work in progress</span>}
       </div>
 
-      <h1 class="mt-4 font-display text-4xl leading-tight font-semibold tracking-tight text-foreground-0 md:text-5xl">
+      <h1 class="mt-8 font-display text-[clamp(2.4rem,4vw,3.5rem)] leading-[1.08] font-medium tracking-tight text-foreground-0">
         {note.data.title}
       </h1>
+      {note.data.description && <p class="mt-5 max-w-2xl text-lg leading-8 text-foreground-2">{note.data.description}</p>}
 
-      {note.data.authors.length > 0 && <p class="mt-5 font-mono text-xs text-foreground-3"><AuthorLinks authors={note.data.authors} /></p>}
-
-      {
-        (note.data.created || note.data.updated) && (
-          <p class="mt-5 font-mono text-xs text-foreground-3">
-            {note.data.updated
-              ? `Updated ${formatDate(note.data.updated)}`
-              : note.data.created && `Created ${formatDate(note.data.created)}`}
-          </p>
-        )
-      }
-
-      <ModuleRoadmapLink module={module} />
+      <div class="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground-2">
+          {note.data.authors.length > 0 && <AuthorLinks authors={note.data.authors} />}
+        </p>
+        <ModuleRoadmapLink module={module} />
+      </div>
     </header>
 
-    <div class="prose px-5 py-10 md:px-10 lg:px-14">
+    {tableOfContents.length > 0 && <details class="mt-6 rounded-lg bg-background-1 p-4 min-[72rem]:hidden">
+      <summary class="cursor-pointer font-mono text-sm text-foreground-1">On this page</summary>
+      <nav class="mt-4 grid gap-2" aria-label="Note sections">
+        {tableOfContents.map((heading) => <a class:list={["text-sm leading-6 text-foreground-2 hover:text-accent-1", heading.depth === 3 && "pl-3"]} href={`#${heading.slug}`}>{heading.text}</a>)}
+      </nav>
+    </details>}
+
+    <div class="prose pt-12 pb-12">
       <Content />
     </div>
 
+    {(previous || next) && <nav class="mb-20 grid gap-3 sm:grid-cols-2" aria-label="Continue through the module">
+      {previous && <a href={`/${getNoteSlug(previous)}`} class="grain-surface grain-surface--hover group flex min-h-28 flex-col justify-between rounded-xl bg-background-1 p-5 transition-colors duration-300 hover:bg-background-2/70 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-2 motion-reduce:transition-none">
+        <span class="flex items-center gap-2 font-mono text-xs text-foreground-3"><Icon name="arrow-left" class="size-4" aria-hidden="true" /> Previous note</span>
+        <span class="font-display text-lg font-medium text-foreground-0 transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none">{previous.data.title}</span>
+      </a>}
+      {next && <a href={`/${getNoteSlug(next)}`} class:list={["grain-surface grain-surface--hover group flex min-h-28 flex-col justify-between rounded-xl bg-background-1 p-5 transition-colors duration-300 hover:bg-background-2/70 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-2 motion-reduce:transition-none", !previous && "sm:col-start-2"]}>
+        <span class="flex items-center justify-end gap-2 font-mono text-xs text-foreground-3">Next note <Icon name="arrow-right" class="size-4" aria-hidden="true" /></span>
+        <span class="text-right font-display text-lg font-medium text-foreground-0 transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none">{next.data.title}</span>
+      </a>}
+    </nav>}
   </article>
 </NotesLayout>

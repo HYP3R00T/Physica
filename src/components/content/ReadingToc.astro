@@ -1,0 +1,110 @@
+---
+interface Heading {
+  depth: number
+  slug: string
+  text: string
+}
+
+interface Props {
+  headings: Heading[]
+}
+
+const { headings } = Astro.props as Props
+const sections = headings.filter(({ depth }) => depth === 2 || depth === 3)
+---
+
+{sections.length > 0 && <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="On this page">
+  <h2 class="font-sans text-xs font-semibold tracking-wide text-foreground-2">On this page</h2>
+  <nav data-reading-toc class="reading-toc relative mt-4" aria-label="Article sections">
+    <ul class="space-y-2">
+      {sections.map((heading) => <li>
+        <a href={`#${heading.slug}`} data-toc-link class:list={["block py-0.5 pl-4 text-sm leading-5 text-foreground-3 transition-[color,opacity] duration-200 hover:text-accent-1", heading.depth === 3 && "pl-7"]}>
+          {heading.text}
+        </a>
+      </li>)}
+    </ul>
+  </nav>
+</aside>}
+
+<style>
+  .reading-toc::before,
+  .reading-toc::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    border-radius: 999px;
+    content: "";
+    pointer-events: none;
+  }
+
+  .reading-toc::before {
+    height: 100%;
+    background: var(--background-2);
+  }
+
+  .reading-toc::after {
+    height: var(--toc-progress, 0px);
+    background: color-mix(in oklch, var(--accent-1) 36%, transparent);
+    transition: height 220ms ease;
+  }
+
+  [data-toc-link][data-toc-seen] {
+    opacity: .6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-toc::after,
+    [data-toc-link] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  let dispose = () => {}
+
+  function initReadingToc() {
+    dispose()
+    const toc = document.querySelector<HTMLElement>("[data-reading-toc]")
+    if (!toc) return
+    const tocElement = toc
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")]
+    const targets = links.map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+    let frame = 0
+
+    function update() {
+      frame = 0
+      const threshold = window.innerHeight * .35
+      let active = -1
+      targets.forEach((target, index) => {
+        if (target && target.getBoundingClientRect().top <= threshold) active = index
+      })
+      links.forEach((link, index) => {
+        if (index === active) link.setAttribute("aria-current", "location")
+        else link.removeAttribute("aria-current")
+        if (index < active) link.dataset.tocSeen = ""
+        else delete link.dataset.tocSeen
+      })
+      const current = active >= 0 ? links[active] : null
+      tocElement.style.setProperty("--toc-progress", current ? `${current.offsetTop + current.offsetHeight / 2}px` : "0px")
+    }
+
+    function schedule() {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    update()
+    dispose = () => {
+      window.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }
+
+  document.addEventListener("astro:page-load", initReadingToc)
+  document.addEventListener("astro:before-swap", () => dispose())
+  initReadingToc()
+</script>

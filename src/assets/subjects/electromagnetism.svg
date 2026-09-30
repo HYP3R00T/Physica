@@ -1,3 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 64" fill="none" stroke="currentColor" stroke-width="1.5">
-  <path d="M10 10c20 0 20 44 40 44s20-44 40-44M10 32h80M10 54c20 0 20-44 40-44s20 44 40 44" /><circle cx="24" cy="32" r="5" fill="currentColor" /><circle cx="76" cy="32" r="5" fill="currentColor" />
+  <path d="M16 32h68" opacity=".28" />
+  <path class="subject-em-wave" d="M16 32 Q33 10 50 32 T84 32" />
+  <circle cx="16" cy="32" r="5" fill="currentColor" stroke="none" />
+  <circle cx="84" cy="32" r="5" fill="currentColor" stroke="none" />
+  <circle cx="16" cy="32" r="8" opacity=".45" />
+  <circle cx="84" cy="32" r="8" opacity=".45" />
 </svg>

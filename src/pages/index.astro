@@ -1,67 +1,64 @@
 ---
 import { Icon } from "astro-icon/components"
-import { getCollection } from "astro:content"
-import { getModuleNotes, isModule } from "@/lib/content"
-import ModuleCard from "@/components/content/ModuleCard.astro"
 import Section from "@/components/common/Section.astro"
-import { buttonVariants } from "@/components/ui/button"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import LivingTrajectory from "@/components/home/LivingTrajectory.astro"
 import MechanicsArt from "@/assets/subjects/classical-mechanics.svg"
 import ElectromagnetismArt from "@/assets/subjects/electromagnetism.svg"
 import ThermodynamicsArt from "@/assets/subjects/thermodynamics.svg"
 import QuantumArt from "@/assets/subjects/quantum-mechanics.svg"
 import RelativityArt from "@/assets/subjects/relativity.svg"
 
-const learning = await getCollection("learning", ({ data }) => !data.draft)
-const modules = learning.filter(isModule).sort((a, b) => a.data.title.localeCompare(b.data.title))
-
 const subjects = [
-  { slug: "classical-mechanics", title: "Classical mechanics", question: "How does the world move?", detail: "From motion and forces to the principles behind mechanical systems.", color: "red", art: MechanicsArt },
-  { slug: "electromagnetism", title: "Electromagnetism", question: "How do charges shape our world?", detail: "Connect electric and magnetic fields, circuits and electromagnetic waves.", color: "orange", art: ElectromagnetismArt },
-  { slug: "thermodynamics-and-statistical-mechanics", title: "Thermodynamics & statistical mechanics", question: "How does the small become the large?", detail: "Follow heat, entropy and the collective behaviour of many particles.", color: "green", art: ThermodynamicsArt },
-  { slug: "quantum-mechanics", title: "Quantum mechanics", question: "What changes at the quantum scale?", detail: "Explore states, measurement and the behaviour of quantum systems.", color: "purple", art: QuantumArt },
-  { slug: "relativity", title: "Relativity", question: "What do space and time have in common?", detail: "Reconsider motion, spacetime and gravity through relativity.", color: "cyan", art: RelativityArt },
+  { slug: "classical-mechanics", title: "Classical mechanics", question: "How does the world move?", color: "red", art: MechanicsArt },
+  { slug: "electromagnetism", title: "Electromagnetism", question: "How do charges shape our world?", color: "orange", art: ElectromagnetismArt },
+  { slug: "thermodynamics-and-statistical-mechanics", title: "Thermodynamics & statistical mechanics", question: "How does the small become the large?", color: "green", art: ThermodynamicsArt },
+  { slug: "quantum-mechanics", title: "Quantum mechanics", question: "What changes at the quantum scale?", color: "purple", art: QuantumArt },
+  { slug: "relativity", title: "Relativity", question: "What do space and time have in common?", color: "cyan", art: RelativityArt },
 ]
-
 ---
 
 <BaseLayout title="Physica | Find your way through physics" description="Study physics through modules and notes, and explore a roadmap connecting the topics and their prerequisites.">
-  <div class="[--home-space:clamp(1.5rem,4.5vw,4rem)] [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-accent-1 [&_a:focus-visible]:outline-offset-4">
-    <Section frameClass="block">
-      <header class="px-(--home-space) py-14 max-[1000px]:py-12 max-[700px]:pb-6">
-        <p class="font-mono text-[.7rem] tracking-[.09em] text-foreground-2">Learn physics, one idea at a time</p>
-        <h1 class="mt-7 font-display text-[clamp(2.8rem,4.6vw,4.4rem)] leading-[1.06] font-semibold tracking-[-.055em] max-[700px]:text-[clamp(2.6rem,9vw,3.7rem)]">Follow your curiosity.<br /><span class="text-accent-1">Build your understanding.</span></h1>
-        <p class="mt-7 max-w-160 text-[1.1rem] leading-[1.8] text-foreground-2">Read through a module, explore how the ideas connect, and find your next step in physics.</p>
-        <div class="mt-8 flex flex-wrap items-center gap-4">
-          <a href="/modules" class={buttonVariants({ size: "lg", className: "h-12 gap-3 px-5" })}>Explore modules <Icon name="arrow-right" aria-hidden="true" /></a>
-          <a href="/roadmap" class={buttonVariants({ variant: "outline", size: "lg", className: "h-12 gap-3 px-5" })}>View roadmap <Icon name="arrow-right" aria-hidden="true" /></a>
+  <div class="[&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-accent-1 [&_a:focus-visible]:outline-offset-4">
+    <Section id="trajectory">
+      <div class="home-hero editorial-frame">
+        <div class="home-hero-copy">
+          <h1 class="font-display leading-[1.04] font-medium tracking-[-.06em]">Follow your curiosity.<br /><span class="home-hero-accent">Build your understanding.</span></h1>
+          <p class="mt-8 max-w-2xl text-lg leading-[1.7] text-foreground-2">Read through a module, explore how ideas connect, and find your next step in physics.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-3 text-sm font-medium">
+            <a href="/modules" class="grain-surface grain-surface--hover home-hero-action home-hero-action--primary inline-flex items-center gap-2 rounded-lg px-5 py-3.5 text-accent-1">Explore modules <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
+            <a href="/roadmap" class="grain-surface grain-surface--hover home-hero-action inline-flex items-center gap-2 rounded-lg px-5 py-3.5 text-foreground-1">View roadmap <Icon name="arrow-right" class="size-4" aria-hidden="true" /></a>
+          </div>
         </div>
-      </header>
-    </Section>
-
-    <Section aria-labelledby="home-modules-title">
-      <div class="flex items-end justify-between gap-8 px-(--home-space) pt-16 pb-10 max-[1000px]:flex-col max-[1000px]:items-start max-[1000px]:gap-4 max-[700px]:pt-12"><div><p class="font-mono text-[.7rem] tracking-[.09em] text-foreground-2">Read and explore</p><h2 class="mt-4 font-display text-[clamp(2rem,3vw,2.8rem)] leading-[1.15] font-medium tracking-[-.035em]" id="home-modules-title">Start with a module.</h2></div><p class="max-w-100 text-[.95rem] leading-[1.7] text-foreground-2">Notes that develop a topic step by step. The collection grows as we work through physics.</p></div>
-      <div class="px-(--home-space) pb-12">
-        {modules.slice(0, 3).map(module => <ModuleCard module={module} noteCount={getModuleNotes(learning, module).length} />)}
-        <a class={buttonVariants({ variant: "outline", size: "lg", className: "mt-6 gap-3 px-5" })} href="/modules">Browse all modules <Icon name="arrow-right" aria-hidden="true" /></a>
+        <LivingTrajectory />
       </div>
     </Section>
 
     <Section id="subjects" class="scroll-mt-20">
-      <div class="flex items-end justify-between gap-8 px-(--home-space) pt-16 pb-10 max-[1000px]:flex-col max-[1000px]:items-start max-[1000px]:gap-4 max-[700px]:pt-12"><div><p class="font-mono text-[.7rem] tracking-[.09em] text-foreground-2">Follow a question</p><h2 class="mt-4 font-display text-[clamp(2rem,3vw,2.8rem)] leading-[1.15] font-medium tracking-[-.035em]">What draws you in?</h2></div><p class="max-w-100 text-[.95rem] leading-[1.7] text-foreground-2">Start with a familiar idea or something you’ve always wanted to understand. Each path shows the preparation it needs.</p></div>
-      <div class="grid grid-cols-3 gap-4 px-(--home-space) pb-16 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1">
-        {subjects.map(subject => (
-          <a class="flex flex-col rounded-lg border border-border p-7 transition-colors hover:border-(--subject-color) hover:bg-background-1 max-[700px]:p-6" href={`/roadmap?subject=${subject.slug}`} style={`--subject-color: var(--${subject.color}-0)`}>
-            <div class="mb-6 flex items-start justify-between text-(--subject-color)">
-              <subject.art class="h-16 w-25" aria-hidden="true" />
-              <Icon name="arrow-right" class="size-5" aria-hidden="true" />
+      <div class="editorial-frame pb-(--section-space)">
+        <div class="max-w-3xl">
+          <h2 class="font-display text-[clamp(2rem,4vw,3.25rem)] font-medium tracking-tight">What draws you in?</h2>
+          <p class="mt-4 text-lg leading-8 text-foreground-2">Pick an idea that interests you. The roadmap shows what to learn along the way.</p>
+        </div>
+        <div class="mt-10 grid gap-4 md:grid-cols-2">
+          {subjects.map(subject => (
+            <a class="home-subject-card group flex min-h-60 flex-col rounded-xl bg-background-1 p-7 md:min-h-72 md:p-9" href={`/roadmap?subject=${subject.slug}`} style={`--subject-color: var(--${subject.color}-0)`}>
+              <subject.art class="h-20 w-28 shrink-0 text-(--subject-color) md:h-24 md:w-32" aria-hidden="true" />
+              <div class="mt-auto pt-8">
+                <p class="text-sm text-foreground-2">{subject.question}</p>
+                <h3 class="mt-2 font-display text-xl font-medium tracking-tight md:text-2xl">{subject.title}</h3>
+              </div>
+            </a>
+          ))}
+          <a class="home-roadmap-card group flex min-h-60 flex-col rounded-xl bg-background-1 p-7 transition-colors duration-300 hover:bg-background-2/70 motion-reduce:transition-none md:min-h-72 md:p-9" href="/roadmap">
+            <Icon name="arrow-right" class="size-8 text-accent-1" aria-hidden="true" />
+            <div class="mt-auto pt-8">
+              <p class="text-sm text-foreground-2">Keep exploring</p>
+              <h3 class="mt-2 font-display text-xl font-medium tracking-tight transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none md:text-2xl">See the whole roadmap.</h3>
             </div>
-            <p class="mb-2 text-xs leading-normal text-(--subject-color)">{subject.question}</p><h3 class="font-display text-2xl leading-[1.2] font-medium tracking-[-.02em]">{subject.title}</h3><p class="mt-4 text-[.85rem] leading-[1.7] text-foreground-2">{subject.detail}</p>
           </a>
-        ))}
-        <a class="flex flex-col justify-center rounded-lg border border-dashed border-border p-7 transition-colors hover:border-accent-1 hover:bg-background-1 max-[700px]:p-6" href="/roadmap"><p class="font-mono text-[.7rem] tracking-[.09em] text-foreground-2">Keep exploring</p><h3 class="mt-4 font-display text-[2rem] leading-[1.2] font-medium tracking-[-.02em]">There’s more<br />to connect.</h3><p class="mt-4 text-[.85rem] leading-[1.7] text-foreground-2">Optics, waves, matter, the cosmos, and the mathematics behind them.</p><span class="mt-7 inline-flex items-center gap-2.5 text-sm [&_svg]:size-4">See the whole map <Icon name="arrow-right" aria-hidden="true" /></span></a>
+        </div>
       </div>
     </Section>
-
   </div>
 </BaseLayout>
