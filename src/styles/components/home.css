@@ -245,6 +245,7 @@
   width: 100%;
   height: 100%;
   overflow: visible;
+  pointer-events: none;
 }
 
 .home-trajectory-reference,
@@ -327,35 +328,76 @@
   opacity: .8;
 }
 
-.home-simulation-caption {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
+.home-simulation-info {
+  position: relative;
+  display: flow-root;
   padding-inline: .5rem;
+}
+
+.home-simulation-info summary {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--background-1);
+  color: var(--foreground-2);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.home-simulation-info summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-simulation-info summary svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.home-simulation-info summary:is(:hover, :focus-visible),
+.home-simulation-info[open] summary {
+  background: var(--background-2);
+  color: var(--accent-1);
+}
+
+.home-simulation-info summary:focus-visible,
+.home-simulation-popover button:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 3px;
+}
+
+.home-simulation-popover {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + .75rem);
+  right: .5rem;
+  width: min(20rem, 100%);
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+  background: var(--background-1);
+  box-shadow: 0 1rem 2.5rem color-mix(in oklch, var(--background-0) 35%, transparent);
   color: var(--foreground-2);
   font-size: .78rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-.home-simulation-caption p {
-  max-width: 21rem;
-}
-
-.home-simulation-caption button {
-  flex: none;
+.home-simulation-popover button {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .9rem;
   color: var(--accent-1);
+  font-weight: 600;
   cursor: pointer;
   transition: color 240ms ease;
 }
 
-.home-simulation-caption button:is(:hover, :focus-visible) {
+.home-simulation-popover button:hover {
   color: var(--foreground-0);
-}
-
-.home-simulation-caption button:focus-visible {
-  outline: 2px solid var(--accent-1);
-  outline-offset: 4px;
 }
 
 @media (min-width: 64rem) {
@@ -381,7 +423,8 @@
   .home-trajectory-force,
   .home-trajectory-pointer,
   .home-trajectory-pointer-ring,
-  .home-simulation-caption button {
+  .home-simulation-info summary,
+  .home-simulation-popover button {
     transition: none;
   }
 }
