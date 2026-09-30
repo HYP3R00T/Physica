@@ -11,8 +11,8 @@ const segment = module.data.roadmap
 ---
 
 {segment && (
-  <a data-module-roadmap href={`/roadmap#segment-${segment.id}`} class="inline-flex items-center gap-2 rounded-lg bg-background-2 px-3 py-2 text-sm text-foreground-1 transition-colors duration-300 hover:text-accent-1 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-2 motion-reduce:transition-none">
+  <a data-module-roadmap href={`/roadmap#segment-${segment.id}`} class="inline-flex items-center gap-2 rounded-md py-1 text-sm font-medium text-accent-1 transition-colors duration-300 hover:text-accent-2 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-2 motion-reduce:transition-none">
     <span>View on roadmap</span>
-    <Icon name="arrow-up-right" class="size-4 shrink-0" aria-hidden="true" />
+    <Icon name="arrow-right" class="size-4 shrink-0" aria-hidden="true" />
   </a>
 )}

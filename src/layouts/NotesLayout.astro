@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import ReadingToc from "@/components/content/ReadingToc.astro"
 import { getModuleSlug, getNoteSlug } from "@/lib/content"
 import type { LearningEntry } from "@/lib/content"
 
@@ -22,7 +23,6 @@ interface Props {
 
 const { title, description, module, notes, currentId, headings = [] } = Astro.props as Props
 
-const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 3)
 ---
 
 <BaseLayout
@@ -30,18 +30,20 @@ const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 
   description={description ?? "Study notes"}
   contentType="article"
   layout="notes"
+  showFooterBorder={false}
 >
   <div class="reading-layout min-h-[calc(100vh-4rem)] items-start">
     <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="Notes">
+      <h2 class="mb-4 px-3 font-sans text-xs font-semibold tracking-wide text-foreground-2">In this module</h2>
       <nav aria-label={`${module.data.title} notes`}>
-        <ul class="space-y-1">
+        <ul class="space-y-1 rounded-xl bg-background-1 p-2">
           {
             notes.map((note) => (
               <li>
                 <a
                   href={`/${getNoteSlug(note)}`}
                   aria-current={note.id === currentId ? "page" : undefined}
-                  class="block rounded-md px-3 py-2 text-sm leading-5 text-foreground-2 transition-colors hover:bg-background-1 hover:text-foreground-0 aria-[current=page]:bg-background-1 aria-[current=page]:font-medium aria-[current=page]:text-accent-1"
+                  class:list={["grain-surface block rounded-lg px-3 py-2.5 text-sm leading-5 transition-colors duration-300", note.id === currentId ? "grain-surface--always bg-background-2/70 font-medium text-accent-1" : "grain-surface--hover text-foreground-3 hover:bg-background-2/70 hover:text-foreground-1"]}
                 >
                   {note.data.title}
                 </a>
@@ -76,28 +78,6 @@ const tableOfContents = headings.filter(({ depth }) => depth === 2 || depth === 
       <slot />
     </div>
 
-    <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="On this page">
-      {
-        tableOfContents.length > 0 && (
-          <>
-            <h2 class="font-mono text-[0.6875rem] tracking-[0.12em] text-foreground-3 uppercase">On this page</h2>
-            <nav class="mt-4">
-              <ul class="space-y-2">
-                {tableOfContents.map((heading) => (
-                  <li class:list={[heading.depth === 3 && "pl-3"]}>
-                    <a
-                      href={`#${heading.slug}`}
-                      class="block text-sm leading-5 text-foreground-2 transition-colors hover:text-accent-1"
-                    >
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </>
-        )
-      }
-    </aside>
+    <ReadingToc headings={headings} />
   </div>
 </BaseLayout>
