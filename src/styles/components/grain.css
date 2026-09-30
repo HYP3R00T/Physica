@@ -18,7 +18,7 @@
 }
 
 .grain-surface::before {
-  background: radial-gradient(ellipse at 82% 8%, color-mix(in oklch, var(--grain-color) var(--grain-strength), transparent), transparent 72%);
+  background: radial-gradient(ellipse at var(--grain-position, 82% 8%), color-mix(in oklch, var(--grain-color) var(--grain-strength), transparent), transparent 72%);
 }
 
 .grain-surface::after {
