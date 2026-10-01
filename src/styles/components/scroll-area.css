@@ -1,0 +1,42 @@
+/* Shared by Astro/React surfaces and scrollable Markdown content. */
+@layer utilities {
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display) {
+    --scroll-thumb: transparent;
+    scrollbar-gutter: stable;
+  }
+
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display):is(:hover, :focus-within) {
+    --scroll-thumb: var(--foreground-3);
+  }
+
+  @supports (-moz-appearance: none) {
+    :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display) {
+      scrollbar-width: thin;
+      scrollbar-color: var(--scroll-thumb) transparent;
+    }
+  }
+
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display)::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display)::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display)::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display)::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background-color: var(--scroll-thumb);
+  }
+
+  :is(.scroll-area, .prose pre, .prose table, .prose .equation-scroll, .prose .katex-display)::-webkit-scrollbar-thumb:hover {
+    background-color: var(--foreground-2);
+  }
+}

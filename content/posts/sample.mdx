@@ -254,6 +254,63 @@ $$
 
 Equation \eqref(sample-constant-acceleration) gives two relations in one numbered block.
 
+### A derivation with one number
+
+Use `equation` with `split` when several lines describe one derivation. The whole block receives one number.
+
+$$
+\begin{equation}
+\begin{split}
+\Delta K &= \int_{x_0}^{x_1} F\,\mathrm{d}x \\
+&= m\int_{v_0}^{v_1} v\,\mathrm{d}v \\
+&= \dfrac{1}{2}m(v_1^2-v_0^2)
+\end{split}
+\label{sample-work-energy}
+\end{equation}
+$$
+
+Equation \eqref(sample-work-energy) is the work–energy theorem for a particle of constant mass.
+
+### Aligned equations with separate numbers
+
+Use `align` to number each row. Place a label on each row you want to reference. These numbers continue from the earlier equations in this post.
+
+$$
+\begin{align}
+v(t) &= v_0 + at \label{sample-velocity} \\
+x(t) &= x_0 + v_0t + \dfrac{1}{2}at^2 \label{sample-position} \\
+v^2-v_0^2 &= 2a(x-x_0) \label{sample-speed-displacement}
+\end{align}
+$$
+
+Equation \eqref(sample-velocity) gives velocity, equation \eqref(sample-position) gives position, and equation \eqref(sample-speed-displacement) eliminates time. Each link points to its own row.
+
+```latex
+$$
+\begin{align}
+v(t) &= v_0 + at \label{velocity} \\
+x(t) &= x_0 + v_0t + \dfrac{1}{2}at^2 \label{position}
+\end{align}
+$$
+
+See equations \eqref(velocity) and \eqref(position).
+```
+
+In prose, use `\eqref(label)` with parentheses so MDX does not treat braces as JavaScript. Our plugin resolves the labels before KaTeX renders the mathematics. Missing or duplicate labels stop the build.
+
+### Skipping a row number
+
+Use `\notag` or `\nonumber` to skip a row. Use `align*` for an unnumbered group, or `aligned` for several lines sharing one label.
+
+$$
+\begin{align}
+(a+b)^2 &= a^2+2ab+b^2 \notag \\
+(a-b)^2 &= a^2-2ab+b^2 \label{sample-square-difference}
+\end{align}
+$$
+
+Only equation \eqref(sample-square-difference) receives a number in this group.
+
 ### Matrices and piecewise functions
 
 $$

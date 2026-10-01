@@ -35,10 +35,26 @@
   }
 }
 
+/* Posts need an article and contents; notes add module navigation when it fits. */
+.reading-layout--post,
+.reading-layout--notes {
+  width: min(100%, 78rem);
+}
+
 @media (min-width: 72rem) {
-  .reading-layout {
-    grid-template-columns: minmax(10rem, 1fr) minmax(0, var(--reading-width)) minmax(10rem, 1fr);
-    gap: clamp(2rem, 3vw, 3.5rem);
+  .reading-layout--post,
+  .reading-layout--notes {
+    grid-template-columns: minmax(0, var(--reading-width)) minmax(14rem, 16rem);
+    justify-content: center;
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 90rem) {
+  .reading-layout--notes {
+    width: min(100%, 96rem);
+    grid-template-columns: minmax(12rem, 15rem) minmax(0, var(--reading-width)) minmax(14rem, 16rem);
+    gap: 2.5rem;
   }
 }
 

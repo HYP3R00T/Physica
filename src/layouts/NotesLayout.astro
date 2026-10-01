@@ -32,8 +32,8 @@ const { title, description, module, notes, currentId, headings = [] } = Astro.pr
   layout="notes"
   showFooterBorder={false}
 >
-  <div class="reading-layout min-h-[calc(100vh-4rem)] items-start">
-    <aside class="sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 min-[72rem]:block" aria-label="Notes">
+  <div class="reading-layout reading-layout--notes min-h-[calc(100vh-4rem)] items-start">
+    <aside class="scroll-area sticky top-24 hidden max-h-[calc(100svh-8rem)] overflow-y-auto overscroll-contain py-8 pr-4 min-[90rem]:block" aria-label="Notes">
       <h2 class="mb-4 px-3 font-sans text-xs font-semibold tracking-wide text-foreground-2">In this module</h2>
       <nav aria-label={`${module.data.title} notes`}>
         <ul class="space-y-1 rounded-xl bg-background-1 p-2">
@@ -55,7 +55,7 @@ const { title, description, module, notes, currentId, headings = [] } = Astro.pr
     </aside>
 
     <div class="reading-main">
-      <details class="py-5 min-[72rem]:hidden">
+      <details class="py-5 min-[90rem]:hidden">
         <summary class="cursor-pointer font-mono text-sm font-medium text-foreground-1">Browse notes</summary>
         <nav class="mt-4 grid gap-1" aria-label="Mobile notes navigation">
           <a href={`/${getModuleSlug(module)}`} class="rounded-md px-3 py-2 text-sm text-foreground-2 hover:bg-background-1">

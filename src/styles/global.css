@@ -8,6 +8,7 @@
 @import "./prose.css";
 @import "./code.css";
 @import "./utilities.css";
+@import "./components/scroll-area.css";
 @import "./components/image-carousel.css";
 @import "./components/mobile-menu-toggle.css";
 @import "./components/video.css";

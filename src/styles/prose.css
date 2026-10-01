@@ -207,8 +207,12 @@
       @apply my-8 grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 scroll-mt-28;
     }
 
+    &:is(.equation-aligned) {
+      @apply grid-cols-1;
+    }
+
     &:is(.equation-scroll) {
-      @apply min-w-0 overflow-x-auto;
+      @apply min-w-0 overflow-x-auto py-2;
     }
 
     &:is(.equation-scroll:focus-visible) {
@@ -296,4 +300,16 @@
       }
     }
   }
+}
+
+.prose .equation-row-target {
+  scroll-margin-top: 7rem;
+}
+
+.prose .equation-aligned .katex-html {
+  min-width: max-content;
+}
+
+.prose .equation-aligned .katex-tag {
+  right: 0.15em !important;
 }

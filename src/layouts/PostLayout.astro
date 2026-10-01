@@ -14,14 +14,11 @@ const topicColors = ["--teal-0", "--purple-0", "--orange-0", "--green-0", "--cya
 ---
 
 <BaseLayout title={`${title} — Physica`} description={description} image={cover} imageAlt={coverAlt} contentType="article" layout="notes" showFooterBorder={false}>
-  <div class="reading-layout min-h-[calc(100vh-4rem)] items-start">
-    <aside class="sticky top-24 hidden py-8 min-[72rem]:block">
-      <a href="/post" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground-2 transition-colors hover:bg-background-1 hover:text-accent-1"><Icon name="arrow-left" class="size-5 shrink-0" aria-hidden="true" /> All articles</a>
-    </aside>
+  <div class="reading-layout reading-layout--post min-h-[calc(100vh-4rem)] items-start">
     <article class="reading-main">
       <header class="grain-surface grain-surface--always mt-10 rounded-xl bg-background-1 p-6 md:-mx-6 md:mt-16 md:p-8" style="--grain-color: var(--purple-0)">
         <div class="flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
-          <a href="/post" class="inline-flex items-center gap-2 text-accent-1 transition-colors hover:text-accent-2 min-[72rem]:hidden"><Icon name="arrow-left" class="size-3.5" aria-hidden="true" />All articles</a>
+          <a href="/post" class="inline-flex items-center gap-2 text-accent-1 transition-colors hover:text-accent-2"><Icon name="arrow-left" class="size-3.5" aria-hidden="true" />All articles</a>
           <span class="text-purple-0">{category ?? "Article"}</span>
         </div>
         <h1 class="mt-8 font-display text-[clamp(2.5rem,4vw,3.8rem)] leading-[1.08] font-medium tracking-tight text-foreground-0">{title}</h1>

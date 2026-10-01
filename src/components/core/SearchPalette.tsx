@@ -218,7 +218,10 @@ export function SearchPalette() {
             </DialogPrimitive.Close>
           </div>
 
-          <fieldset className="flex shrink-0 items-center gap-1 overflow-x-auto px-2 py-3" aria-label="Search filters">
+          <fieldset
+            className="flex shrink-0 items-center gap-1 scroll-area overflow-x-auto px-2 py-3"
+            aria-label="Search filters"
+          >
             {filters.map((item) => (
               <button
                 key={item.value}
@@ -236,7 +239,7 @@ export function SearchPalette() {
           </fieldset>
 
           <div
-            className="min-h-[min(12rem,30dvh)] flex-1 overflow-y-auto overscroll-contain px-2 pb-2 scrollbar-gutter-stable"
+            className="min-h-[min(12rem,30dvh)] flex-1 scroll-area overflow-y-auto overscroll-contain px-2 pb-2"
             role="listbox"
             aria-label="Search results"
           >
