@@ -431,7 +431,7 @@ export default function RoadmapExplorer({
               id="roadmap-map"
               ref={mapScroller}
               data-roadmap-map-scroll
-              className="h-full overflow-y-auto overscroll-contain py-5"
+              className="h-full scroll-area overflow-y-auto overscroll-contain py-5"
             >
               {visibleSegments.length === 0 && (
                 <p role="status" className="p-6 text-sm text-foreground-2">
@@ -449,7 +449,7 @@ export default function RoadmapExplorer({
                   aria-label="Learning path graph; scroll horizontally to explore strands"
                   // biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need to scroll the graph horizontally.
                   tabIndex={0}
-                  className="min-w-0 cursor-grab overflow-x-auto overscroll-x-contain active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+                  className="min-w-0 cursor-grab scroll-area overflow-x-auto overscroll-x-contain active:cursor-grabbing focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
                   onPointerDown={(event) => {
                     if (event.pointerType !== "mouse" || event.button !== 0) return
                     graphDrag.current = { startX: event.clientX, scrollLeft: event.currentTarget.scrollLeft }
@@ -589,7 +589,7 @@ export default function RoadmapExplorer({
           <div data-roadmap-detail-viewport className="relative min-h-0 flex-1">
             <div
               data-roadmap-detail-body
-              className="h-full overflow-y-auto overscroll-contain px-5 pt-10 pb-12 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
+              className="h-full scroll-area overflow-y-auto overscroll-contain px-5 pt-10 pb-12 focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2"
               ref={detailScroller}
             >
               <div id="roadmap-overview" tabIndex={-1} className="outline-none" />
