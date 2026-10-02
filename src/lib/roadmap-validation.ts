@@ -2,7 +2,14 @@ import { type RoadmapDomain, roadmapDomains } from "./roadmap-domain.ts"
 
 type RoadmapValidationEntry = {
   id: string
-  data: { domain: RoadmapDomain; strand: string; dependencies: string[]; follows?: string; draft: boolean }
+  data: {
+    domain: RoadmapDomain
+    strand: string
+    dependencies: string[]
+    follows?: string
+    draft: boolean
+    hide?: boolean
+  }
 }
 
 const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -25,7 +32,6 @@ export function validateRoadmap<T extends RoadmapValidationEntry>(entries: T[]):
     for (const dependency of data.dependencies) {
       const source = byId.get(dependency)
       if (!source) throw new Error(`${id} references unknown roadmap segment ${dependency}`)
-      if (!data.draft && source.data.draft) throw new Error(`Published segment ${id} depends on draft ${dependency}`)
     }
     if (data.follows !== undefined) {
       const previous = byId.get(data.follows)
@@ -62,15 +68,21 @@ export function validateRoadmap<T extends RoadmapValidationEntry>(entries: T[]):
   return result
 }
 
-/** Skip unpublished reading steps without changing genuine prerequisites. Input must be validated. */
-export function getPublishedRoadmap<T extends RoadmapValidationEntry>(entries: T[]): T[] {
+/** Skip hidden reading steps and omit links to hidden prerequisites. Input must be validated. */
+export function getVisibleRoadmap<T extends RoadmapValidationEntry>(entries: T[]): T[] {
   const byId = new Map(entries.map((entry) => [entry.id, entry]))
   return entries
-    .filter(({ data }) => !data.draft)
+    .filter(({ data }) => !data.hide)
     .map((entry) => {
-      if (!entry.data.follows) return entry
       let follows: string | undefined = entry.data.follows
-      while (follows && byId.get(follows)?.data.draft) follows = byId.get(follows)?.data.follows
-      return { ...entry, data: { ...entry.data, follows } }
+      while (follows && byId.get(follows)?.data.hide) follows = byId.get(follows)?.data.follows
+      return {
+        ...entry,
+        data: {
+          ...entry.data,
+          follows,
+          dependencies: entry.data.dependencies.filter((id) => !byId.get(id)?.data.hide),
+        },
+      }
     })
 }

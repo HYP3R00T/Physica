@@ -1,5 +1,6 @@
 ---
 import { render } from "astro:content"
+import Callout from "@/components/common/Callout.astro"
 import type { RoadmapOverviewEntry } from "@/lib/roadmap"
 
 interface Props {
@@ -15,6 +16,13 @@ const titleId = `subject-title-${subjectId.replaceAll("/", "-")}`
   <header class="prose mb-8">
     <h1 id={titleId}>{entry.data.title}</h1>
   </header>
+  {entry.data.draft && (
+    <div class="prose mb-8">
+      <Callout title="Draft content" color="yellow">
+        <p>This content is still being revised. Explanations and references may change as we review it.</p>
+      </Callout>
+    </div>
+  )}
   <div class="prose [&_:is(pre,table,.katex-display)]:max-w-full [&_:is(pre,table,.katex-display)]:overflow-x-auto [&_a]:wrap-anywhere">
     <Content />
   </div>
