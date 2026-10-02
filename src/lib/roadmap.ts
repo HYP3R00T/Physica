@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content"
 import { getCollection } from "astro:content"
 import { mapRoadmapModules } from "./content"
 import { getRoadmapStrands } from "./roadmap-strands"
-import { getPublishedRoadmap, validateRoadmap } from "./roadmap-validation"
+import { getVisibleRoadmap, validateRoadmap } from "./roadmap-validation"
 
 export type { RoadmapStrand } from "./roadmap-strands"
 
@@ -16,7 +16,7 @@ export type RoadmapOverviewEntry = RoadmapContentEntry & {
 export function isRoadmapSegment(entry: RoadmapContentEntry): entry is RoadmapEntry {
   return !entry.data.overview
 }
-export type RoadmapSegment = Omit<RoadmapEntry["data"], "draft" | "subject"> & {
+export type RoadmapSegment = Omit<RoadmapEntry["data"], "hide" | "subject"> & {
   id: string
   subject: string
 }
@@ -36,9 +36,9 @@ export async function getRoadmap() {
     overviewKeys.add(key)
   }
   const modulesBySegment = mapRoadmapModules(learning, segmentEntries)
-  const entries = getPublishedRoadmap(validateRoadmap(segmentEntries))
+  const entries = getVisibleRoadmap(validateRoadmap(segmentEntries))
   const segments: RoadmapSegment[] = entries.map(({ id, data }) => {
-    const { draft: _draft, ...metadata } = data
+    const { hide: _hide, ...metadata } = data
     return {
       ...metadata,
       id,
@@ -52,7 +52,7 @@ export async function getRoadmap() {
     segments,
     strands,
     overviews: overviews.filter(
-      ({ data }) => !data.draft && strands.some((strand) => strand.id === `${data.domain}/${data.strand}`),
+      ({ data }) => !data.hide && strands.some((strand) => strand.id === `${data.domain}/${data.strand}`),
     ),
     modulesBySegment,
     segmentIds: new Set(segments.map((segment) => segment.id)),

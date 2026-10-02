@@ -437,7 +437,7 @@ export default function RoadmapExplorer({
                 <p role="status" className="p-6 text-sm text-foreground-2">
                   {focusedStrand
                     ? "No segments match this strand and subject."
-                    : `No ${domain === "mathematics" ? "mathematics" : "physics"} segments published yet.`}
+                    : `No ${domain === "mathematics" ? "mathematics" : "physics"} segments available yet.`}
                 </p>
               )}
               <div
@@ -526,7 +526,10 @@ export default function RoadmapExplorer({
                           className="flex justify-between gap-2 font-mono text-[.65rem] text-foreground-3 group-data-[connected=true]/segment:text-(--segment-color) max-[450px]:text-[.6rem]"
                         >
                           <span className="min-w-0 truncate">{segment.subject}</span>
-                          <span className="shrink-0">{segment.stage}</span>
+                          <span className="shrink-0">
+                            {segment.stage}
+                            {segment.draft && " · Draft"}
+                          </span>
                         </span>
                         <span
                           data-roadmap-row-title

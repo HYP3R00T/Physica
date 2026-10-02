@@ -17,7 +17,7 @@ const byId = new Map(segments.map(segment => [segment.id, segment]))
         {subjectEntries.map(entry => <RoadmapSubjectPanel entry={entry} />)}
         {roadmapEntries.map((entry, index) => <RoadmapPanel module={modulesBySegment.get(entry.id)} entry={entry} initial={index === 0} prerequisites={entry.data.dependencies.map(id => byId.get(id)!)} />)}
       </div>
-    </RoadmapExplorer> : <p class="p-10">No roadmap segments published yet.</p>}
+    </RoadmapExplorer> : <p class="p-10">No roadmap segments available yet.</p>}
     <noscript><p class="p-6">Enable JavaScript to select segments and explore their connections. The initial segment and full route are shown above.</p></noscript>
   </div>
 </BaseLayout>

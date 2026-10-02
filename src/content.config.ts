@@ -62,6 +62,7 @@ const roadmapMetadata = z.object({
   domain: z.enum(["mathematics", "physics"]),
   strand: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   draft: z.boolean().default(false),
+  hide: z.boolean().optional().default(false),
 })
 
 const roadmap = defineCollection({

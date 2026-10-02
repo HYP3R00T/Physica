@@ -6,7 +6,7 @@ import { filterRoadmap, roadmapFileIdentity } from "../src/lib/roadmap-domain.ts
 import { getRoadmapEdges } from "../src/lib/roadmap-geometry.ts"
 import { readRoadmapProgress, readRoadmapSubject, resolveRoadmapHash, roadmapUrl } from "../src/lib/roadmap-identity.ts"
 import { getRoadmapStrands } from "../src/lib/roadmap-strands.ts"
-import { getPublishedRoadmap, validateRoadmap } from "../src/lib/roadmap-validation.ts"
+import { getVisibleRoadmap, validateRoadmap } from "../src/lib/roadmap-validation.ts"
 
 const entry = (id, dependencies = [], strand = "physics", draft = false) => ({
   id,
@@ -49,8 +49,13 @@ test("rejects cycles, including disconnected cycles and self-dependencies", () =
 test("rejects duplicate IDs", () => {
   assert.throws(() => sort([entry("atoms"), entry("atoms")]), /Duplicate/)
 })
-test("published segments cannot depend on drafts", () => {
-  assert.throws(() => sort([entry("draft", [], "physics", true), entry("atoms", ["draft"])]), /depends on draft/)
+test("draft segments remain visible and can be prerequisites", () => {
+  const entries = validateRoadmap([entry("draft", [], "physics", true), entry("atoms", ["draft"])])
+  assert.deepEqual(
+    getVisibleRoadmap(entries).map(({ id }) => id),
+    ["draft", "atoms"],
+  )
+  assert.deepEqual(getVisibleRoadmap(entries)[1].data.dependencies, ["draft"])
 })
 test("resolves current slugs and scoped heading links", () => {
   const segments = [{ id: "atomic-structure" }]
@@ -141,7 +146,7 @@ test("maps modules to roadmap segments from module metadata", () => {
   assert.equal(mapRoadmapModules([{ ...module, data: { ...module.data, draft: true } }], targets).size, 0)
 })
 
-test("rejects duplicate module mappings, unknown targets, note mappings and published-to-draft links", () => {
+test("rejects duplicate module mappings, unknown targets and note mappings", () => {
   const module = {
     id: "demo/index",
     filePath: "content/notes/demo/index.mdx",
@@ -154,7 +159,8 @@ test("rejects duplicate module mappings, unknown targets, note mappings and publ
     () => mapRoadmapModules([{ ...module, filePath: "content/notes/demo/note.mdx" }], targets),
     /module index/,
   )
-  assert.throws(() => mapRoadmapModules([module], [{ id: "vectors", data: { draft: true } }]), /draft roadmap/)
+  assert.equal(mapRoadmapModules([module], [{ id: "vectors", data: { draft: true } }]).get("vectors"), module)
+  assert.equal(mapRoadmapModules([module], [{ id: "vectors", data: { draft: false, hide: true } }]).size, 0)
 })
 
 test("derives domains from folders while keeping slugs stable", () => {
@@ -233,12 +239,14 @@ test("reading succession rejects unknown, cross-strand and conflicting links", (
 test("hidden reading steps are skipped without hiding independent published topics", () => {
   const a = entry("a")
   const b = entry("b", [], "physics", true)
+  b.data.hide = true
   b.data.follows = "a"
   const c = entry("c", [], "physics", true)
+  c.data.hide = true
   c.data.follows = "b"
   const d = entry("d", ["a"])
   d.data.follows = "c"
-  const visible = getPublishedRoadmap(validateRoadmap([d, c, b, a]))
+  const visible = getVisibleRoadmap(validateRoadmap([d, c, b, a]))
   assert.deepEqual(
     visible.map(({ id }) => id),
     ["a", "d"],
@@ -246,9 +254,9 @@ test("hidden reading steps are skipped without hiding independent published topi
   assert.equal(visible[1].data.follows, "a")
   assert.deepEqual(visible[1].data.dependencies, ["a"])
   assert.equal(d.data.follows, "c")
-  a.data.draft = true
+  a.data.hide = true
   d.data.dependencies = []
-  assert.equal(getPublishedRoadmap(validateRoadmap([a, b, c, d]))[0].data.follows, undefined)
+  assert.equal(getVisibleRoadmap(validateRoadmap([a, b, c, d]))[0].data.follows, undefined)
 })
 
 test("strand focus includes only direct prerequisites and excludes their ancestors", () => {
@@ -341,4 +349,19 @@ test("subject overview headings and local links are scoped without changing segm
   assert.equal(tree.children[0].properties.id, "overview-physics-arbitrary-folder-index--intro")
   assert.equal(tree.children[1].properties.href, "#overview-physics-arbitrary-folder-index--intro")
   assert.equal(tree.children[2].properties.href, "#segment-kinematics")
+})
+
+test("hide overrides both draft statuses and removes dangling dependency links", () => {
+  const hiddenDraft = entry("hidden-draft", [], "physics", true)
+  hiddenDraft.data.hide = true
+  const hiddenFinal = entry("hidden-final")
+  hiddenFinal.data.hide = true
+  const visibleDraft = entry("visible-draft", ["hidden-draft", "hidden-final"], "physics", true)
+  const visible = getVisibleRoadmap(validateRoadmap([hiddenDraft, hiddenFinal, visibleDraft]))
+  assert.deepEqual(
+    visible.map(({ id }) => id),
+    ["visible-draft"],
+  )
+  assert.deepEqual(visible[0].data.dependencies, [])
+  assert.deepEqual(visibleDraft.data.dependencies, ["hidden-draft", "hidden-final"])
 })

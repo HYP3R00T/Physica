@@ -73,7 +73,10 @@ export const validateContent = (entries: LearningEntry[]) => {
   }
 }
 
-export function mapRoadmapModules(entries: LearningEntry[], segments: { id: string; data: { draft: boolean } }[]) {
+export function mapRoadmapModules(
+  entries: LearningEntry[],
+  segments: { id: string; data: { draft: boolean; hide?: boolean } }[],
+) {
   const bySegment = new Map<string, LearningEntry>()
   const targets = new Map(segments.map((segment) => [segment.id, segment]))
   for (const entry of entries) {
@@ -82,11 +85,9 @@ export function mapRoadmapModules(entries: LearningEntry[], segments: { id: stri
     if (!isModule(entry)) throw new Error(`Set roadmap on the module index, not the note "${entry.id}".`)
     const segment = targets.get(target)
     if (!segment) throw new Error(`Module "${entry.id}" references unknown roadmap segment "${target}".`)
-    if (!entry.data.draft && segment.data.draft)
-      throw new Error(`Published module "${entry.id}" references draft roadmap segment "${target}".`)
     const existing = bySegment.get(target)
     if (existing) throw new Error(`Roadmap segment "${target}" is linked to both "${existing.id}" and "${entry.id}".`)
     bySegment.set(target, entry)
   }
-  return new Map([...bySegment].filter(([, module]) => !module.data.draft))
+  return new Map([...bySegment].filter(([target, module]) => !module.data.draft && !targets.get(target)?.data.hide))
 }
