@@ -365,3 +365,22 @@ test("hide overrides both draft statuses and removes dangling dependency links",
   assert.deepEqual(visible[0].data.dependencies, [])
   assert.deepEqual(visibleDraft.data.dependencies, ["hidden-draft", "hidden-final"])
 })
+
+test("hidden content is excluded before dependency analysis and ordering", () => {
+  const hidden = entry("hidden", ["missing"])
+  hidden.data.hide = true
+  hidden.data.follows = "hidden"
+  const visible = entry("a-visible", ["hidden"])
+  visible.data.follows = "hidden"
+  const independent = entry("z-independent")
+  const entries = validateRoadmap(getVisibleRoadmap([hidden, independent, visible]))
+  assert.deepEqual(
+    entries.map(({ id }) => id),
+    ["a-visible", "z-independent"],
+  )
+  assert.deepEqual(entries[0].data.dependencies, [])
+  assert.equal(entries[0].data.follows, undefined)
+  const segments = entries.map(({ id, data }) => ({ id, ...data }))
+  assert.deepEqual(getRoadmapEdges(segments, getRoadmapStrands(segments)), [])
+  assert.equal(resolveRoadmapHash("#segment-hidden", entries), undefined)
+})
