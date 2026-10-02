@@ -82,6 +82,7 @@ export function mapRoadmapModules(
   for (const entry of entries) {
     const target = entry.data.roadmap
     if (!target) continue
+    if (targets.get(target)?.data.hide) continue
     if (!isModule(entry)) throw new Error(`Set roadmap on the module index, not the note "${entry.id}".`)
     const segment = targets.get(target)
     if (!segment) throw new Error(`Module "${entry.id}" references unknown roadmap segment "${target}".`)

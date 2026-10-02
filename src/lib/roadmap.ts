@@ -25,10 +25,12 @@ export async function getRoadmap() {
   const [all, learning] = await Promise.all([getCollection("roadmap"), getCollection("learning")])
   const segmentEntries = all.filter(isRoadmapSegment)
   const overviews = all.filter(
-    (entry): entry is RoadmapOverviewEntry => entry.data.overview && Boolean(entry.data.title && entry.data.strand),
+    (entry): entry is RoadmapOverviewEntry =>
+      entry.data.overview && !entry.data.hide && Boolean(entry.data.title && entry.data.strand),
   )
   const overviewKeys = new Set<string>()
-  const strandKeys = new Set(segmentEntries.map(({ data }) => `${data.domain}/${data.strand}`))
+  const visibleEntries = getVisibleRoadmap(segmentEntries)
+  const strandKeys = new Set(visibleEntries.map(({ data }) => `${data.domain}/${data.strand}`))
   for (const { data } of overviews) {
     const key = `${data.domain}/${data.strand}`
     if (overviewKeys.has(key)) throw new Error(`Duplicate roadmap overview for ${key}`)
@@ -36,7 +38,7 @@ export async function getRoadmap() {
     overviewKeys.add(key)
   }
   const modulesBySegment = mapRoadmapModules(learning, segmentEntries)
-  const entries = getVisibleRoadmap(validateRoadmap(segmentEntries))
+  const entries = validateRoadmap(visibleEntries)
   const segments: RoadmapSegment[] = entries.map(({ id, data }) => {
     const { hide: _hide, ...metadata } = data
     return {

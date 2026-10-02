@@ -68,14 +68,22 @@ export function validateRoadmap<T extends RoadmapValidationEntry>(entries: T[]):
   return result
 }
 
-/** Skip hidden reading steps and omit links to hidden prerequisites. Input must be validated. */
+/** Remove hidden content and its links before validating or ordering the visible graph. */
 export function getVisibleRoadmap<T extends RoadmapValidationEntry>(entries: T[]): T[] {
   const byId = new Map(entries.map((entry) => [entry.id, entry]))
   return entries
     .filter(({ data }) => !data.hide)
     .map((entry) => {
       let follows: string | undefined = entry.data.follows
-      while (follows && byId.get(follows)?.data.hide) follows = byId.get(follows)?.data.follows
+      const skipped = new Set<string>()
+      while (follows && byId.get(follows)?.data.hide) {
+        if (skipped.has(follows)) {
+          follows = undefined
+          break
+        }
+        skipped.add(follows)
+        follows = byId.get(follows)?.data.follows
+      }
       return {
         ...entry,
         data: {
