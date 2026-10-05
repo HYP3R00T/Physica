@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content"
 import { Icon } from "astro-icon/components"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import Section from "@/components/common/Section.astro"
-import { getModuleSlug, getNoteSlug, isModule } from "@/lib/content"
+import { getModuleSlug, getNoteSlug, getVisibleLearning, isModule } from "@/lib/content"
 import { formatDateUppercase } from "@/lib/utils"
 export async function getStaticPaths() {
   return (await getCollection("authors")).map((author) => ({ params: { slug: author.id }, props: { author } }))
@@ -14,7 +14,7 @@ const { author } = Astro.props as { author: CollectionEntry<"authors"> }
 const { Content } = await render(author)
 const posts = (await getCollection("posts", ({ data }) => !data.draft && data.authors.some((item) => item.id === author.id)))
   .sort((a, b) => b.data.pubDatetime.valueOf() - a.data.pubDatetime.valueOf())
-const learning = await getCollection("learning", ({ data }) => !data.draft && data.authors.some((item) => item.id === author.id))
+const learning = getVisibleLearning(await getCollection("learning")).filter(({ data }) => data.authors.some((item) => item.id === author.id))
 const modules = learning.filter(isModule)
 const notes = learning.filter((entry) => !isModule(entry))
 const initials = author.data.name.split(" ").map((part) => part[0]).slice(0, 2).join("")
