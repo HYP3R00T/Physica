@@ -143,7 +143,8 @@ test("maps modules to roadmap segments from module metadata", () => {
   const targets = [{ id: "vectors", data: { draft: false } }]
   assert.equal(mapRoadmapModules([module], targets).get("vectors"), module)
   assert.equal(mapRoadmapModules([{ ...module, data: { draft: false } }], targets).size, 0)
-  assert.equal(mapRoadmapModules([{ ...module, data: { ...module.data, draft: true } }], targets).size, 0)
+  assert.equal(mapRoadmapModules([{ ...module, data: { ...module.data, draft: true } }], targets).size, 1)
+  assert.equal(mapRoadmapModules([{ ...module, data: { ...module.data, hide: true } }], targets).size, 0)
 })
 
 test("rejects duplicate module mappings, unknown targets and note mappings", () => {

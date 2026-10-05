@@ -8,6 +8,7 @@ import {
   getModuleNotes,
   getModuleSlug,
   getNoteSlug,
+  getVisibleLearning,
   isModule,
   mapRoadmapModules,
   validateContent,
@@ -15,10 +16,9 @@ import {
 import type { LearningEntry } from "@/lib/content"
 
 export async function getStaticPaths() {
-  const candidates = await getCollection("learning", ({ data }) => !import.meta.env.PROD || !data.draft)
-  const modules = candidates.filter(isModule)
-  const visibleFolders = new Set(modules.map(getModuleFolder))
-  const entries = candidates.filter((entry) => isModule(entry) || visibleFolders.has(getModuleFolder(entry)))
+  const candidates = await getCollection("learning")
+  const entries = getVisibleLearning(candidates)
+  const modules = entries.filter(isModule)
 
   validateContent(entries)
   mapRoadmapModules(candidates, await getCollection("roadmap", ({data}) => !data.overview))

@@ -1,0 +1,57 @@
+---
+title: Vector independence and bases
+description: Dependence, span, unique coordinates and vector resolution.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## Dependence and independence
+
+<Definition title="Linear independence">
+
+Vectors $\mathbf v_1,\ldots,\mathbf v_k$ are **linearly independent** if
+
+$$
+a_1\mathbf v_1+\cdots+a_k\mathbf v_k=\mathbf0
+$$
+
+implies $a_1=\cdots=a_k=0$. They are **linearly dependent** if a choice of coefficients, not all zero, gives the zero vector.
+
+</Definition>
+
+Dependence means at least one vector can be expressed using the others. A collection containing the zero vector is dependent. Two vectors are dependent exactly when one is a scalar multiple of the other, including the cases involving zero.
+
+For example, $(1,0)$ and $(0,1)$ are independent: $a(1,0)+b(0,1)=(a,b)=\mathbf0$ forces both coefficients to vanish. The vectors $(1,2)$ and $(2,4)$ are dependent because $2(1,2)-(2,4)=\mathbf0$.
+
+Two displacements are collinear when their span has dimension at most one. Three displacements in $\mathbb R^3$ are coplanar when their span has dimension at most two, equivalently when they are dependent. For points, apply these criteria to displacements from one chosen point: position vectors alone describe a plane through the origin.
+
+## Bases and coordinates
+
+<Definition title="Basis">
+
+A **basis** of a vector space is a linearly independent collection that spans the space.
+
+</Definition>
+
+For a finite basis $\mathbf b_1,\ldots,\mathbf b_k$, every vector has a unique expression
+
+$$
+\mathbf v=c_1\mathbf b_1+\cdots+c_k\mathbf b_k
+$$
+
+Spanning ensures existence. Independence ensures uniqueness: subtract two expressions for the same vector, and independence forces every coefficient difference to be zero. The coefficients are the coordinates relative to the ordered basis. The number of basis vectors is the dimension; the standard basis of $\mathbb R^n$ has $n$ members.
+
+## Resolution along chosen directions
+
+In a plane, two nonparallel directions form a basis. To resolve $(2,3)$ along $(1,0)$ and $(1,1)$, solve
+
+$$
+(2,3)=a(1,0)+b(1,1)=(a+b,b)
+$$
+
+Thus $b=3$ and $a=-1$. These are components along the chosen directions, which are not perpendicular. Projection coefficients give this resolution directly only for an orthonormal basis. With parallel directions, coefficients may fail to exist or fail to be unique.

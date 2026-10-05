@@ -11,7 +11,7 @@ const { module, noteCount } = Astro.props
 
 <a class="grain-surface grain-surface--hover module-card group flex min-h-64 flex-col rounded-xl bg-background-1 p-7 transition-colors duration-300 hover:bg-background-2/70 focus-visible:outline-2 focus-visible:outline-accent-1 focus-visible:outline-offset-4 motion-reduce:transition-none md:p-9" href={`/${getModuleSlug(module)}`}>
   <div class="flex w-full items-start justify-between gap-5">
-    <p class="font-mono text-[.7rem] text-foreground-2">{noteCount} {noteCount === 1 ? "note" : "notes"} available</p>
+    <p class="font-mono text-[.7rem] text-foreground-2">{noteCount} {noteCount === 1 ? "note" : "notes"} available{module.data.draft && <span class="ml-2 text-orange-0">· Draft</span>}</p>
     <Icon name="arrow-right" class="size-5 shrink-0 text-foreground-2 transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none" aria-hidden="true" />
   </div>
   <div class="mt-auto pt-12">

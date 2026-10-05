@@ -1,0 +1,15 @@
+---
+interface Props {
+  title?: string
+}
+
+const { title } = Astro.props
+---
+
+<section class="definition my-8 rounded-lg bg-background-1 p-[clamp(1rem,3vw,1.75rem)]" aria-label={title ? `Definition: ${title}` : "Definition"}>
+  <div class="not-prose mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-2 font-semibold text-foreground-2">
+    <span>Definition</span>
+    {title && <span class="text-foreground-0">{title}</span>}
+  </div>
+  <div class="min-w-0 *:first:mt-0 *:last:mb-0"><slot /></div>
+</section>

@@ -3,10 +3,10 @@ import { getCollection } from "astro:content"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import Section from "@/components/common/Section.astro"
 import ModuleCard from "@/components/content/ModuleCard.astro"
-import { getModuleNotes, isModule } from "@/lib/content"
+import { getModuleNotes, getVisibleLearning, isModule } from "@/lib/content"
 import "../styles/components/modules.css"
 
-const learning = await getCollection("learning", ({ data }) => !data.draft)
+const learning = getVisibleLearning(await getCollection("learning"))
 const modules = learning.filter(isModule).sort((a, b) => a.data.title.localeCompare(b.data.title))
 ---
 

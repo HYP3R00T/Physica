@@ -1,6 +1,13 @@
 import { getCollection } from "astro:content"
 import type { LearningEntry } from "@/lib/content"
-import { getModuleFolder, getModuleSlug, getNoteSlug, isModule, validateContent } from "@/lib/content"
+import {
+  getModuleFolder,
+  getModuleSlug,
+  getNoteSlug,
+  getVisibleLearning,
+  isModule,
+  validateContent,
+} from "@/lib/content"
 import { getRoadmap } from "@/lib/roadmap"
 import type { SearchIndex, SearchItem, SearchItemType } from "@/lib/search/types"
 
@@ -14,10 +21,8 @@ const entryUrl = (entry: LearningEntry) => (isModule(entry) ? `/${getModuleSlug(
 const entryType = (entry: LearningEntry): SearchItemType => (isModule(entry) ? "module" : "note")
 
 export async function buildSearchIndex(): Promise<SearchIndex> {
-  const candidates = await getCollection("learning", ({ data }) => !import.meta.env.PROD || !data.draft)
-  const modules = candidates.filter(isModule)
-  const visibleFolders = new Set(modules.map(getModuleFolder))
-  const entries = candidates.filter((entry) => isModule(entry) || visibleFolders.has(getModuleFolder(entry)))
+  const entries = getVisibleLearning(await getCollection("learning"))
+  const modules = entries.filter(isModule)
   const modulesByFolder = new Map(modules.map((module) => [getModuleFolder(module), module]))
 
   validateContent(entries)

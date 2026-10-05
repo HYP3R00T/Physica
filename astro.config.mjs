@@ -71,7 +71,13 @@ export default defineConfig({
         ],
       },
     }),
-    AutoImport({ imports: ["./src/components/common/Video.astro", "./src/components/common/Callout.astro"] }),
+    AutoImport({
+      imports: [
+        "./src/components/common/Video.astro",
+        "./src/components/common/Callout.astro",
+        "./src/components/common/Definition.astro",
+      ],
+    }),
     mdx(),
     react(),
   ],

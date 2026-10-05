@@ -1,0 +1,51 @@
+---
+title: Linear combinations
+description: Combining vectors with scalar coefficients and describing their span.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+<Definition title="Linear combination">
+
+A **linear combination** of vectors $\mathbf v_1,\ldots,\mathbf v_k\in\mathbb R^n$ is a vector of the form
+
+$$
+a_1\mathbf v_1+\cdots+a_k\mathbf v_k,
+\qquad a_1,\ldots,a_k\in\mathbb R
+$$
+
+</Definition>
+
+The coefficients tell us how much of each vector to use. For $\mathbf u=(1,0)$ and $\mathbf v=(0,1)$, the combination $2\mathbf u+3\mathbf v=(2,3)$.
+
+## Span
+
+The span of a collection is the set of all its linear combinations:
+
+$$
+\operatorname{span}(\mathbf v_1,\ldots,\mathbf v_k)
+=\{a_1\mathbf v_1+\cdots+a_k\mathbf v_k:a_1,\ldots,a_k\in\mathbb R\}
+$$
+
+One nonzero vector spans a line through the origin. Two nonparallel vectors in $\mathbb R^3$ span a plane through the origin. Three vectors that do not lie in one plane through the origin span $\mathbb R^3$. A collection consisting only of zero vectors spans $\{\mathbf0\}$.
+
+## Components as coefficients
+
+In $\mathbb R^n$, the standard vector $\mathbf e_i$ has a $1$ in position $i$ and zeros elsewhere. Every coordinate vector satisfies
+
+$$
+\mathbf v=v_1\mathbf e_1+\cdots+v_n\mathbf e_n
+$$
+
+With other chosen directions, the coefficients generally change. For example, with $\mathbf b_1=(1,0)$ and $\mathbf b_2=(1,1)$,
+
+$$
+(2,3)=-\mathbf b_1+3\mathbf b_2
+$$
+
+The vector has standard coordinates $(2,3)$ and coordinates $(-1,3)$ relative to these directions. We will explain when such coordinates are unique in the note on independence and bases.

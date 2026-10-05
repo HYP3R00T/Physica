@@ -54,6 +54,7 @@ const learning = defineCollection({
     created: z.coerce.date().optional(),
     updated: z.coerce.date().optional(),
     draft: z.boolean().default(false),
+    hide: z.boolean().optional().default(false),
   }),
 })
 

@@ -1,0 +1,81 @@
+---
+title: "Spectral theory and matrix decompositions"
+strand: "algebra"
+subject: "Algebra"
+stage: "Foundations"
+dependencies:
+    - eigenvalues-and-diagonalisation
+    - inner-products-and-least-squares
+follows: eigenvalues-and-diagonalisation
+draft: true
+---
+
+## What to study
+
+### Adjoints and the spectral theorem
+
+- [ ] Operators on inner-product spaces
+    - Adjoint maps, transpose and conjugate transpose
+    - Self-adjoint, orthogonal, unitary and normal operators
+    - Finite-dimensional spectral theorem
+    - Orthogonal and unitary diagonalisation
+    - Spectral projectors and simultaneous diagonalisation of commuting self-adjoint operators
+- [ ] Quadratic and Hermitian forms
+    - Real symmetric and complex Hermitian matrices
+    - Principal axes, signature and definiteness
+    - Positive definite and positive semidefinite operators
+    - Eigenvalue and leading-principal-minor tests with their assumptions
+    - Cholesky factorisation
+    - Rayleigh quotients and variational eigenvalue bounds
+
+### Singular values and approximation
+
+- [ ] Singular value decomposition
+    - Singular values and left and right singular vectors
+    - Full and reduced forms of the decomposition
+    - Rank and the fundamental subspaces
+    - Moore-Penrose pseudoinverse and minimum-norm least-squares solutions
+    - Eckart-Young theorem, low-rank approximation and principal components
+    - Polar decomposition and its geometric interpretation
+- [ ] Conditioning and computation
+    - Vector and induced matrix norms
+    - Singular values and condition numbers
+    - Sensitivity of linear systems and residual versus solution error
+    - Forward error, backward error and floating-point roundoff
+    - Stable factorisations and choosing a solver for the matrix structure
+
+### General operators
+
+- [ ] Beyond diagonalisation
+    - Schur triangularisation over the complex numbers and real Schur form
+    - Generalised eigenspaces, eigenvectors and Jordan chains
+    - Jordan canonical form over the complex numbers
+    - Matrix functions on Jordan blocks
+    - Distinguishing structural canonical forms from numerically stable decompositions
+
+### Numerical solution methods
+
+- [ ] Iteration theory for linear systems
+    - Matrix splittings, fixed-point iteration and error propagation
+    - Spectral-radius convergence criterion for stationary iterations
+    - Residual-based stopping, tolerances and convergence versus stagnation
+- [ ] Stationary iterative solvers
+    - Jacobi, Gauss-Seidel and successive over-relaxation (SOR)
+    - Diagonal dominance as a sufficient convergence condition for Jacobi and Gauss-Seidel
+    - Symmetric positive definite systems, Gauss-Seidel convergence and SOR parameter restrictions
+- [ ] Krylov subspace methods
+    - Conjugate gradients for symmetric positive definite systems
+    - GMRES for general nonsymmetric systems
+    - Preconditioning, sparse matrices and comparing computational costs
+- [ ] Computing eigenvalues and singular values
+    - Power iteration, inverse iteration and shifts
+    - QR iteration and the role of orthogonal transformations
+    - Stable numerical computation versus symbolic canonical forms
+
+Algorithm implementation and further error analysis continue in [numerical approximation and linear algebra](#segment-numerical-approximation-and-linear-algebra).
+
+## Reading
+
+Lang, Chapter VIII, for symmetric operators; Strang, Chapters 5-7 and Appendix B, for positive definiteness, singular values, conditioning and Jordan form.
+
+Book details and the related MIT lecture sequence are listed in the [Algebra overview](?subject=algebra).

@@ -38,7 +38,7 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
   <Section frameClass="max-w-[56rem]">
     <header class="px-(--page-gutter) pt-(--section-space)">
       <div class="max-w-3xl">
-        <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Module</p>
+        <p class="font-mono text-xs tracking-[0.14em] text-accent-1 uppercase">Module{module.data.draft && <span class="ml-3 rounded-md bg-orange-0/10 px-2.5 py-1 text-orange-0 normal-case tracking-normal">Draft</span>}</p>
         <h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-foreground-0 md:text-5xl">
           {module.data.title}
         </h1>
@@ -70,6 +70,7 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
                   <div class="min-w-0">
                     <h3 class="font-display text-xl font-medium text-foreground-0 transition-colors duration-300 group-hover:text-accent-1 motion-reduce:transition-none">
                       {note.data.title}
+                      {note.data.draft && <span class="ml-2 font-mono text-xs font-normal text-orange-0">Draft</span>}
                     </h3>
                     {note.data.description && <p class="mt-2 text-sm leading-6 text-foreground-2">{note.data.description}</p>}
                   </div>
@@ -79,7 +80,7 @@ const related = module.data.related.reduce<LearningEntry[]>((entries, slug) => {
             ))}
           </ol>
         ) : (
-          <p class="px-4 py-8 text-foreground-2 md:px-5">No published notes yet.</p>
+          <p class="px-4 py-8 text-foreground-2 md:px-5">No visible notes yet.</p>
         )
       }
     </section>

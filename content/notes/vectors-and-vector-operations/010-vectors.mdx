@@ -1,0 +1,63 @@
+---
+title: Vectors
+description: Coordinate vectors, notation and geometric interpretations.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## Coordinate vectors
+
+<Definition title="Coordinate vector">
+
+For a positive integer $n$, a **coordinate vector in $\mathbb R^n$** is an ordered list of $n$ real numbers,
+
+$$
+\mathbf v=(v_1,\ldots,v_n)
+$$
+
+The numbers $v_1,\ldots,v_n$ are its **components**. The set of all such lists is denoted by $\mathbb R^n$.
+
+</Definition>
+
+Order matters: $(2,3)$ and $(3,2)$ are different vectors. Two vectors in $\mathbb R^n$ are equal exactly when their corresponding components are equal. A real number used to scale a vector is called a scalar.
+
+## How we write vectors
+
+We use bold letters such as $\mathbf v$. Arrow notation $\vec v$ is also common. Component tuples and column matrices represent the same coordinate vector:
+
+$$
+\mathbf v=(v_1,\ldots,v_n)
+\qquad\longleftrightarrow\qquad
+\begin{bmatrix}v_1\\\vdots\\v_n\end{bmatrix}
+$$
+
+A column vector is an $n\times1$ matrix. A row matrix $\begin{bmatrix}v_1&\cdots&v_n\end{bmatrix}$ is its transpose; row and column shapes matter when multiplying matrices. Matrix notation supplies a representation, not a different geometric object.
+
+The standard coordinate directions in $\mathbb R^3$ are
+
+$$
+\mathbf e_1=(1,0,0),\quad\mathbf e_2=(0,1,0),\quad\mathbf e_3=(0,0,1)
+$$
+
+They are also written $\hat{\mathbf i},\hat{\mathbf j},\hat{\mathbf k}$. After introducing vector operations, we can write
+
+$$
+(v_1,v_2,v_3)=v_1\mathbf e_1+v_2\mathbf e_2+v_3\mathbf e_3
+$$
+
+## Geometric interpretation
+
+In a Cartesian plane, $(2,3)$ can represent an arrow from the origin to the point with coordinates $(2,3)$. Its components give the horizontal and vertical displacements. In three dimensions, a third component gives displacement along the third coordinate axis. The coordinate definition continues to work for any positive $n$, even when we cannot draw the whole space.
+
+A point records a location; a displacement records a change of location. If $A$ and $B$ have coordinates $\mathbf a$ and $\mathbf b$, the arrow from $A$ to $B$ represents $\mathbf b-\mathbf a$. For example, from $(1,1)$ to $(3,4)$ the displacement is $(2,3)$.
+
+Translating an arrow without changing its displacement gives another representative of the same free vector. Choosing an origin associates each point with its position vector. This association explains why points and vectors can share coordinates while playing different roles.
+
+## Reading
+
+[Interactive Linear Algebra: Vectors](https://textbooks.math.gatech.edu/ila/vectors.html) gives a related coordinate introduction.

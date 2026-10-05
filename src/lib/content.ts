@@ -34,6 +34,12 @@ export const getModuleNotes = (entries: LearningEntry[], module: LearningEntry) 
   return sortNotes(entries.filter((entry) => !isModule(entry) && getModuleFolder(entry) === folder))
 }
 
+// Hiding a module also hides its notes. Draft is a status, not a visibility filter.
+export const getVisibleLearning = (entries: LearningEntry[]) => {
+  const visibleFolders = new Set(entries.filter((entry) => isModule(entry) && !entry.data.hide).map(getModuleFolder))
+  return entries.filter((entry) => !entry.data.hide && (isModule(entry) || visibleFolders.has(getModuleFolder(entry))))
+}
+
 export const validateContent = (entries: LearningEntry[]) => {
   const modules = entries.filter(isModule)
   const moduleFolders = new Set(modules.map(getModuleFolder))
@@ -80,6 +86,7 @@ export function mapRoadmapModules(
   const bySegment = new Map<string, LearningEntry>()
   const targets = new Map(segments.map((segment) => [segment.id, segment]))
   for (const entry of entries) {
+    if (entry.data.hide) continue
     const target = entry.data.roadmap
     if (!target) continue
     if (targets.get(target)?.data.hide) continue
@@ -90,5 +97,5 @@ export function mapRoadmapModules(
     if (existing) throw new Error(`Roadmap segment "${target}" is linked to both "${existing.id}" and "${entry.id}".`)
     bySegment.set(target, entry)
   }
-  return new Map([...bySegment].filter(([target, module]) => !module.data.draft && !targets.get(target)?.data.hide))
+  return new Map([...bySegment].filter(([target, module]) => !module.data.hide && !targets.get(target)?.data.hide))
 }

@@ -1,46 +1,72 @@
 ---
-title: "Vector spaces and linear operators"
+title: "Vector spaces and linear maps"
 strand: "algebra"
 subject: "Algebra"
 stage: "Foundations"
 dependencies:
     - matrices-and-linear-systems
+follows: matrices-and-linear-systems
 draft: true
 ---
 
 ## What to study
 
-### Vector spaces
+### Vector spaces and subspaces
 
-- [ ] Real and complex vector spaces
-    - Subspaces, span and linear independence
-    - Bases, dimension and coordinate changes
-    - Polynomial and function-space examples
-- [ ] Linear maps
-    - Kernel, image and rank-nullity theorem
-    - Matrix representations and change of basis
-    - Dual spaces and linear functionals
+- [ ] Vector-space definitions
+    - Real vector spaces and their axioms
+    - Euclidean, matrix, polynomial and function-space examples
+    - Subspace tests, intersections, sums and direct sums
+    - Complex vector spaces after studying complex numbers
+- [ ] Span, independence and bases
+    - Linear combinations and spanning sets
+    - Linear dependence and independence
+    - Bases, dimension and coordinates
+    - Basis extension and exchange theorems
+    - Extending an independent set and extracting a basis
+    - Dimension formula for sums and intersections
+    - Quotient spaces and their dimensions
+    - Coordinate changes and transition matrices
 
-### Inner products and projections
+### The four fundamental subspaces
 
-- [ ] Inner-product spaces
-    - Norms, orthogonality and Cauchy-Schwarz inequality
-    - Gram-Schmidt orthogonalisation
-    - Orthogonal complements and projections
-    - Orthonormal bases and completeness in finite dimensions
-- [ ] Least-squares approximation
-    - Projection onto a column space
-    - Normal equations and QR factorisation
-    - Overdetermined systems and residuals
+- [ ] Column, row, null and left-null spaces
+    - Bases from elimination and careful use of the original columns
+    - Rank, nullity and equality of row and column rank
+    - Solvability of a system through its column space
+    - Dimensions and the rank-nullity relation
 
-### Operator structure
+### Linear maps and matrix representations
 
-- [ ] Adjoint operators
-    - Self-adjoint, unitary and normal operators
-    - Finite-dimensional spectral theorem
-    - Commuting operators and simultaneous diagonalisation
-- [ ] General spectral decompositions
-    - Generalised eigenvectors and Jordan form
-    - Singular value decomposition and pseudoinverses
-    - Matrix functions and matrix exponentials
-    - Positive operators and variational eigenvalue bounds
+- [ ] Structure-preserving maps
+    - Linearity tests and geometric transformations
+    - Kernel, image, injectivity and surjectivity
+    - Rank-nullity theorem for linear maps
+    - Composition, inverses and isomorphisms
+- [ ] Matrices relative to bases
+    - Representing maps between different vector spaces
+    - Change of basis for maps and operators
+    - Similarity of matrices representing the same operator
+    - Dual spaces, dual bases and linear functionals
+    - Dual maps, annihilators and the finite-dimensional double dual
+
+### Reasoning about linear structure
+
+- [ ] Proofs and counterexamples in linear algebra
+    - Direct proof from the axioms and proof by cases
+    - Contrapositive and contradiction in independence and invertibility arguments
+    - Necessary and sufficient conditions, converses and counterexamples
+    - Proving existence and uniqueness separately
+
+### Further examples
+
+- [ ] Linear structure beyond coordinate vectors
+    - Evaluation, differentiation and integration as maps on suitable spaces
+    - Linear constraints, affine solution sets and convex combinations
+    - Finite-dimensional reasoning and the limits of its extension to infinite dimensions
+
+## Reading
+
+Lang, Chapters III-V, including the change-of-bases appendix; Strang, Chapter 2. Connect every abstract definition to a small matrix or polynomial example.
+
+Book details and the related MIT lecture sequence are listed in the [Algebra overview](?subject=algebra).

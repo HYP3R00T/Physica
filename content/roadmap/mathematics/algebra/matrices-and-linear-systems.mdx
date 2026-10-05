@@ -5,46 +5,54 @@ subject: "Algebra"
 stage: "Foundations"
 dependencies:
     - vectors-and-vector-operations
-    - complex-numbers-and-polynomials
+follows: vectors-and-vector-operations
 draft: true
 ---
 
 ## What to study
 
-### Matrix algebra
+### From equations to matrices
 
-- [ ] Matrices and operations
-    - Shape, entries, sums and products
-    - Identity, diagonal and triangular matrices
-    - Transpose and conjugate transpose
-    - Symmetric, skew-symmetric and Hermitian matrices
-- [ ] Inverses and determinants
-    - Invertibility and singularity
-    - Determinant properties and cofactor expansion
-    - Adjugate formula and Cramer's rule
-    - Determinants as area and volume scale factors
+- [ ] Matrix notation and operations
+    - Rows, columns, shape and entries
+    - Matrix-vector products as linear combinations of columns
+    - Row and column interpretations of a linear system
+    - Matrix multiplication, composition and noncommutativity
+    - Identity, diagonal, triangular, transpose and permutation matrices
+- [ ] Solution structure
+    - General m-by-n systems and the matrix equation Ax = b
+    - Unique, absent and infinitely many solutions
+    - Homogeneous solution spaces and affine nonhomogeneous solution sets
+- [ ] Gaussian and Gauss-Jordan elimination
+    - Augmented matrices and elementary row operations
+    - Pivots, echelon forms and reduced row echelon form
+    - Back substitution, free variables and parametric solutions
+    - Consistent and inconsistent systems
+    - Homogeneous and nonhomogeneous equations
+    - A particular solution plus a homogeneous solution
 
-### Linear equations
+### Invertibility and factorisation
 
-- [ ] Gaussian elimination
-    - Elementary row operations and row echelon forms
-    - Pivot variables and free variables
-    - Rank, consistency and solution sets
-    - Homogeneous and nonhomogeneous systems
-- [ ] Matrix factorisation
-    - Permutations and pivoting
-    - LU factorisation
-    - Solving several systems with the same matrix
+- [ ] Matrix inverses
+    - Invertibility, singularity and solving by elimination
+    - Elementary matrices and row reduction of an augmented identity
+    - Inverses of products and transposes
+    - Conditions for uniqueness in a square system
+- [ ] LU factorisation
+    - Elimination multipliers and triangular factors
+    - Row exchanges, pivoting and permutation matrices
+    - Solving several systems with the same coefficient matrix
+    - Residual checks and why explicit inversion is usually unnecessary
 
-### Eigenvalue problems
+### Applications
 
-- [ ] Eigenvalues and eigenvectors
-    - Characteristic polynomial
-    - Eigenspaces and multiplicities
-    - Similarity transformations and diagonalisation
-    - Cayley-Hamilton theorem
-- [ ] Symmetric and Hermitian eigenproblems
-    - Real eigenvalues and orthogonal eigenvectors
-    - Orthogonal and unitary diagonalisation
-    - Quadratic forms and definiteness
-    - Principal axes
+- [ ] Systems as models
+    - Balance equations and simple networks
+    - Rectangular systems and underdetermined or overdetermined data
+    - Distinguishing exact solutions from approximation problems
+
+## Reading
+
+Lang, Chapters II and V; Strang, Chapter 1. Work through elimination by hand before using a numerical solver.
+
+Book details and the related MIT lecture sequence are listed in the [Algebra overview](?subject=algebra).
