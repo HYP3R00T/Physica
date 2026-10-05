@@ -1,0 +1,74 @@
+---
+title: Angles and projections
+description: Orthogonality, direction angles and resolving vectors into projections.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## Angles and orthogonality
+
+For nonzero Euclidean vectors, the angle $\theta\in[0,\pi]$ satisfies
+
+$$
+\mathbf u\cdot\mathbf v=\|\mathbf u\|\,\|\mathbf v\|\cos\theta,
+\qquad
+\cos\theta=\frac{\mathbf u\cdot\mathbf v}{\|\mathbf u\|\,\|\mathbf v\|}
+$$
+
+The Cauchy–Schwarz inequality,
+
+$$
+|\mathbf u\cdot\mathbf v|\leq\|\mathbf u\|\,\|\mathbf v\|,
+$$
+
+ensures that the ratio lies between $-1$ and $1$. Equality holds exactly when the vectors are linearly dependent. One proof, for $\mathbf v\ne\mathbf0$, expands the nonnegative quantity
+
+$$
+\left\|\mathbf u-\frac{\mathbf u\cdot\mathbf v}{\|\mathbf v\|^2}\mathbf v\right\|^2
+=\|\mathbf u\|^2-\frac{(\mathbf u\cdot\mathbf v)^2}{\|\mathbf v\|^2}
+$$
+
+Cauchy–Schwarz also gives the triangle inequality by expanding $\|\mathbf u+\mathbf v\|^2$.
+
+Vectors are orthogonal when $\mathbf u\cdot\mathbf v=0$. For two nonzero vectors, this means they are perpendicular. The zero vector is orthogonal to every vector, although it has no geometric direction or angle.
+
+## Projections
+
+<Definition title="Projection onto a direction">
+
+For a nonzero vector $\mathbf v$, the scalar projection of $\mathbf u$ onto its direction and the vector projection onto its span are
+
+$$
+\operatorname{comp}_{\mathbf v}\mathbf u
+=\frac{\mathbf u\cdot\mathbf v}{\|\mathbf v\|},
+\qquad
+\operatorname{proj}_{\mathbf v}\mathbf u
+=\frac{\mathbf u\cdot\mathbf v}{\mathbf v\cdot\mathbf v}\mathbf v
+$$
+
+</Definition>
+
+The scalar projection is a signed length. The vector projection lies along $\mathbf v$. The remaining vector $\mathbf u-\operatorname{proj}_{\mathbf v}\mathbf u$ is orthogonal to $\mathbf v$.
+
+For $\mathbf u=(2,3)$ and $\mathbf v=(1,0)$, the projection is $(2,0)$ and the remainder is $(0,3)$. Resolving a vector into mutually perpendicular unit directions uses these dot products as coefficients. With nonparallel directions that are not perpendicular, coefficients must instead be found by solving the component equations.
+
+## Direction angles
+
+In $\mathbb R^3$, the angles $\alpha,\beta,\gamma$ with the positive coordinate axes obey
+
+$$
+\cos\alpha=\frac{v_1}{\|\mathbf v\|},\quad
+\cos\beta=\frac{v_2}{\|\mathbf v\|},\quad
+\cos\gamma=\frac{v_3}{\|\mathbf v\|}
+$$
+
+Their squared cosines sum to $1$. In the plane, the direction angle of $(x,y)\ne(0,0)$ is obtained with $\operatorname{atan2}(y,x)$, which uses both signs to select the quadrant. Using only $\arctan(y/x)$ loses that information and fails when $x=0$.
+
+## Reading
+
+[Interactive Linear Algebra: Dot products and orthogonality](https://textbooks.math.gatech.edu/ila/dot-product.html) provides further examples.

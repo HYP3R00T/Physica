@@ -1,0 +1,58 @@
+---
+title: Vector operations
+description: Addition, subtraction and scalar multiplication in coordinates and geometry.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## Addition and scalar multiplication
+
+<Definition title="Coordinate operations">
+
+For $\mathbf u,\mathbf v\in\mathbb R^n$ and $a\in\mathbb R$,
+
+$$
+\mathbf u+\mathbf v=(u_1+v_1,\ldots,u_n+v_n),
+\qquad
+ a\mathbf v=(av_1,\ldots,av_n)
+$$
+
+</Definition>
+
+For example, $(2,3)+(-1,4)=(1,7)$ and $2(2,3)=(4,6)$. Addition combines displacements: place the second arrow at the endpoint of the first. The resultant arrow runs from the initial point to the final point. This is the head-to-tail or triangle construction. Drawing both arrows from a common point gives the parallelogram construction. Repeating head-to-tail addition gives the polygon construction for several vectors.
+
+A positive scalar preserves the direction of a nonzero vector; a negative scalar reverses it. Multiplication by zero gives the zero vector. The magnitude is multiplied by $|a|$.
+
+## Zero, negatives and subtraction
+
+The zero vector is $\mathbf0=(0,\ldots,0)$. It has no direction. The opposite vector is $-\mathbf v=(-v_1,\ldots,-v_n)$, and
+
+$$
+\mathbf v+(-\mathbf v)=\mathbf0,
+\qquad
+\mathbf u-\mathbf v=\mathbf u+(-\mathbf v)
+$$
+
+For nonzero vectors, $\mathbf u=a\mathbf v$ means they are parallel: they have the same direction for $a>0$ and opposite directions for $a<0$. Opposite-direction vectors are called antiparallel.
+
+## Algebraic properties
+
+Component arithmetic gives, for all appropriate vectors and real scalars,
+
+$$
+\begin{aligned}
+\mathbf u+\mathbf v&=\mathbf v+\mathbf u,\\
+(\mathbf u+\mathbf v)+\mathbf w&=\mathbf u+(\mathbf v+\mathbf w),\\
+a(\mathbf u+\mathbf v)&=a\mathbf u+a\mathbf v,\\
+(a+b)\mathbf v&=a\mathbf v+b\mathbf v,\\
+a(b\mathbf v)&=(ab)\mathbf v,\\
+1\mathbf v&=\mathbf v
+\end{aligned}
+$$
+
+For instance, the $i$th component of $a(\mathbf u+\mathbf v)$ is $a(u_i+v_i)=au_i+av_i$, proving distributivity in every component. These are the properties we will later collect in the vector-space definition.

@@ -1,0 +1,80 @@
+---
+title: Dot products and norms
+description: Scalar products, Euclidean length, distance and normalization.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## Dot product
+
+<Definition title="Euclidean dot product">
+
+For $\mathbf u,\mathbf v\in\mathbb R^n$, their **dot product**, also called their scalar product, is
+
+$$
+\mathbf u\cdot\mathbf v=\sum_{i=1}^{n}u_iv_i
+$$
+
+Its result is a real scalar.
+
+</Definition>
+
+For example, $(2,3)\cdot(4,-1)=8-3=5$. The dot product is symmetric and linear in each argument:
+
+$$
+\begin{aligned}
+\mathbf u\cdot\mathbf v&=\mathbf v\cdot\mathbf u,\\
+(a\mathbf u+b\mathbf v)\cdot\mathbf w
+&=a(\mathbf u\cdot\mathbf w)+b(\mathbf v\cdot\mathbf w)
+\end{aligned}
+$$
+
+Also, $\mathbf v\cdot\mathbf v\geq0$, with equality exactly when $\mathbf v=\mathbf0$.
+
+## Euclidean norm
+
+<Definition title="Euclidean norm">
+
+The **Euclidean norm** of $\mathbf v\in\mathbb R^n$ is
+
+$$
+\|\mathbf v\|=\sqrt{\mathbf v\cdot\mathbf v}
+=\sqrt{v_1^2+\cdots+v_n^2}
+$$
+
+</Definition>
+
+This is its length or magnitude in Euclidean geometry. For example, $\|(3,4)\|=5$. The formula extends the Pythagorean theorem to $n$ coordinates.
+
+A norm measures size. The Euclidean norm obeys
+
+$$
+\|\mathbf v\|\geq0,\qquad
+\|\mathbf v\|=0\iff\mathbf v=\mathbf0,\qquad
+\|a\mathbf v\|=|a|\,\|\mathbf v\|,
+$$
+
+and the triangle inequality,
+
+$$
+\|\mathbf u+\mathbf v\|\leq\|\mathbf u\|+\|\mathbf v\|
+$$
+
+For points with position vectors $\mathbf a,\mathbf b$, the Euclidean distance is $\|\mathbf b-\mathbf a\|$.
+
+## Unit vectors and normalization
+
+A unit vector has norm $1$. To normalize a nonzero vector, divide it by its length:
+
+$$
+\widehat{\mathbf v}=\frac{\mathbf v}{\|\mathbf v\|}
+$$
+
+Then $\|\widehat{\mathbf v}\|=1$, and it points in the same direction as $\mathbf v$. For example, normalizing $(3,4)$ gives $(3/5,4/5)$. The zero vector cannot be normalized because its norm is zero.
+
+A vector space alone does not specify a norm or a dot product. Here we have chosen the usual Euclidean ones on $\mathbb R^n$.

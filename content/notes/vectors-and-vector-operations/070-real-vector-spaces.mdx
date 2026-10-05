@@ -1,0 +1,66 @@
+---
+title: Real vector spaces
+description: The vector-space axioms and the general meaning of a vector.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## From coordinate operations to axioms
+
+Coordinate addition and scalar multiplication satisfy the same algebraic laws in every $\mathbb R^n$. We can use these laws to define a broader class of objects.
+
+<Definition>
+
+A **real vector space** is a nonempty set $V$ with specified operations of vector addition and multiplication by real scalars, satisfying the following conditions.
+
+**Closure:**
+
+For every $\mathbf{u},\mathbf{v}\in V$ and $a\in\mathbb{R}$,
+
+- Closure under vector addition: $\mathbf{u}+\mathbf{v}\in V$.
+- Closure under scalar multiplication: $a\mathbf{v}\in V$.
+
+For all $\mathbf{u},\mathbf{v},\mathbf{w}\in V$ and $a,b\in\mathbb{R}$, the operations satisfy:
+
+| Property | Condition |
+| --- | --- |
+| Commutativity | $\mathbf{u}+\mathbf{v}=\mathbf{v}+\mathbf{u}$ |
+| Associativity of addition | $(\mathbf{u}+\mathbf{v})+\mathbf{w}=\mathbf{u}+(\mathbf{v}+\mathbf{w})$ |
+| Additive identity | There exists $\mathbf{0}\in V$ such that $\mathbf{v}+\mathbf{0}=\mathbf{0}+\mathbf{v}=\mathbf{v}$ for every $\mathbf{v}\in V$ |
+| Additive inverses | Each $\mathbf{v}\in V$ has an element $-\mathbf{v}\in V$ such that $\mathbf{v}+(-\mathbf{v})=(-\mathbf{v})+\mathbf{v}=\mathbf{0}$ |
+| Distributivity over vector addition | $a(\mathbf{u}+\mathbf{v})=a\mathbf{u}+a\mathbf{v}$ |
+| Distributivity over scalar addition | $(a+b)\mathbf{v}=a\mathbf{v}+b\mathbf{v}$ |
+| Compatibility of scalar multiplication | $a(b\mathbf{v})=(ab)\mathbf{v}$ |
+| Scalar identity | $1\mathbf{v}=\mathbf{v}$ |
+
+</Definition>
+
+
+An element of a vector space is called a **vector**. In $\mathbb R^n$, vectors are coordinate lists. In other vector spaces, they can be matrices, polynomials or functions, with suitable addition and scalar multiplication.
+
+## Examples and a non-example
+
+Every $\mathbb R^n$ with the component operations is a real vector space. The set of real $m\times n$ matrices is another: add corresponding entries and multiply every entry by the scalar. The zero matrix is its additive identity.
+
+Real polynomials form a vector space under ordinary polynomial addition and real scalar multiplication. For example, $2(1+x)+(x^2-x)=2+x+x^2$. The zero polynomial is the zero vector.
+
+A line through the origin, $V=\{t\mathbf d:t\in\mathbb R\}$, is closed under the usual operations because
+
+$$
+s\mathbf d+t\mathbf d=(s+t)\mathbf d,\qquad a(t\mathbf d)=(at)\mathbf d
+$$
+
+The other axioms are inherited from the surrounding coordinate space. A line that does not pass through the origin fails to contain the zero vector, so it cannot be a vector space under those operations.
+
+## What the definition provides
+
+The axioms specify addition and scaling. They do not specify a length, angle or dot product. Those require additional choices. This is why the geometric ideas from earlier notes describe Euclidean coordinate space, while the vector-space definition also applies to objects such as polynomials.
+
+## Reading
+
+[Ximera: Definition of a vector space](https://ximera.osu.edu/linearalgebra/textbook/vectorSpaces/definition) is the source for the definition block above.

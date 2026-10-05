@@ -1,0 +1,61 @@
+---
+title: Vector equations of lines and planes
+description: Parametric equations, normals, intersections and distances.
+tags:
+  - algebra
+  - linear algebra
+created: 2026-10-05
+updated: 2026-10-05
+draft: true
+hide: true
+---
+
+## Lines
+
+A line through a point with position vector $\mathbf p$, in a nonzero direction $\mathbf d$, has equation
+
+$$
+\mathbf x=\mathbf p+t\mathbf d,\qquad t\in\mathbb R
+$$
+
+The parameter $t$ selects a point. For example, $(x,y)=(1,2)+t(3,-1)$ means $x=1+3t$ and $y=2-t$. Restricting $t$ to $[0,1]$ in $\mathbf x=\mathbf a+t(\mathbf b-\mathbf a)$ gives the segment from $A$ to $B$; $t=1/2$ gives its midpoint. More generally, $\mathbf a+t(\mathbf b-\mathbf a)$ divides the segment internally in ratio $t:(1-t)$ for $0<t<1$.
+
+Two lines have parallel directions when their nonzero direction vectors are scalar multiples. Their direction vectors determine their angle; the smaller unoriented angle uses the absolute value of the dot-product ratio. Perpendicular directions have zero dot product. In three dimensions, lines with perpendicular directions need not intersect.
+
+To find an intersection, equate the two parametric expressions and solve for their separate parameters. In three dimensions, nonparallel lines can be skew: they neither intersect nor lie in one plane.
+
+## Planes
+
+A plane in $\mathbb R^3$ through $\mathbf p$ with two linearly independent directions $\mathbf u,\mathbf v$ has equation
+
+$$
+\mathbf x=\mathbf p+s\mathbf u+t\mathbf v,\qquad s,t\in\mathbb R
+$$
+
+Here independence means that neither direction is a scalar multiple of the other. With a nonzero normal vector $\mathbf n$ perpendicular to both directions, the same plane satisfies
+
+$$
+\mathbf n\cdot(\mathbf x-\mathbf p)=0
+$$
+
+For $\mathbf n=(a,b,c)$, this becomes $ax+by+cz=d$, where $d=\mathbf n\cdot\mathbf p$. For example, $(x,y,z)=(1,0,2)+s(1,0,0)+t(0,1,0)$ describes $z=2$.
+
+Planes are parallel when their normals are scalar multiples and perpendicular when their normals are orthogonal. The smaller angle between planes equals the smaller angle between their normal lines. A line is parallel to a plane's directions when $\mathbf n\cdot\mathbf d=0$, and perpendicular to the plane when $\mathbf d$ is parallel to $\mathbf n$.
+
+Substitute a line's parametric equation into a plane equation to find their intersection. The result can be one point, no points, or the entire line. Two distinct nonparallel planes intersect in a line.
+
+## Distances
+
+For a point with position vector $\mathbf q$, the distance to the line $\mathbf p+t\mathbf d$ is
+
+$$
+\left\|(\mathbf q-\mathbf p)-\operatorname{proj}_{\mathbf d}(\mathbf q-\mathbf p)\right\|
+$$
+
+The distance to the plane with normal $\mathbf n$ through $\mathbf p$ is
+
+$$
+\frac{|\mathbf n\cdot(\mathbf q-\mathbf p)|}{\|\mathbf n\|}
+$$
+
+Both formulas retain the perpendicular part of the displacement. Lines and planes through the origin are spans. Translating them away from the origin gives affine sets, which generally are not vector spaces under the usual operations.
