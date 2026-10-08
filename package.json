@@ -31,7 +31,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fuse.js": "^7.5.0",
-    "katex": "^0.18.9",
+    "katex": "^0.18.10",
     "lucide-react": "^1.48.0",
     "radix-ui": "^1.6.7",
     "react": "^19.3.0",
@@ -40,7 +40,7 @@
     "rehype-pretty-code": "^0.14.5",
     "remark-math": "^6.0.0",
     "shadcn": "^4.21.0",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "shiki": "^4.4.3",
     "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3",
@@ -48,7 +48,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.5.15",
     "globals": "^17.12.0"
   }
 }
